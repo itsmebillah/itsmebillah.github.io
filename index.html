@@ -1839,16 +1839,9 @@ function initializeChatbot() {
 
             const GAS_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
 
-            const response = await fetch(GAS_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    action: 'chat',
-                    message: message
-                })
-            });
+            const response = await fetch(
+    `${GAS_URL}?action=chat&message=${encodeURIComponent(message)}`
+        );
 
             const data = await response.json();
 
