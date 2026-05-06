@@ -532,7 +532,7 @@
             <!-- Profile Image -->
             <div class="relative mx-auto w-80 h-80 mb-8 floating">
                 <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full animate-pulse"></div>
-                <img id="profileImage" 
+                <img id="profileImage" loading="lazy"
                      alt="Md. Masum Billah" 
                      class="relative w-72 h-72 rounded-full object-cover mx-auto mt-4 border-4 border-white/20 shadow-2xl"
                      src="https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png">
@@ -1333,7 +1333,7 @@ class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-wh
                         </div>
                         
                         <div class="text-center">
-                            <img src="${project.image}" 
+                            <img src="${project.image}" loading="lazy">
                                  alt="${project.name}" 
                                  class="w-full h-64 object-cover rounded-2xl mb-6 shadow-2xl">
                             <div class="text-2xl font-bold gradient-text">80% Time Saved</div>
