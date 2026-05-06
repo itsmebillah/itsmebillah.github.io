@@ -1835,29 +1835,151 @@ function initializeChatbot() {
 
     async function generateReply(message) {
 
-        try {
+    const msg = message.toLowerCase();
 
-            const GAS_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
+    // ========================
+    // GREETING
+    // ========================
 
-            const response = await fetch(
-    `${GAS_URL}?action=chat&message=${encodeURIComponent(message)}`
-        );
-
-            const data = await response.json();
-
-            if (data.success) {
-    return data.reply;
-} else {
-    return data.reply;
-}
-
-        } catch (error) {
-
-            console.error('Chatbot Error:', error);
-
-            return 'Connection error. Please try again later.';
-        }
+    if (
+        msg.includes('hi') ||
+        msg.includes('hello') ||
+        msg.includes('hey')
+    ) {
+        return `👋 Hello! I'm Masum's virtual assistant.<br><br>
+        I can help you explore:
+        <br>• Skills
+        <br>• Projects
+        <br>• Experience
+        <br>• Certifications
+        <br>• Contact Information`;
     }
+
+    // ========================
+    // SKILLS
+    // ========================
+
+    if (
+        msg.includes('skill') ||
+        msg.includes('sql') ||
+        msg.includes('power bi') ||
+        msg.includes('python') ||
+        msg.includes('excel')
+    ) {
+
+        return `
+        🚀 Masum's core skills include:
+        <br><br>
+        • SQL
+        <br>• Power BI
+        <br>• Excel Automation
+        <br>• Google Apps Script
+        <br>• Python for Data Analysis
+        <br>• Dashboard Development
+        <br>• Business Intelligence
+        `;
+    }
+
+    // ========================
+    // PROJECTS
+    // ========================
+
+    if (
+        msg.includes('project') ||
+        msg.includes('portfolio') ||
+        msg.includes('dashboard')
+    ) {
+
+        return `
+        📊 Featured Projects:
+        <br><br>
+        • Enterprise Retail Analytics Dashboard
+        <br>• HR Analytics Dashboard
+        <br>• POS & Finance Tracking System
+        <br>• Google Workspace Automation
+        <br>• Investment Tracker App
+        <br><br>
+        Visit the Projects section to explore more 🚀
+        `;
+    }
+
+    // ========================
+    // EXPERIENCE
+    // ========================
+
+    if (
+        msg.includes('experience') ||
+        msg.includes('job') ||
+        msg.includes('work')
+    ) {
+
+        return `
+        💼 Masum previously worked at Data Solution 360 as a Data Analyst.
+        <br><br>
+        He also has experience building:
+        <br>• Automation systems
+        <br>• BI dashboards
+        <br>• Reporting solutions
+        <br>• Google Apps Script tools
+        `;
+    }
+
+    // ========================
+    // CONTACT
+    // ========================
+
+    if (
+        msg.includes('contact') ||
+        msg.includes('email') ||
+        msg.includes('hire') ||
+        msg.includes('whatsapp')
+    ) {
+
+        return `
+        📬 Contact Masum:
+        <br><br>
+        📧 Email: itsmbillah@gmail.com
+        <br>
+        🌐 Portfolio: itsmebillah.github.io
+        <br>
+        💼 LinkedIn: linkedin.com/in/itsmebillah
+        `;
+    }
+
+    // ========================
+    // CERTIFICATES
+    // ========================
+
+    if (
+        msg.includes('certificate') ||
+        msg.includes('certification')
+    ) {
+
+        return `
+        🏆 Masum has completed multiple certifications in:
+        <br><br>
+        • Data Analytics
+        <br>• Power BI
+        <br>• SQL
+        <br>• Excel
+        <br>• Automation
+        `;
+    }
+
+    // ========================
+    // DEFAULT
+    // ========================
+
+    return `
+    🤖 I couldn't fully understand that.
+    <br><br>
+    Try asking about:
+    <br>• Skills
+    <br>• Projects
+    <br>• Experience
+    <br>• Certifications
+    <br>• Contact
+    `;
 }
         // Google Analytics
         gtag('event', 'page_view', {
