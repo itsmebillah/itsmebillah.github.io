@@ -1005,6 +1005,7 @@ class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-wh
             initializeSmoothScrolling();
             initializeThemeToggle();
             initializeFormSubmission();
+            initializeChatbot();
             
             // Hide loader
             setTimeout(() => {
@@ -1747,6 +1748,124 @@ class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-wh
             }
         });
 
+        // =========================
+// CHATBOT SYSTEM
+// =========================
+
+function initializeChatbot() {
+
+    const chatToggle = document.getElementById('chatToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const closeChat = document.getElementById('closeChat');
+    const sendChat = document.getElementById('sendChat');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Open Chat
+    chatToggle.addEventListener('click', () => {
+        chatWindow.classList.remove('hidden');
+    });
+
+    // Close Chat
+    closeChat.addEventListener('click', () => {
+        chatWindow.classList.add('hidden');
+    });
+
+    // Send Message
+    sendChat.addEventListener('click', sendMessage);
+
+    // Enter Press
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    async function sendMessage() {
+
+        const message = chatInput.value.trim();
+
+        if (!message) return;
+
+        // User Message
+        appendMessage(message, 'user');
+
+        // Clear Input
+        chatInput.value = '';
+
+        // Typing Effect
+        setTimeout(async () => {
+
+            const reply = await generateReply(message);
+
+            appendMessage(reply, 'bot');
+
+        }, 700);
+    }
+
+    function appendMessage(text, sender) {
+
+        const messageDiv = document.createElement('div');
+
+        if (sender === 'user') {
+
+            messageDiv.innerHTML = `
+                <div class="flex justify-end">
+                    <div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-3 rounded-2xl max-w-[80%]">
+                        ${text}
+                    </div>
+                </div>
+            `;
+
+        } else {
+
+            messageDiv.innerHTML = `
+                <div class="flex">
+                    <div class="bg-white/10 text-white px-4 py-3 rounded-2xl max-w-[80%]">
+                        ${text}
+                    </div>
+                </div>
+            `;
+        }
+
+        chatMessages.appendChild(messageDiv);
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function generateReply(message) {
+
+        try {
+
+            const GAS_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
+
+            const response = await fetch(GAS_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: 'chat',
+                    message: message
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                return data.reply;
+            } else {
+                return 'AI assistant is currently unavailable.';
+            }
+
+        } catch (error) {
+
+            console.error('Chatbot Error:', error);
+
+            return 'Connection error. Please try again later.';
+        }
+    }
+}
         // Google Analytics
         gtag('event', 'page_view', {
             page_title: document.title,
