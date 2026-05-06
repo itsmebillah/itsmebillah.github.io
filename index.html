@@ -1846,10 +1846,10 @@ function initializeChatbot() {
             const data = await response.json();
 
             if (data.success) {
-                return data.reply;
-            } else {
-                return 'AI assistant is currently unavailable.';
-            }
+    return data.reply;
+} else {
+    return data.reply;
+}
 
         } catch (error) {
 
