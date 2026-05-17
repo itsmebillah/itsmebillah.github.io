@@ -1351,9 +1351,12 @@ class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-wh
             otherContainer.innerHTML = otherProjects.map(project => `
                 <div class="glass rounded-2xl p-6 magnetic-btn">
                     <div class="mb-4">
-                        <img src="${project.image}" loading="lazy">
-                             alt="${project.name}" 
-                             class="w-full h-48 object-cover rounded-lg mb-4 shadow-lg">
+                        <img 
+  src="${project.image}" 
+  loading="lazy"
+  alt="${project.name}" 
+  class="w-full h-48 object-cover rounded-lg mb-4 shadow-lg"
+/>
                     </div>
                     
                     <h4 class="text-xl font-semibold mb-3 text-white">${project.name}</h4>
