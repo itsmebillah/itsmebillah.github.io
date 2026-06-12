@@ -1003,7 +1003,20 @@ class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-wh
 
             // Load portfolio data
             await loadPortfolioData();
-            
+
+
+            projects = (result.data.projects || []).map(project => ({
+  name: project.Name || '',
+  description: project.Description || '',
+  image: project.Image || '',
+  liveUrl: project.LiveURL || '',
+  githubUrl: project.GitHubURL || '',
+  featured: String(project.Featured).toUpperCase() === 'TRUE',
+  tags: (project.Tags || '')
+    .split(',')
+    .map(t => t.trim())
+    .filter(Boolean)
+}));
             // Initialize other components
             initializeMagneticButtons();
             initializeSmoothScrolling();
