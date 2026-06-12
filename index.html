@@ -1037,6 +1037,7 @@ class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-wh
                     portfolioData = result.data.config || {};
                     skills = result.data.skills || [];
                     projects = result.data.projects || [];
+                    console.log("PROJECTS DATA:", projects);
                     projects = projects.map(project => ({
   ...project,
   tags: (project.Tags || project.tags || "")
