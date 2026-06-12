@@ -1,2021 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Head section-এর শুরুতে যোগ করুন -->
-<link rel="icon" href="data:image/svg+xml,
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
-  <rect width='100' height='100' rx='20' fill='%230f172a'/>
-  <text x='50' y='68'
-        font-size='60'
-        text-anchor='middle'
-        fill='white'>
-    🧑‍💻
-  </text>
-</svg>">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Md. Masum Billah | Data Analyst & Automation Developer</title>
-    
-    <!-- Meta Tags for SEO -->
-    <meta name="description" content="Data Analyst at Data Solution 360 with expertise in data analysis, automation, and business intelligence. Portfolio of Md. Masum Billah.">
-    <meta name="keywords" content="Data Analyst, Automation Developer, Business Intelligence, Google Apps Script, Power BI, SQL, Python, Bangladesh">
-    <meta name="author" content="Md. Masum Billah">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://itsmebillah.github.io/itsmebillah/">
-    <meta property="og:title" content="Md. Masum Billah | Data Analyst & Automation Developer">
-    <meta property="og:description" content="Data Analyst at Data Solution 360 with expertise in data analysis, automation, and business intelligence.">
-    <meta property="og:image" content="https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://itsmebillah.github.io/itsmebillah/">
-    <meta property="twitter:title" content="Md. Masum Billah | Data Analyst & Automation Developer">
-    <meta property="twitter:description" content="Data Analyst at Data Solution 360 with expertise in data analysis, automation, and business intelligence.">
-    <meta property="twitter:image" content="https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png">
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KDTNVZE7P7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-KDTNVZE7P7');
-    </script>
-    
-    <!-- Tailwind CSS -->
+    <title>Md. Masum Billah | Portfolio</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50' y='68' font-size='60' text-anchor='middle' fill='white'>🧑‍💻</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-        media="print"
-onload="this.media='all'">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- AOS Animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-            transition: all 0.3s ease;
-        }
-
-        body.light-mode {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #2d3748;
-        }
-
-        .light-mode .glass {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #2d3748;
-        }
-
-        .light-mode .gradient-text {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .light-mode .text-gray-300 {
-            color: #4a5568;
-        }
-
-        .light-mode .text-gray-400 {
-            color: #718096;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #1a202c;
-        }
-        
-        .light-mode ::-webkit-scrollbar-track {
-            background: #e2e8f0;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #FF6B35, #FF8B35);
-            border-radius: 10px;
-        }
-
-        /* Glass Morphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(45deg, #FF6B35, #FF8B35, #FF6B9D);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Floating Animation */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .floating {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        /* Magnetic Buttons */
-        .magnetic-btn {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .magnetic-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
-        }
-
-        /* Particle Background */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* Skills Progress Bars */
-        .skill-container {
-            margin-bottom: 1.5rem;
-        }
-        
-        .skill-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-        
-        .skill-name {
-            font-weight: 600;
-            color: white;
-        }
-        
-        .skill-percentage {
-            color: #FF6B35;
-            font-weight: 600;
-        }
-        
-        .skill-bar {
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(90deg, #FF6B35, #FF8B35);
-            border-radius: 4px;
-            width: 0;
-            transition: width 1.5s ease-in-out;
-        }
-
-        /* Timeline Styles */
-        .timeline-container {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 0;
-        }
-
-        .timeline-container::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, #FF6B35, #FF8B35);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 3rem;
-            width: 100%;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content {
-            margin-left: auto;
-            margin-right: 2rem;
-            text-align: left;
-            padding-right: 4rem;
-            padding-left: 0;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            margin-left: 2rem;
-            margin-right: auto;
-            text-align: left;
-            padding-left: 4rem;
-            padding-right: 0;
-        }
-
-        .timeline-content {
-            position: relative;
-            width: 45%;
-            padding: 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.2);
-        }
-
-        .timeline-icon {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(45deg, #FF6B35, #FF8B35);
-            color: white;
-            font-size: 1.25rem;
-        }
-
-        .timeline-item:nth-child(odd) .timeline-icon {
-            right: -25px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-icon {
-            left: -25px;
-        }
-
-        .timeline-period {
-            display: inline-block;
-            background: rgba(255, 107, 53, 0.2);
-            color: #FF6B35;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-content h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-            color: white;
-        }
-
-        .light-mode .timeline-content h3 {
-            color: #2d3748;
-        }
-
-        .timeline-company {
-            display: block;
-            color: #FF8B35;
-            font-weight: 500;
-            margin-bottom: 0.75rem;
-            font-size: 1rem;
-        }
-
-        .timeline-description {
-            color: rgba(255, 255, 255, 0.7);
-            line-height: 1.6;
-            font-size: 0.9rem;
-        }
-
-        .light-mode .timeline-description {
-            color: #4a5568;
-        }
-
-        /* Project Tags */
-        .project-tag {
-            display: inline-block;
-            background: rgba(255, 107, 53, 0.2);
-            color: #FF8B35;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Blog Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            overflow-y: auto;
-            padding: 2rem;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%);
-            max-width: 900px;
-            margin: 0 auto;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
-
-        .light-mode .modal-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255, 107, 53, 0.2);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.25rem;
-            transition: all 0.3s ease;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 107, 53, 0.4);
-            transform: rotate(90deg);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .timeline-container::before {
-                left: 30px;
-            }
-
-            .timeline-item:nth-child(odd) .timeline-content,
-            .timeline-item:nth-child(even) .timeline-content {
-                width: calc(100% - 80px);
-                margin-left: 80px;
-                text-align: left;
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-            }
-
-            .timeline-item:nth-child(odd) .timeline-icon,
-            .timeline-item:nth-child(even) .timeline-icon {
-                left: -55px;
-                right: auto;
-            }
-            
-            .modal-content {
-                padding: 1rem;
-            }
-        }
-
-        /* Loader Styles */
-        #loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 107, 53, 0.3);
-            border-radius: 50%;
-            border-top-color: #FF6B35;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .loader-text {
-            margin-top: 20px;
-            color: #FF8B35;
-            font-weight: 500;
-        }
-        /* =========================================== */
-/* EXPERIENCE SECTION SPECIFIC FIX (NEW ADDED) */
-/* =========================================== */
-
-/* শুধুমাত্র Experience section-এর জন্য */
-#experience .timeline-content {
-    padding: 2rem 2.5rem !important;
-    text-align: left !important;
-}
-
-#experience .timeline-content h3 {
-    margin-bottom: 0.75rem !important;
-    text-align: left !important;
-}
-
-#experience .timeline-company {
-    margin-bottom: 1rem !important;
-    display: block;
-}
-
-#experience .timeline-description {
-    margin-top: 1rem !important;
-    line-height: 1.7;
-    text-align: left !important;
-}
-
-/* Left এবং Right alignment fix */
-#experience .timeline-item:nth-child(odd) .timeline-content,
-#experience .timeline-item:nth-child(even) .timeline-content {
-    text-align: left !important;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-    #experience .timeline-content {
-        padding: 1.5rem !important;
-    }
-}
+        body { background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%); color: #ffffff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-text { background: linear-gradient(45deg, #FF6B35, #FF8B35, #FF6B9D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+        .floating { animation: float 6s ease-in-out infinite; }
+        .skill-bar { height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+        .skill-progress { height: 100%; background: linear-gradient(90deg, #FF6B35, #FF8B35); width: 0; transition: width 1.5s ease-in-out; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; overflow-y: auto; padding: 2rem; }
     </style>
 </head>
-<body>
-    <!-- Loader -->
-    <div id="loader">
-        <div class="loader-spinner"></div>
-        <div class="loader-text">Loading Portfolio...</div>
+<body class="bg-[#0B1120]">
+
+    <div id="loader" class="fixed inset-0 z-50 bg-[#0B1120] flex flex-col justify-center items-center transition-opacity duration-500">
+        <div class="w-12 h-12 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
+        <p class="mt-4 text-orange-400 font-medium">Synchronizing Portfolio Data Engine...</p>
     </div>
 
-    <!-- Particle Background -->
-    <div class="particles" id="particles-js"></div>
-
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text">Md. Masum Billah</div>
-                
-                <div class="hidden md:flex space-x-8">
-                    <a href="#home" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Home</a>
-                    <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">About</a>
-                    <a href="#skills" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Skills</a>
-                    <a href="#projects" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Projects</a>
-                    <a href="#certificates" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Certificates</a>
-                    <a href="#blogs" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Case Studies</a>
-                    <a href="#experience" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Experience</a>
-                    <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn">Contact</a>
-                    
-                    <!-- CV Download Button -->
-                    <a href="https://drive.google.com/file/d/1AGm--2_soUpLvUB1a16xf-w4KHbF1I48/view" 
-                       class="text-gray-300 hover:text-white transition-colors duration-300 magnetic-btn"
-                       download="Md_Masum_Billah_CV.pdf" target="_blank">
-                        <i class="fas fa-download mr-1"></i>CV
-                    </a>
-                </div>
-                
-                <!-- Theme Toggle -->
-                <div class="flex items-center space-x-4">
-                    <button id="themeToggle" class="p-2 rounded-lg glass magnetic-btn">
-                        <i class="fas fa-sun text-white"></i>
-                    </button>
-                </div>
+    <nav class="fixed top-0 left-0 right-0 z-40 glass border-b border-white/5">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold gradient-text unique-name-element">Dynamic Portfolio</div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#home" class="hover:text-orange-400 transition">Home</a>
+                <a href="#about" class="hover:text-orange-400 transition">About</a>
+                <a href="#skills" class="hover:text-orange-400 transition">Skills</a>
+                <a href="#projects" class="hover:text-orange-400 transition">Projects</a>
+                <a href="#experience" class="hover:text-orange-400 transition">Journey</a>
+                <a href="#contact" class="hover:text-orange-400 transition">Contact</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home" class="min-h-screen flex items-center justify-center pt-20 px-6">
         <div class="container mx-auto text-center">
-            <!-- Profile Image -->
-            <div class="relative mx-auto w-80 h-80 mb-8 floating">
-                <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full animate-pulse"></div>
-                <img id="profileImage" loading="lazy"
-                     alt="Md. Masum Billah" 
-                     class="relative w-72 h-72 rounded-full object-cover mx-auto mt-4 border-4 border-white/20 shadow-2xl"
-                     src="https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png">
+            <div class="relative mx-auto w-64 h-64 mb-8 floating">
+                <img id="dyn-profile-pic" src="" class="w-full h-full rounded-full object-cover border-4 border-white/10 shadow-2xl" alt="Profile">
             </div>
-            
-            <h1 id="heroName" class="text-5xl md:text-7xl font-bold mb-4 gradient-text">Md. Masum Billah</h1>
-            
-            <div id="heroTitle" class="text-2xl md:text-3xl text-gray-300 mb-6">
-                Data Analyst | Automation Developer | Business Intelligence Specialist
-            </div>
-            
-            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-                "Turning data into intelligence and automation into impact."
-            </p>
-            
-            <!-- CTA Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-semibold magnetic-btn hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300">
-                    <i class="fas fa-briefcase mr-2"></i>View My Work
-                </a>
-                <a href="#contact" class="px-8 py-3 glass border border-white/20 rounded-full text-white font-semibold magnetic-btn hover:border-white/40 transition-all duration-300">
-                    <i class="fas fa-paper-plane mr-2"></i>Get In Touch
-                </a>
-            </div>
+            <h1 id="dyn-name" class="text-4xl md:text-6xl font-bold mb-4 gradient-text">Loading...</h1>
+            <p id="dyn-title" class="text-xl md:text-2xl text-gray-300 mb-6 font-medium"></p>
+            <p id="dyn-bio" class="text-gray-400 max-w-2xl mx-auto mb-8"></p>
+            <div class="flex justify-center space-x-4" id="dyn-socials"></div>
+        </div>
+    </section>
 
-            <!-- Social Links -->
-            <div class="flex justify-center space-x-6 mt-8">
-                <a id="linkedinLink" href="https://linkedin.com/in/itsmebillah" class="text-gray-400 hover:text-white transition-colors duration-300 magnetic-btn" target="_blank">
-                    <i class="fab fa-linkedin text-2xl"></i>
-                </a>
-                <a id="githubLink" href="https://github.com/itsmbillah" class="text-gray-400 hover:text-white transition-colors duration-300 magnetic-btn" target="_blank">
-                    <i class="fab fa-github text-2xl"></i>
-                </a>
-                <a id="facebookLink" href="https://www.facebook.com/itsmebillah" class="text-gray-400 hover:text-white transition-colors duration-300 magnetic-btn" target="_blank">
-                    <i class="fab fa-facebook text-2xl"></i>
-                </a>
-                <a id="whatsappLink" href="https://wa.me/8801915966721" class="text-gray-400 hover:text-white transition-colors duration-300 magnetic-btn" target="_blank">
-                    <i class="fab fa-whatsapp text-2xl"></i>
-                </a>
-                <a id="emailLink" href="mailto:itsmbillah@gmail.com" class="text-gray-400 hover:text-white transition-colors duration-300 magnetic-btn">
-                    <i class="fas fa-envelope text-2xl"></i>
-                </a>
+    <section id="about" class="py-20 px-6 max-w-5xl mx-auto">
+        <div class="glass rounded-3xl p-8 md:p-12 grid md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h2 class="text-3xl font-bold mb-4 text-orange-500">Professional Identity</h2>
+                <p id="dyn-about-bio" class="text-gray-300 leading-relaxed"></p>
+            </div>
+            <div class="space-y-4 border-t md:border-t-0 md:border-l border-white/10 pt-6 md:pt-0 md:pl-8">
+                <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 w-8"></i> <span id="dyn-loc" class="text-gray-300"></span></div>
+                <div class="flex items-center"><i class="fas fa-envelope text-orange-500 w-8"></i> <span id="dyn-email" class="text-gray-300"></span></div>
+                <div class="flex items-center"><i class="fas fa-phone text-orange-500 w-8"></i> <span id="dyn-phone" class="text-gray-300"></span></div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">About Me</h2>
-            
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="glass rounded-3xl p-8">
-                    <h3 class="text-2xl font-semibold mb-4 text-orange-500">My Journey</h3>
-                    <p class="text-gray-300 leading-relaxed mb-4">
-                        I'm <span class="gradient-text font-semibold" id="aboutName">Md. Masum Billah</span>, a passionate Data Analyst and Automation Developer with expertise in transforming complex datasets into actionable business strategies and building systems that run themselves.
-                    </p>
-                    <p class="text-gray-300 leading-relaxed">
-                        I combine strong analytical skills with automation logic to streamline reporting, improve decision-making, and unlock efficiency for teams and organizations. Whether it's a Power BI dashboard, Google Apps Script automation, or data-driven business system, I build with precision, scalability, and purpose.
-                    </p>
-                </div>
-                
-                <div class="glass rounded-3xl p-8">
-                    <h3 class="text-2xl font-semibold mb-4 text-orange-500">Quick Facts</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt text-orange-500 mr-3 text-lg"></i>
-                            <span class="text-gray-300" id="location">Dhaka, Bangladesh</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope text-orange-500 mr-3 text-lg"></i>
-                            <a id="contactEmail" href="mailto:itsmbillah@gmail.com" class="text-gray-300 hover:text-orange-400 transition-colors">itsmbillah@gmail.com</a>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-phone text-orange-500 mr-3 text-lg"></i>
-                            <span class="text-gray-300" id="phone">+880 1915-966721</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-briefcase text-orange-500 mr-3 text-lg"></i>
-                            <span class="text-gray-300">Data Analyst at Data Solution 360</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8 pt-8 border-t border-white/10">
-                        <h4 class="text-lg font-semibold mb-4 text-orange-500">Core Expertise</h4>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm">Data Analysis</span>
-                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm">Business Intelligence</span>
-                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm">Automation</span>
-                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm">Google Apps Script</span>
-                            <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm">Power BI</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section id="skills" class="py-20 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Technical Prowess</h2>
+        <div id="skills-grid" class="grid md:grid-cols-2 gap-6"></div>
+    </section>
+
+    <section id="projects" class="py-20 px-6 max-w-6xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Featured Implementations</h2>
+        <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section id="experience" class="py-20 px-6 max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Experience & Education</h2>
+        <div id="timeline" class="space-y-8 relative before:absolute before:inset-0 before:left-4 before:w-0.5 before:bg-white/10"></div>
+    </section>
+
+    <section id="contact" class="py-20 px-6 max-w-2xl mx-auto">
+        <div class="glass rounded-3xl p-8">
+            <h2 class="text-3xl font-bold mb-6 text-center text-orange-500">Get In Touch</h2>
+            <form id="portfolioContactForm" class="space-y-4">
+                <input type="text" id="form-name" placeholder="Your Name" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition">
+                <input type="email" id="form-email" placeholder="Your Email" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition">
+                <input type="text" id="form-subject" placeholder="Subject" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition">
+                <textarea id="form-message" placeholder="Your Message" rows="4" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition"></textarea>
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-xl font-semibold hover:opacity-90 transition">Send Secure Message</button>
+            </form>
+            <div id="formStatus" class="mt-4 text-center hidden"></div>
         </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Technical Skills</h2>
-            
-            <div class="grid md:grid-cols-2 gap-12" id="skillsContainer">
-                <!-- Skills will be loaded dynamically -->
-                <div class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-400">Loading skills...</p>
-                </div>
-            </div>
-            
-            <!-- Skills Categories -->
-            <div class="grid md:grid-cols-4 gap-6 mt-16">
-                <div class="glass rounded-2xl p-6 text-center magnetic-btn">
-                    <i class="fas fa-database text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Data Analysis</h3>
-                    <p class="text-gray-300 text-sm">SQL, Python, Advanced Excel</p>
-                </div>
-                
-                <div class="glass rounded-2xl p-6 text-center magnetic-btn">
-                    <i class="fas fa-robot text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Automation</h3>
-                    <p class="text-gray-300 text-sm">Google Apps Script, APIs</p>
-                </div>
-                
-                <div class="glass rounded-2xl p-6 text-center magnetic-btn">
-                    <i class="fas fa-chart-bar text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">BI & Visualization</h3>
-                    <p class="text-gray-300 text-sm">Power BI, Tableau, Dashboards</p>
-                </div>
-                
-                <div class="glass rounded-2xl p-6 text-center magnetic-btn">
-                    <i class="fas fa-code text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Development</h3>
-                    <p class="text-gray-300 text-sm">JavaScript, HTML, CSS, Apps Script</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Featured Projects</h2>
-            
-            <!-- Featured Projects Container -->
-            <div id="featuredProjectsContainer">
-                <div class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-400">Loading projects...</p>
-                </div>
-            </div>
-            
-            <!-- Other Projects Grid -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="otherProjectsContainer">
-                <!-- Other projects will be loaded here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Certificates Section -->
-    <section id="certificates" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Certifications</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="certificatesContainer">
-                <div class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-400">Loading certificates...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Blogs/Case Studies Section -->
-    <section id="blogs" class="py-20 px-6 bg-gradient-to-b from-[#0B1120] to-[#1a202c]">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Case Studies & Blogs</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="blogsContainer">
-                <div class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-400">Loading case studies...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience & Education Section -->
-    <section id="experience" class="py-20 px-6">
-        <div class="container mx-auto">
-            <div class="section-header text-center mb-16">
-                <span class="section-badge">Career Journey</span>
-                <h2 class="text-4xl md:text-5xl font-bold mt-4 mb-4 gradient-text">Experience & Education</h2>
-                <p class="text-gray-400 text-xl">My professional growth and academic achievements</p>
-            </div>
-            
-            <div class="timeline-container" id="timelineContainer">
-                <div class="text-center py-12">
-                    <i class="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-                    <p class="text-gray-400">Loading experience...</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Get In Touch</h2>
-            
-            <div class="max-w-2xl mx-auto glass rounded-3xl p-8">
-                <form id="contactForm" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <input type="text" id="name" name="name" placeholder="Your Name" 
-                               class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition-all"
-                               required>
-                        <input type="email" id="email" name="email" placeholder="Your Email" 
-                               class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition-all"
-                               required>
-                    </div>
-                    
-                    <input type="text" id="subject" name="subject" placeholder="Subject" 
-                           class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition-all"
-                           required>
-                    
-                    <textarea id="message" name="message" placeholder="Your Message" rows="5" 
-                              class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/30 transition-all"
-                              required></textarea>
-                    
-                    <button type="submit" id="submitBtn" 
-                            class="w-full py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg text-white font-semibold magnetic-btn hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300 flex items-center justify-center">
-                        <span id="btnText">Send Message</span>
-                        <i id="btnIcon" class="fas fa-paper-plane ml-2"></i>
-                        <i id="btnSpinner" class="fas fa-spinner fa-spin ml-2 hidden"></i>
-                    </button>
-                </form>
-                
-                <div id="formMessage" class="mt-4 p-4 rounded-lg text-center hidden"></div>
-                
-                <div class="mt-8 pt-8 border-t border-white/10">
-                    <p class="text-gray-400 text-center mb-6">Or contact me directly:</p>
-                    
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <a id="contactEmailCard" href="mailto:itsmbillah@gmail.com" 
-                           class="glass p-4 rounded-xl text-center magnetic-btn hover:border-orange-500 transition-all">
-                            <i class="fas fa-envelope text-2xl text-orange-500 mb-2"></i>
-                            <div class="text-sm font-medium">Email</div>
-                            <div class="text-xs text-gray-400 mt-1" id="contactEmailText">itsmbillah@gmail.com</div>
-                        </a>
-                        
-                        <a id="contactLinkedinCard" href="https://linkedin.com/in/itsmebillah" 
-                           target="_blank"
-                           class="glass p-4 rounded-xl text-center magnetic-btn hover:border-orange-500 transition-all">
-                            <i class="fab fa-linkedin text-2xl text-orange-500 mb-2"></i>
-                            <div class="text-sm font-medium">LinkedIn</div>
-                            <div class="text-xs text-gray-400 mt-1">/itsmebillah</div>
-                        </a>
-                        
-                        <a id="contactWhatsappCard" href="https://wa.me/8801915966721" 
-                           target="_blank"
-                           class="glass p-4 rounded-xl text-center magnetic-btn hover:border-orange-500 transition-all">
-                            <i class="fab fa-whatsapp text-2xl text-orange-500 mb-2"></i>
-                            <div class="text-sm font-medium">WhatsApp</div>
-                            <div class="text-xs text-gray-400 mt-1">+880 1915-966721</div>
-                        </a>
-                        
-                        <a id="contactPhoneCard" href="tel:+8801915966721" 
-                           class="glass p-4 rounded-xl text-center magnetic-btn hover:border-orange-500 transition-all">
-                            <i class="fas fa-phone text-2xl text-orange-500 mb-2"></i>
-                            <div class="text-sm font-medium">Call</div>
-                            <div class="text-xs text-gray-400 mt-1">+880 1915-966721</div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-white/10 bg-gradient-to-b from-transparent to-black/20">
-        <div class="container mx-auto">
-            <div class="grid md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <div class="text-2xl font-bold gradient-text mb-4">Md. Masum Billah</div>
-                    <p class="text-gray-400">Turning data into intelligence and automation into impact.</p>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4 text-white">Quick Links</h4>
-                    <div class="space-y-2">
-                        <a href="#home" class="block text-gray-400 hover:text-orange-500 transition-colors">Home</a>
-                        <a href="#projects" class="block text-gray-400 hover:text-orange-500 transition-colors">Projects</a>
-                        <a href="#certificates" class="block text-gray-400 hover:text-orange-500 transition-colors">Certificates</a>
-                        <a href="#blogs" class="block text-gray-400 hover:text-orange-500 transition-colors">Case Studies</a>
-                        <a href="#contact" class="block text-gray-400 hover:text-orange-500 transition-colors">Contact</a>
-                    </div>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold mb-4 text-white">Connect</h4>
-                    <div class="flex space-x-4">
-                        <a id="footerLinkedin" href="https://linkedin.com/in/itsmebillah" 
-                           class="text-gray-400 hover:text-white transition-colors" target="_blank">
-                            <i class="fab fa-linkedin text-xl"></i>
-                        </a>
-                        <a id="footerGithub" href="https://github.com/itsmbillah" 
-                           class="text-gray-400 hover:text-white transition-colors" target="_blank">
-                            <i class="fab fa-github text-xl"></i>
-                        </a>
-                        <a id="footerFacebook" href="https://www.facebook.com/itsmebillah" 
-                           class="text-gray-400 hover:text-white transition-colors" target="_blank">
-                            <i class="fab fa-facebook text-xl"></i>
-                        </a>
-                        <a id="footerEmail" href="mailto:itsmbillah@gmail.com" 
-                           class="text-gray-400 hover:text-white transition-colors">
-                            <i class="fas fa-envelope text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="pt-8 border-t border-white/10 text-center">
-                <p class="text-gray-500 text-sm">© 2025 Md. Masum Billah. All rights reserved.</p>
-                <p class="text-gray-600 text-xs mt-2">Built with Google Apps Script & Tailwind CSS</p>
-            </div>
-        </div>
-    </footer>
-
-     <!-- Chat bot -->
-<!-- =========================
- AI CHATBOT
-========================= -->
-
-<!-- Chat Toggle Button -->
-<button id="chatToggle"
-class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center">
-
-<i class="fas fa-robot text-2xl"></i>
-
-</button>
-
-<!-- Chat Window -->
-<div id="chatWindow"
-class="fixed bottom-24 right-6 w-[95%] sm:w-[400px] h-[600px] glass rounded-3xl overflow-hidden z-50 hidden border border-white/10 shadow-2xl flex flex-col">
-
-<!-- Header -->
-<div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
-
-<div>
-<h3 class="font-bold text-lg text-white">Masum AI Assistant</h3>
-<p class="text-xs text-gray-400">Online</p>
-</div>
-
-<button id="closeChat"
-class="text-gray-400 hover:text-white">
-<i class="fas fa-times"></i>
-</button>
-
-</div>
-
-<!-- Messages -->
-<div id="chatMessages"
-class="flex-1 overflow-y-auto p-4 space-y-4">
-
-<div class="flex">
-<div class="bg-orange-500/20 text-white px-4 py-3 rounded-2xl max-w-[80%]">
-👋 Hello! I'm Masum's AI assistant.<br><br>
-Ask me about:
-<ul class="mt-2 text-sm list-disc list-inside text-gray-300">
-<li>Projects</li>
-<li>Skills</li>
-<li>Experience</li>
-<li>Contact</li>
-</ul>
-</div>
-</div>
-
-</div>
-
-<!-- Input Area -->
-<div class="p-4 border-t border-white/10">
-
-<div class="flex gap-2">
-
-<input type="text"
-id="chatInput"
-placeholder="Ask something..."
-class="flex-1 bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500">
-
-<button id="sendChat"
-class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white flex items-center justify-center hover:scale-105 transition-all">
-
-<i class="fas fa-paper-plane"></i>
-
-</button>
-
-</div>
-
-</div>
-
-</div>   
+    <button id="aiChatToggle" class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl flex items-center justify-center text-xl z-50 hover:scale-105 transition"><i class="fas fa-robot"></i></button>
     
-    <!-- Blog Modal -->
-    <div id="blogModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeBlogModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <div id="modalBody"></div>
+    <div id="aiChatBox" class="fixed bottom-24 right-6 w-[92%] sm:w-96 h-[500px] glass rounded-2xl z-50 hidden flex flex-col shadow-2xl overflow-hidden">
+        <div class="p-4 bg-black/20 border-b border-white/10 flex justify-between items-center">
+            <div><h3 class="font-bold text-white text-sm">Masum's AI Agent</h3><p class="text-xs text-green-400">Context: Connected to Google Sheet</p></div>
+            <button id="closeChat" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="chatBody" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+            <div class="bg-white/5 p-3 rounded-xl max-w-[85%] text-gray-200">Hello! I am Masum's live data integrated agent. Ask me anything about his skills, experience, or projects.</div>
+        </div>
+        <div class="p-3 border-t border-white/10 flex gap-2">
+            <input type="text" id="chatInput" placeholder="Ask AI agent..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-sm focus:outline-none focus:border-orange-500">
+            <button id="sendChatBtn" class="px-4 bg-orange-500 rounded-xl text-white hover:bg-orange-600 transition"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    
     <script>
-        // Global variables
-        let allBlogs = [];
-        let portfolioData = {};
-        let skills = [];
-        let projects = [];
-        let certificates = [];
-        let experience = [];
-        let education = [];
-        let blogs = [];
+        // 🔴 আপনার ডেপ্লয় করা গুগল অ্যাপস স্ক্রিপ্ট ওয়েব অ্যাপ ইউআরএল এখানে বসাবেন
+        const API_URL = "https://script.google.com/macros/s/YOUR_DEPLOYED_APP_SCRIPT_URL/exec";
 
-        // Initialize everything when DOM is loaded
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize AOS animations
-            AOS.init({
-                duration: 1000,
-                once: true
-            });
-
-            // Initialize Particles.js
-            particlesJS('particles-js', {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: "#FF6B35" },
-                    shape: { type: "circle" },
-                    opacity: { value: 0.5, random: true },
-                    size: { value: 3, random: true },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: "#FF6B35",
-                        opacity: 0.4,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 2,
-                        direction: "none",
-                        random: true,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false
-                    }
-                }
-            });
-
-            // Load portfolio data
-          
-        
-            // Initialize other components
-            initializeMagneticButtons();
-            initializeSmoothScrolling();
-            initializeThemeToggle();
-            initializeFormSubmission();
-            initializeChatbot();
-            
-            // Hide loader
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('loader').style.display = 'none';
-                }, 500);
-            }, 100);
+        document.addEventListener("DOMContentLoaded", () => {
+            AOS.init({ duration: 800, once: true });
+            fetchPortfolioCoreData();
+            setupFormController();
+            setupChatbotAgent();
         });
 
-        // Load portfolio data from GAS API
-        async function loadPortfolioData() {
+        async function fetchPortfolioCoreData() {
             try {
-                // 🔴 IMPORTANT: আপনার GAS Web App URL
-                const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
-                
-                const response = await fetch(`${GAS_API_URL}?action=getAllData`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const res = await fetch(`${API_URL}?action=getAllData`);
+                const result = await res.json();
+                if(result.success) {
+                    renderProfile(result.data.profile);
+                    renderSkills(result.data.skills);
+                    renderProjects(result.data.projects);
+                    renderTimeline([...result.data.experience, ...result.data.education]);
+                    hideLoader();
                 }
-                
-                const result = await response.json();
-                
-               if (result.success) {
-    portfolioData = result.data.config || {};
-    skills = result.data.skills || [];
-
-    projects = (result.data.projects || []).map(project => ({
-      name: project.Name || '',
-      description: project.Description || '',
-      image: project.Image || '',
-      liveUrl: project.LiveURL || '',
-      githubUrl: project.GitHubURL || '',
-      featured: String(project.Featured).toUpperCase() === 'TRUE',
-      tags: (project.Tags || '')
-        .split(',')
-        .map(t => t.trim())
-        .filter(Boolean)
-    }));
-
-    certificates = result.data.certificates || [];
-    experience = result.data.experience || [];
-    education = result.data.education || [];
-    blogs = result.data.blogs || [];
-    allBlogs = blogs;
-
-    updateUIWithData();
-} else {
-                    throw new Error('Failed to load portfolio data');
-                }
-                
-            } catch (error) {
-                console.error('Error loading portfolio data:', error);
-                // Use fallback static data
-                useStaticData();
+            } catch(e) {
+                console.error("Critical Architecture Mismatch: Fetch broken.", e);
             }
         }
 
-        // Update UI with loaded data
-        function updateUIWithData() {
-            // Update basic info
-            if (portfolioData.name) {
-                document.getElementById('heroName').textContent = portfolioData.name;
-                document.getElementById('aboutName').textContent = portfolioData.name;
-            }
-            
-            if (portfolioData.title) {
-                document.getElementById('heroTitle').textContent = portfolioData.title;
-            }
-            
-            if (portfolioData.location) {
-                document.getElementById('location').textContent = portfolioData.location;
-            }
-            
-            if (portfolioData.phone) {
-                document.getElementById('phone').textContent = portfolioData.phone;
-            }
-            
-            if (portfolioData.email) {
-                const emailLink = document.getElementById('contactEmail');
-                const emailText = document.getElementById('contactEmailText');
-                const emailCard = document.getElementById('contactEmailCard');
-                const footerEmail = document.getElementById('footerEmail');
-                
-                if (emailLink) emailLink.href = `mailto:${portfolioData.email}`;
-                if (emailLink) emailLink.textContent = portfolioData.email;
-                if (emailText) emailText.textContent = portfolioData.email;
-                if (emailCard) emailCard.href = `mailto:${portfolioData.email}`;
-                if (footerEmail) footerEmail.href = `mailto:${portfolioData.email}`;
-            }
-            
-            // Update social links
-            if (portfolioData.social) {
-                const socialLinks = portfolioData.social;
-                if (socialLinks.linkedin) {
-                    document.getElementById('linkedinLink').href = socialLinks.linkedin;
-                    document.getElementById('contactLinkedinCard').href = socialLinks.linkedin;
-                    document.getElementById('footerLinkedin').href = socialLinks.linkedin;
-                }
-                if (socialLinks.github) {
-                    document.getElementById('githubLink').href = socialLinks.github;
-                    document.getElementById('footerGithub').href = socialLinks.github;
-                }
-                if (socialLinks.facebook) {
-                    document.getElementById('facebookLink').href = socialLinks.facebook;
-                    document.getElementById('footerFacebook').href = socialLinks.facebook;
-                }
-                if (socialLinks.whatsapp) {
-                    document.getElementById('whatsappLink').href = socialLinks.whatsapp;
-                    document.getElementById('contactWhatsappCard').href = socialLinks.whatsapp;
-                }
-            }
-            
-            // Update profile image
-            if (portfolioData.images && portfolioData.images.profile) {
-                document.getElementById('profileImage').src = portfolioData.images.profile;
-            }
-            
-            // Render skills
-            renderSkills();
-            
-            // Render projects
-            renderProjects();
-            
-            // Render certificates
-            renderCertificates();
-            
-            // Render blogs
-            renderBlogs();
-            
-            // Render experience & education
-            renderTimeline();
-            
-            // Animate skill bars
-            setTimeout(animateSkillBars, 500);
-        }
+        function renderProfile(profile) {
+            document.getElementById("dyn-name").textContent = profile.Name || "Md. Masum Billah";
+            document.title = `${profile.Name} | Professional Portfolio`;
+            document.getElementById("dyn-title").textContent = profile.Title;
+            document.getElementById("dyn-bio").textContent = profile.Bio;
+            document.getElementById("dyn-about-bio").textContent = profile.Bio;
+            document.getElementById("dyn-profile-pic").src = profile.ProfilePic;
+            document.getElementById("dyn-loc").textContent = profile.Location;
+            document.getElementById("dyn-email").textContent = profile.Email;
+            document.getElementById("dyn-phone").textContent = profile.Phone;
 
-        // Use static data as fallback
-        function useStaticData() {
-            // Static data (from your original CONFIG)
-            portfolioData = {
-                name: "Md. Masum Billah",
-                title: "Data Analyst | Automation Developer | Business Intelligence Specialist",
-                email: "itsmbillah@gmail.com",
-                phone: "+880 1915-966721",
-                location: "Dhaka, Bangladesh",
-                social: {
-                    linkedin: "https://linkedin.com/in/itsmebillah",
-                    github: "https://github.com/itsmbillah",
-                    facebook: "https://www.facebook.com/itsmebillah",
-                    whatsapp: "https://wa.me/8801915966721"
-                },
-                images: {
-                    profile: "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png"
-                }
-            };
-            
-            // Static skills
-            skills = [
-                { name: "Google Apps Script", level: 90, category: "Automation" },
-                { name: "SQL", level: 85, category: "Data Analysis" },
-                { name: "Python", level: 80, category: "Programming" },
-                { name: "Excel", level: 95, category: "Data Analysis" },
-                { name: "Power BI", level: 85, category: "Data Visualization" },
-                { name: "Data Analysis", level: 88, category: "Analytics" },
-                { name: "Automation", level: 92, category: "Technical" },
-                { name: "Marketing Analytics", level: 75, category: "Business" }
-            ];
-            
-            // Static projects
-            projects = [
-                {
-                    name: "Autopilot Business System",
-                    description: "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script",
-                    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400",
-                    tags: ["Google Apps Script", "Automation", "Google Sheets API"],
-                    liveUrl: "https://script.google.com/macros/s/AKfycbzJwA27QizVfbsVt3uJl1_mdJxAaU5dU0qFvUvESSNS1Fv277UCerV5-1qiP9dU0aY5/exec",
-                    featured: true,
-                    demoCredentials: {
-                        email: "itsmbillah@gmail.com",
-                        password: "123456"
-                    }
-                },
-                {
-                    name: "Car Sales Analysis",
-                    description: "Vehicle sales trends and profitability analysis with Power BI dashboard",
-                    image: "https://i.postimg.cc/Hnp5vTtn/Screenshot-2025-07-28-110516.png",
-                    tags: ["Power BI", "SQL", "Data Analysis", "Dashboard"],
-                    liveUrl: "https://app.powerbi.com/view?r=eyJrIjoiMjBhNzM1MDEtNTZiYy00MGM1LWJhM2MtY2NlZmYyZTA0ZjQ0IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
-                    featured: false
-                },
-                {
-                    name: "HR Analytics Dashboard",
-                    description: "Employee performance and retention analysis with advanced SQL queries",
-                    image: "https://i.postimg.cc/bNZdyGd8/Screenshot-2025-07-28-110453.png",
-                    tags: ["Power BI", "SQL", "HR Analytics", "Dashboard"],
-                    liveUrl: "https://app.powerbi.com/view?r=eyJrIjoiMjBhNzM1MDEtNTZiYy00MGM1LWJhM2MtY2NlZmYyZTA0ZjQ0IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
-                    featured: false
-                },
-                {
-                    name: "Toy Store Sales Analytics",
-                    description: "Deep-dive dashboard analyzing $14.44M in sales across multiple stores",
-                    image: "https://i.postimg.cc/xqVrVFcX/Screenshot-2025-07-28-111331.png",
-                    tags: ["Power BI", "Sales Analytics", "Dashboard"],
-                    liveUrl: "https://app.powerbi.com/view?r=eyJrIjoiMjQ4MjhjZDAtNzNiZC00OGUzLTgwN2ItMjEyOGU4MmRkMjQ1IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
-                    featured: false
-                }
-            ];
-            
-            // Static experience
-            experience = [
-                {
-                    title: "Data Analyst",
-                    company: "Data Solution 360",
-                    period: "June 2025 – Present",
-                    description: "Developed automated data pipelines reducing manual reporting time by 70%. Designed Google Apps Script automations for seamless business workflows. Built custom automation for certificate generation and CRM email triggers.",
-                    icon: "fa-briefcase"
-                },
-                {
-                    title: "Accounts Executive",
-                    company: "Orient Button Ltd.",
-                    period: "2023 – 2025",
-                    description: "Created advanced Excel dashboards for financial KPIs and variance trends. Automated recurring monthly reporting using VBA and Google Sheets. Managed and analyzed sales and expense data across departments.",
-                    icon: "fa-chart-line"
-                }
-            ];
-            
-            // Static education
-            education = [
-                {
-                    degree: "Bachelor of Business Administration (BBA)",
-                    institution: "Mohammadpur Kendriya College",
-                    period: "2018 – 2022",
-                    description: "Specialized in Marketing with coursework in business analytics, statistics, and strategic management. Graduated with honors and completed a thesis on data-driven marketing strategies.",
-                    icon: "fa-graduation-cap"
-                },
-                {
-                    degree: "Data Analytics Certification",
-                    institution: "Google Data Analytics Professional Certificate",
-                    period: "2023 – 2024",
-                    description: "Completed comprehensive training in data analysis, visualization, and interpretation using industry-standard tools including SQL, R, Tableau, and advanced Excel functions.",
-                    icon: "fa-certificate"
-                }
-            ];
-            
-            // Update UI with static data
-            updateUIWithData();
-        }
-
-        // Render skills
-        function renderSkills() {
-            const skillsContainer = document.getElementById('skillsContainer');
-            if (!skillsContainer || skills.length === 0) return;
-            
-            const firstHalf = skills.slice(0, Math.ceil(skills.length / 2));
-            const secondHalf = skills.slice(Math.ceil(skills.length / 2));
-            
-            skillsContainer.innerHTML = `
-                <div>
-                    ${firstHalf.map(skill => `
-                        <div class="skill-container">
-                            <div class="skill-header">
-                                <span class="skill-name">${skill.name}</span>
-                                <span class="skill-percentage">${skill.level}%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="${skill.level}"></div>
-                            </div>
-                            <div class="text-sm text-gray-400 mt-1">${skill.category}</div>
-                        </div>
-                    `).join('')}
-                </div>
-                <div>
-                    ${secondHalf.map(skill => `
-                        <div class="skill-container">
-                            <div class="skill-header">
-                                <span class="skill-name">${skill.name}</span>
-                                <span class="skill-percentage">${skill.level}%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" data-width="${skill.level}"></div>
-                            </div>
-                            <div class="text-sm text-gray-400 mt-1">${skill.category}</div>
-                        </div>
-                    `).join('')}
-                </div>
+            const socials = document.getElementById("dyn-socials");
+            socials.innerHTML = `
+                <a href="${profile.LinkedIn}" target="_blank" class="text-2xl text-gray-400 hover:text-white transition"><i class="fab fa-linkedin"></i></a>
+                <a href="${profile.GitHub}" target="_blank" class="text-2xl text-gray-400 hover:text-white transition"><i class="fab fa-github"></i></a>
+                <a href="${profile.Facebook}" target="_blank" class="text-2xl text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                <a href="https://wa.me/${profile.WhatsApp}" target="_blank" class="text-2xl text-gray-400 hover:text-white transition"><i class="fab fa-whatsapp"></i></a>
             `;
         }
 
-        // Render projects
-        function renderProjects() {
-            const featuredContainer = document.getElementById('featuredProjectsContainer');
-            const otherContainer = document.getElementById('otherProjectsContainer');
-            
-            if (!featuredContainer || !otherContainer || projects.length === 0) return;
-            
-            const featuredProjects = projects.filter(p => p.featured);
-            const otherProjects = projects.filter(p => !p.featured);
-            
-            // Render featured projects
-            featuredContainer.innerHTML = featuredProjects.map(project => `
-                <div class="glass rounded-3xl p-8 mb-16">
-                    <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <div>
-                            <h3 class="text-3xl font-semibold mb-4 gradient-text">🚀 ${project.name}</h3>
-                            <p class="text-gray-300 mb-6">
-                                ${project.description}
-                            </p>
-                            
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                ${project.tags.map(tag => `
-                                    <span class="project-tag">${tag}</span>
-                                `).join('')}
-                            </div>
-                            
-                            ${project.demoCredentials ? `
-                                <div class="demo-credentials mb-6">
-                                    <div class="mb-2">
-                                        <span class="label">Demo Email:</span> ${project.demoCredentials.email}
-                                    </div>
-                                    <div>
-                                        <span class="label">Demo Password:</span> ${project.demoCredentials.password}
-                                    </div>
-                                    <div class="text-xs text-gray-400 mt-2">Use these credentials to test the demo</div>
-                                </div>
-                            ` : ''}
-                            
-                            <div class="flex flex-wrap gap-4">
-                                ${project.liveUrl ? `
-                                    <a href="${project.liveUrl}" 
-                                       target="_blank"
-                                       class="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-semibold magnetic-btn">
-                                        <i class="fas fa-external-link-alt mr-2"></i>Live Demo
-                                    </a>
-                                ` : ''}
-                            </div>
-                        </div>
-                        
-                        <div class="text-center">
-                            <img 
-  src="${project.image}" 
-  loading="lazy"
-  alt="${project.name}" 
-  class="w-full h-64 object-cover rounded-2xl mb-6 shadow-2xl"
-/>
-                            <div class="text-2xl font-bold gradient-text">80% Time Saved</div>
-                            <div class="text-gray-400">Manual data entry reduction</div>
-                        </div>
+        function renderSkills(skills) {
+            const grid = document.getElementById("skills-grid");
+            grid.innerHTML = skills.sort((a,b) => a.Order - b.Order).map(s => `
+                <div class="glass rounded-xl p-4">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium text-gray-200">${s.Name}</span>
+                        <span class="text-orange-400 font-bold">${s.Level}%</span>
                     </div>
-                </div>
-            `).join('');
-            
-            // Render other projects
-            otherContainer.innerHTML = otherProjects.map(project => `
-                <div class="glass rounded-2xl p-6 magnetic-btn">
-                    <div class="mb-4">
-                        <img 
-  src="${project.image}" 
-  loading="lazy"
-  alt="${project.name}" 
-  class="w-full h-48 object-cover rounded-lg mb-4 shadow-lg"
-/>
-                    </div>
-                    
-                    <h4 class="text-xl font-semibold mb-3 text-white">${project.name}</h4>
-                    <p class="text-gray-300 text-sm mb-4">${project.description}</p>
-                    
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        ${project.tags.slice(0, 3).map(tag => `
-                            <span class="px-2 py-1 bg-orange-500/10 text-orange-400 rounded text-xs">${tag}</span>
-                        `).join('')}
-                    </div>
-                    
-                    ${project.liveUrl ? `
-                        <a href="${project.liveUrl}" 
-                           target="_blank"
-                           class="text-orange-400 hover:text-orange-300 text-sm font-semibold magnetic-btn inline-flex items-center">
-                            View Project <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                        </a>
-                    ` : ''}
+                    <div class="skill-bar"><div class="skill-progress" style="width: ${s.Level}%"></div></div>
+                    <span class="text-xs text-gray-500 mt-1 block">${s.Category}</span>
                 </div>
             `).join('');
         }
 
-        // Render certificates
-        function renderCertificates() {
-            const container = document.getElementById('certificatesContainer');
-            if (!container) return;
-            
-            if (certificates.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 col-span-3">
-                        <i class="fas fa-certificate text-6xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-400">No certificates available</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = certificates.map(cert => `
-                <div class="glass rounded-3xl overflow-hidden group border border-white/10 hover:border-orange-500 transition-all duration-300 magnetic-btn">
-                    <div class="relative h-56 overflow-hidden">
-                        <img 
-  src="${cert.image || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}"
-  loading="lazy"
-  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-/>
-                        
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                        
-                        <div class="absolute bottom-4 left-4 right-4">
-                            <h3 class="text-white font-bold text-lg mb-1">${cert.name || 'Certificate'}</h3>
-                            <p class="text-gray-300 text-sm">${cert.org || 'Organization'}</p>
+        function renderProjects(projects) {
+            const grid = document.getElementById("projects-grid");
+            grid.innerHTML = projects.map(p => `
+                <div class="glass rounded-2xl overflow-hidden group hover:border-orange-500/50 transition duration-300">
+                    <img src="${p.Image}" class="w-full h-44 object-cover group-hover:scale-105 transition duration-500" alt="${p.Name}">
+                    <div class="p-5">
+                        <h3 class="text-xl font-bold mb-2 text-white">${p.Name}</h3>
+                        <p class="text-gray-400 text-sm mb-4 line-clamp-3">${p.Description}</p>
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            ${p.Tags.split(',').map(t => `<span class="text-[10px] px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded-full">${t.trim()}</span>`).join('')}
                         </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-orange-500 font-semibold">${cert.date || 'Date not specified'}</span>
-                            
-                            ${cert.verify ? `
-                                <a href="${cert.verify}" 
-                                   target="_blank"
-                                   class="px-3 py-1 bg-orange-500 text-white rounded-full text-xs hover:bg-orange-600 transition-colors">
-                                    <i class="fas fa-external-link-alt mr-1"></i>Verify
-                                </a>
-                            ` : ''}
+                        <div class="flex gap-4 text-sm font-semibold">
+                            ${p.LiveURL ? `<a href="${p.LiveURL}" target="_blank" class="text-orange-400 hover:underline"><i class="fas fa-external-link-alt mr-1"></i>Demo</a>`:''}
+                            ${p.GitHubURL && p.GitHubURL!=='#' ? `<a href="${p.GitHubURL}" target="_blank" class="text-gray-400 hover:text-white hover:underline"><i class="fab fa-github mr-1"></i>Repo</a>`:''}
                         </div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Render blogs
-        function renderBlogs() {
-            const container = document.getElementById('blogsContainer');
-            if (!container) return;
-            
-            if (blogs.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 col-span-2">
-                        <i class="fas fa-blog text-6xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-400">No case studies available</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = blogs.map((blog, index) => `
-                <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/10 hover:border-orange-500 transition-all magnetic-btn">
-                    <div class="md:w-1/3 h-48 md:h-auto">
-                        <img 
-  src="${blog.thumbnail || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}"
-  loading="lazy"
-  class="w-full h-full object-cover"
-/>
-                    </div>
-                    
-                    <div class="p-6 md:w-2/3">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-bold text-orange-500 uppercase tracking-wider">${blog.category || 'Case Study'}</span>
-                            <span class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i>${blog.readTime || 5} min read</span>
-                        </div>
-                        
-                        <h3 class="text-xl font-bold text-white mt-2 mb-3 leading-tight">${blog.title || 'Untitled'}</h3>
-                        
-                        <p class="text-gray-400 text-sm mb-4">${blog.description || 'No description available'}</p>
-                        
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${blog.date || 'Recent'}</span>
-                            
-                            <button onclick="openBlogModal(${index})" 
-                                    class="text-white font-semibold hover:text-orange-500 flex items-center text-sm transition-colors">
-                                Read Case Study <i class="fas fa-arrow-right ml-2 text-xs"></i>
-                            </button>
-                        </div>
-                    </div>
+        function renderTimeline(items) {
+            const timeline = document.getElementById("timeline");
+            timeline.innerHTML = items.map(item => `
+                <div class="relative pl-8 before:absolute before:inset-0 before:left-3.5 before:w-1.5 before:h-1.5 before:bg-orange-500 before:rounded-full">
+                    <span class="text-xs text-orange-400 font-bold bg-orange-500/10 px-2 py-0.5 rounded-full">${item.Period}</span>
+                    <h3 class="text-lg font-bold text-white mt-1">${item.Title || item.Degree}</h3>
+                    <h4 class="text-sm font-medium text-gray-300">${item.Company || item.Institution}</h4>
+                    <p class="text-gray-400 text-sm mt-2 leading-relaxed">${item.Description}</p>
                 </div>
             `).join('');
         }
 
-        // Render timeline (experience & education)
-        function renderTimeline() {
-            const container = document.getElementById('timelineContainer');
-            if (!container) return;
-            
-            const allItems = [...experience, ...education];
-            
-            if (allItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12">
-                        <i class="fas fa-briefcase text-6xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-400">No experience or education data available</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = allItems.map((item, index) => `
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-period">${item.period || 'Not specified'}</span>
-                        <div class="timeline-icon">
-                            <i class="fas ${item.icon || (item.degree ? 'fa-graduation-cap' : 'fa-briefcase')}"></i>
-                        </div>
-                        <h3>${item.title || item.degree || 'Untitled'}</h3>
-                        <span class="timeline-company">${item.company || item.institution || 'Not specified'}</span>
-                        <p class="timeline-description">${item.description || 'No description available'}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Initialize magnetic buttons
-        function initializeMagneticButtons() {
-            document.querySelectorAll('.magnetic-btn').forEach(btn => {
-                btn.addEventListener('mousemove', (e) => {
-                    const rect = btn.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    
-                    btn.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
-                });
-                
-                btn.addEventListener('mouseleave', () => {
-                    btn.style.transform = 'translate(0, 0)';
-                });
-            });
-        }
-
-        // Initialize smooth scrolling
-        function initializeSmoothScrolling() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        }
-
-        // Initialize theme toggle
-        function initializeThemeToggle() {
-            const themeToggle = document.getElementById('themeToggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                
-                if (document.body.classList.contains('light-mode')) {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
-
-            // Load saved theme
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
-            }
-        }
-
-        // Initialize form submission - FIXED VERSION
-        function initializeFormSubmission() {
-            document.getElementById('contactForm').addEventListener('submit', async function(e) {
+        function setupFormController() {
+            const form = document.getElementById("portfolioContactForm");
+            form.addEventListener("submit", async (e) => {
                 e.preventDefault();
-                
-                const formData = {
-                    name: document.getElementById('name').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    subject: document.getElementById('subject').value.trim() || 'No Subject',
-                    message: document.getElementById('message').value.trim()
-                };
-                
-                // Validation
-                if (!formData.name || !formData.email || !formData.message) {
-                    showFormMessage('Please fill in all required fields', 'error');
-                    return;
-                }
-                
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(formData.email)) {
-                    showFormMessage('Please enter a valid email address', 'error');
-                    return;
-                }
-                
-                // Show loading state
-                const submitBtn = document.getElementById('submitBtn');
-                const btnText = document.getElementById('btnText');
-                const btnIcon = document.getElementById('btnIcon');
-                const btnSpinner = document.getElementById('btnSpinner');
-                
-                btnText.textContent = 'Sending...';
-                btnIcon.classList.add('hidden');
-                btnSpinner.classList.remove('hidden');
-                submitBtn.disabled = true;
-                
+                const status = document.getElementById("formStatus");
+                status.textContent = "Processing transmission...";
+                status.className = "mt-4 text-center text-sm text-orange-400";
+                status.classList.remove("hidden");
+
+                const q = new URLSearchParams({
+                    name: document.getElementById("form-name").value,
+                    email: document.getElementById("form-email").value,
+                    subject: document.getElementById("form-subject").value,
+                    message: document.getElementById("form-message").value
+                });
+
                 try {
-                    // FIXED: URLSearchParams ব্যবহার করে GET request হিসেবে send
-                    const params = new URLSearchParams();
-                    params.append('name', formData.name);
-                    params.append('email', formData.email);
-                    params.append('subject', formData.subject);
-                    params.append('message', formData.message);
-                    
-                    // GAS Web App URL (আপনার actual URL)
-                    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
-                    
-                    const response = await fetch(GAS_URL + '?' + params.toString(), {
-                        method: 'GET',
-                        mode: 'no-cors' // CORS issue সমাধানের জন্য
-                    });
-                    
-                    // no-cors mode-এ response পড়া যায় না, তাই directly success show করি
-                    showFormMessage('✅ Message sent successfully! I will contact you soon.', 'success');
-                    document.getElementById('contactForm').reset();
-                    
-                } catch (error) {
-                    console.error('Form submission error:', error);
-                    showFormMessage('⚠️ Sending via form failed. Please email me directly at itsmbillah@gmail.com', 'error');
-                } finally {
-                    // Reset button state after 2 seconds
-                    setTimeout(() => {
-                        btnText.textContent = 'Send Message';
-                        btnIcon.classList.remove('hidden');
-                        btnSpinner.classList.add('hidden');
-                        submitBtn.disabled = false;
-                    }, 2000);
+                    await fetch(`${API_URL}?${q.toString()}`, { method: 'GET', mode: 'no-cors' });
+                    status.textContent = "Transmission successful! Masum will reply shortly.";
+                    status.className = "mt-4 text-center text-sm text-green-400";
+                    form.reset();
+                } catch(err) {
+                    status.textContent = "Routing failed. Please email direct at address above.";
+                    status.className = "mt-4 text-center text-sm text-red-400";
                 }
             });
         }
 
-        // Alternative form submission method - আরও reliable
-        function submitFormAlternative(formData) {
-            // Simple Google Forms-like submission
-            const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScQO_jyT4oAohYfR7Hfq0Z2K8t8W5YJ5p5p5p5p5p5p5p5p5p5p/viewform?usp=pp_url';
+        function setupChatbotAgent() {
+            const box = document.getElementById("aiChatBox");
+            const input = document.getElementById("chatInput");
+            const body = document.getElementById("chatBody");
             
-            // Create a hidden form and submit
-            const hiddenForm = document.createElement('form');
-            hiddenForm.method = 'POST';
-            hiddenForm.action = formUrl;
-            hiddenForm.target = '_blank';
-            hiddenForm.style.display = 'none';
-            
-            const fields = ['name', 'email', 'subject', 'message'];
-            fields.forEach(field => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = field;
-                input.value = formData[field];
-                hiddenForm.appendChild(input);
-            });
-            
-            document.body.appendChild(hiddenForm);
-            hiddenForm.submit();
-            document.body.removeChild(hiddenForm);
-            
-            return true;
-        }
+            document.getElementById("aiChatToggle").addEventListener("click", () => box.classList.toggle("hidden"));
+            document.getElementById("closeChat").addEventListener("click", () => box.classList.add("hidden"));
 
-        // Show form message
-        function showFormMessage(message, type) {
-            const messageDiv = document.getElementById('formMessage');
-            messageDiv.textContent = message;
-            messageDiv.className = 'mt-4 p-4 rounded-lg text-center';
-            
-            if (type === 'success') {
-                messageDiv.classList.add('bg-green-500/20', 'text-green-400', 'border', 'border-green-500/30');
-            } else if (type === 'error') {
-                messageDiv.classList.add('bg-red-500/20', 'text-red-400', 'border', 'border-red-500/30');
+            document.getElementById("sendChatBtn").addEventListener("click", triggerAiPipeline);
+            input.addEventListener("keypress", (e) => { if(e.key === 'Enter') triggerAiPipeline(); });
+
+            async function triggerAiPipeline() {
+                const text = input.value.trim();
+                if(!text) return;
+
+                appendMsg(text, 'user');
+                input.value = "";
+
+                const typing = document.createElement("div");
+                typing.className = "bg-white/5 p-3 rounded-xl max-w-[85%] text-gray-400 animate-pulse";
+                typing.textContent = "AI Agent is querying architecture context...";
+                body.appendChild(typing);
+                body.scrollTop = body.scrollHeight;
+
+                try {
+                    const res = await fetch(`${API_URL}?action=chat&message=${encodeURIComponent(text)}`);
+                    const data = await res.json();
+                    typing.remove();
+                    appendMsg(data.reply, 'bot');
+                } catch(e) {
+                    typing.remove();
+                    appendMsg("System execution error. Core offline.", 'bot');
+                }
             }
-            
-            messageDiv.classList.remove('hidden');
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                messageDiv.classList.add('hidden');
-            }, 5000);
-        }
 
-        // Animate skill bars
-        function animateSkillBars() {
-            const skillBars = document.querySelectorAll('.skill-progress');
-            skillBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
-                bar.style.width = width + '%';
-            });
-        }
-
-        // Blog Modal Functions
-        function openBlogModal(index) {
-            if (!allBlogs[index]) return;
-            
-            const blog = allBlogs[index];
-            const modal = document.getElementById('blogModal');
-            const modalBody = document.getElementById('modalBody');
-            
-            modalBody.innerHTML = `
-                <article class="blog-article">
-                    <div class="mb-6">
-                        <span class="text-orange-500 font-bold uppercase tracking-widest text-sm">${blog.category || 'Case Study'}</span>
-                        <span class="text-gray-500 text-sm ml-4"><i class="far fa-clock mr-1"></i>${blog.readTime || 5} min read</span>
-                    </div>
-                    
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">${blog.title || 'Untitled'}</h1>
-                    
-                    <div class="mb-8">
-                        <img 
-  src="${blog.thumbnail || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}"
-  class="w-full h-64 md:h-96 object-cover rounded-2xl border border-white/10 shadow-xl"
-/>
-                    </div>
-                    
-                    <div class="prose prose-invert max-w-none">
-                        <div class="text-gray-300 leading-relaxed text-lg space-y-6">
-                            ${blog.content || blog.description || '<p>Content loading...</p>'}
-                        </div>
-                    </div>
-                    
-                    <div class="mt-12 pt-8 border-t border-white/10">
-                        <div class="flex flex-col md:flex-row justify-between items-center">
-                            <div class="mb-4 md:mb-0">
-                                <p class="text-gray-400 text-sm">Case Study by</p>
-                                <p class="text-white font-bold">Md. Masum Billah</p>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            `;
-            
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeBlogModal() {
-            document.getElementById('blogModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal on overlay click
-        document.getElementById('blogModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeBlogModal();
+            function appendMsg(txt, sender) {
+                const m = document.createElement("div");
+                m.className = sender === 'user' ? "bg-orange-500 text-white p-3 rounded-xl max-w-[85%] ml-auto" : "bg-white/5 text-gray-200 p-3 rounded-xl max-w-[85%]";
+                m.innerHTML = txt.replace(/\n/g, '<br>');
+                body.appendChild(m);
+                body.scrollTop = body.scrollHeight;
             }
-        });
-
-        // Close modal with Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeBlogModal();
-            }
-        });
-
-        // =========================
-// CHATBOT SYSTEM
-// =========================
-
-function initializeChatbot() {
-
-    const chatToggle = document.getElementById('chatToggle');
-    const chatWindow = document.getElementById('chatWindow');
-    const closeChat = document.getElementById('closeChat');
-    const sendChat = document.getElementById('sendChat');
-    const chatInput = document.getElementById('chatInput');
-    const chatMessages = document.getElementById('chatMessages');
-
-    // Open Chat
-    chatToggle.addEventListener('click', () => {
-        chatWindow.classList.remove('hidden');
-    });
-
-    // Close Chat
-    closeChat.addEventListener('click', () => {
-        chatWindow.classList.add('hidden');
-    });
-
-    // Send Message
-    sendChat.addEventListener('click', sendMessage);
-
-    // Enter Press
-    chatInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            sendMessage();
-        }
-    });
-
-    async function sendMessage() {
-
-        const message = chatInput.value.trim();
-
-        if (!message) return;
-
-        // User Message
-        appendMessage(message, 'user');
-
-        // Clear Input
-        chatInput.value = '';
-
-        // Typing Effect
-        setTimeout(async () => {
-
-            const reply = await generateReply(message);
-
-            appendMessage(reply, 'bot');
-
-        }, 700);
-    }
-
-    function appendMessage(text, sender) {
-
-        const messageDiv = document.createElement('div');
-
-        if (sender === 'user') {
-
-            messageDiv.innerHTML = `
-                <div class="flex justify-end">
-                    <div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-3 rounded-2xl max-w-[80%]">
-                        ${text}
-                    </div>
-                </div>
-            `;
-
-        } else {
-
-            messageDiv.innerHTML = `
-                <div class="flex">
-                    <div class="bg-white/10 text-white px-4 py-3 rounded-2xl max-w-[80%]">
-                        ${text}
-                    </div>
-                </div>
-            `;
         }
 
-        chatMessages.appendChild(messageDiv);
-
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-}
-    async function generateReply(message) {
-
-    const msg = message.toLowerCase();
-
-    // ========================
-    // GREETING
-    // ========================
-
-    if (
-        msg.includes('hi') ||
-        msg.includes('hello') ||
-        msg.includes('hey')
-    ) {
-        return `👋 Hello! I'm Masum's virtual assistant.<br><br>
-        I can help you explore:
-        <br>• Skills
-        <br>• Projects
-        <br>• Experience
-        <br>• Certifications
-        <br>• Contact Information`;
-    }
-
-    // ========================
-    // SKILLS
-    // ========================
-
-    if (
-        msg.includes('skill') ||
-        msg.includes('sql') ||
-        msg.includes('power bi') ||
-        msg.includes('python') ||
-        msg.includes('excel')
-    ) {
-
-        return `
-        🚀 Masum's core skills include:
-        <br><br>
-        • SQL
-        <br>• Power BI
-        <br>• Excel Automation
-        <br>• Google Apps Script
-        <br>• Python for Data Analysis
-        <br>• Dashboard Development
-        <br>• Business Intelligence
-        `;
-    }
-
-    // ========================
-    // PROJECTS
-    // ========================
-
-    if (
-        msg.includes('project') ||
-        msg.includes('portfolio') ||
-        msg.includes('dashboard')
-    ) {
-
-        return `
-        📊 Featured Projects:
-        <br><br>
-        • Enterprise Retail Analytics Dashboard
-        <br>• HR Analytics Dashboard
-        <br>• POS & Finance Tracking System
-        <br>• Google Workspace Automation
-        <br>• Investment Tracker App
-        <br><br>
-        Visit the Projects section to explore more 🚀
-        `;
-    }
-
-    // ========================
-    // EXPERIENCE
-    // ========================
-
-    if (
-        msg.includes('experience') ||
-        msg.includes('job') ||
-        msg.includes('work')
-    ) {
-
-        return `
-        💼 Masum previously worked at Data Solution 360 as a Data Analyst.
-        <br><br>
-        He also has experience building:
-        <br>• Automation systems
-        <br>• BI dashboards
-        <br>• Reporting solutions
-        <br>• Google Apps Script tools
-        `;
-    }
-
-    // ========================
-    // CONTACT
-    // ========================
-
-    if (
-        msg.includes('contact') ||
-        msg.includes('email') ||
-        msg.includes('hire') ||
-        msg.includes('whatsapp')
-    ) {
-
-        return `
-        📬 Contact Masum:
-        <br><br>
-        📧 Email: itsmbillah@gmail.com
-        <br>
-        🌐 Portfolio: itsmebillah.github.io
-        <br>
-        💼 LinkedIn: linkedin.com/in/itsmebillah
-        `;
-    }
-
-    // ========================
-    // CERTIFICATES
-    // ========================
-
-    if (
-        msg.includes('certificate') ||
-        msg.includes('certification')
-    ) {
-
-        return `
-        🏆 Masum has completed multiple certifications in:
-        <br><br>
-        • Data Analytics
-        <br>• Power BI
-        <br>• SQL
-        <br>• Excel
-        <br>• Automation
-        `;
-    }
-
-    // ========================
-    // DEFAULT
-    // ========================
-
-    return `
-    🤖 I couldn't fully understand that.
-    <br><br>
-    Try asking about:
-    <br>• Skills
-    <br>• Projects
-    <br>• Experience
-    <br>• Certifications
-    <br>• Contact
-    `;
-}
-        // Google Analytics
-        gtag('event', 'page_view', {
-            page_title: document.title,
-            page_location: window.location.href
-        });
+        function hideLoader() {
+            const loader = document.getElementById("loader");
+            loader.style.opacity = "0";
+            setTimeout(() => loader.style.display = "none", 500);
+        }
     </script>
 </body>
 </html>
