@@ -207,356 +207,450 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
-        // 🔴 Web App API URL
-        const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
-        
-        let allBlogs = [];
+        // 🔴 আপনার আসল Google Apps Script Web App URL নিশ্চিত করুন
+const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
 
-        document.addEventListener('DOMContentLoaded', async function() {
-            if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
-            
-            if(typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
-                particlesJS('particles-js', {
-                    particles: {
-                        number: { value: 50, density: { enable: true, value_area: 800 } },
-                        color: { value: "#FF6B35" },
-                        shape: { type: "circle" },
-                        opacity: { value: 0.4, random: true },
-                        size: { value: 3, random: true },
-                        line_linked: { enable: true, distance: 150, color: "#FF6B35", opacity: 0.2, width: 1 },
-                        move: { enable: true, speed: 1.5, direction: "none", random: true, out_mode: "out" }
-                    }
-                });
+let allBlogs = [];
+
+document.addEventListener('DOMContentLoaded', async function() {
+    if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
+    
+    // Particles Configuration safely
+    if(typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 50, density: { enable: true, value_area: 800 } },
+                color: { value: "#FF6B35" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#FF6B35", opacity: 0.2, width: 1 },
+                move: { enable: true, speed: 1.5, direction: "none", random: true, out_mode: "out" }
             }
+        });
+    }
 
-            await loadDataPipeline();
-            initializeChatbotEngine();
-            initializeFormSubmission();
+    await loadDataPipeline();
+    initializeChatbotEngine();
+    initializeFormSubmission();
+});
+
+// কেস-ইনসেনসিটিভ অবজেক্ট প্রপার্টি হেল্পার (শিটের কলাম ছোট-বড় হাত যাই হোক যেন ব্রেক না করে)
+function getProp(obj, key) {
+    if (!obj) return "";
+    if (obj.hasOwnProperty(key)) return obj[key];
+    const lowerKey = key.toLowerCase();
+    for (let k in obj) {
+        if (k.toLowerCase() === lowerKey) return obj[k];
+    }
+    return "";
+}
+
+async function loadDataPipeline() {
+    try {
+        console.log("Connecting to live data stream...");
+        const response = await fetch(`${GAS_API_URL}?action=getAllData`);
+        const result = await response.json();
+        console.log("Raw Response Structure:", result);
+        
+        // অ্যাপস স্ক্রিপ্ট রেসপন্স অবজেক্টের ডাটা লেয়ার এক্সট্রাকশন
+        if (result && result.success) {
+            const payload = result.data || result;
+            
+            if (payload) {
+                renderProfile(payload.profile);
+                renderSkills(payload.skills);
+                renderProjects(payload.projects);
+                renderCertificates(payload.certificates);
+                renderBlogs(payload.blogs);
+                renderTimeline(payload.experience, payload.education);
+            } else {
+                console.error("Payload layer missing inside response.");
+            }
+        } else {
+            console.error("Execution states success as false.");
+        }
+    } catch (error) {
+        console.error('Core Engine Sync Error:', error);
+    } finally {
+        const loader = document.getElementById('loader');
+        if(loader) {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 500);
+        }
+    }
+}
+
+function renderProfile(p) {
+    if(!p) { console.error("Profile payload empty!"); return; }
+    console.log("Mapping Profile:", p);
+    
+    // আপনার প্রম্পট স্কিমা অনুযায়ী ডিফেন্সিভ প্রপার্টি রিডিং
+    const name = getProp(p, 'Name') || "Md. Masum Billah";
+    const title = getProp(p, 'Title');
+    const email = getProp(p, 'Email');
+    const phone = getProp(p, 'Phone');
+    const location = getProp(p, 'Location');
+    const bio = getProp(p, 'Bio');
+    const facebook = getProp(p, 'Facebook') || "#";
+    const linkedin = getProp(p, 'LinkedIn') || "#";
+    const whatsapp = getProp(p, 'WhatsApp');
+    const github = getProp(p, 'GitHub') || "#";
+    const profilePic = getProp(p, 'ProfilePic') || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
+
+    document.getElementById('navName').textContent = name;
+    document.getElementById('heroName').textContent = name;
+    document.getElementById('heroTitle').textContent = title;
+    document.getElementById('heroBio').textContent = bio;
+    document.getElementById('aboutBio').textContent = bio;
+    document.getElementById('infoLocation').textContent = location;
+    document.getElementById('infoEmail').textContent = email;
+    document.getElementById('infoPhone').textContent = phone;
+    document.getElementById('profileImage').src = profilePic;
+
+    const socials = document.getElementById('socialContainer');
+    if(socials) {
+        socials.innerHTML = `
+            <a href="${linkedin}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="${github}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="${facebook}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://wa.me/${whatsapp}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        `;
+    }
+}
+
+function renderSkills(skills) {
+    const container = document.getElementById('skillsContainer');
+    if (!container || !skills || skills.length === 0) { console.warn("Skills layer blank."); return; }
+    
+    const sortedSkills = skills.sort((a, b) => (Number(getProp(a, 'Order')) || 99) - (Number(getProp(b, 'Order')) || 99));
+    const mid = Math.ceil(sortedSkills.length / 2);
+    const left = sortedSkills.slice(0, mid);
+    const right = sortedSkills.slice(mid);
+
+    const mapSkill = s => {
+        const sName = getProp(s, 'Name');
+        const sLevel = getProp(s, 'Level') || 0;
+        const sCat = getProp(s, 'Category');
+        return `
+            <div class="skill-container">
+                <div class="skill-header">
+                    <span class="skill-name">${sName}</span>
+                    <span class="skill-percentage">${sLevel}%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-progress" style="width: ${sLevel}%"></div>
+                </div>
+                <div class="text-sm text-gray-400 mt-1">${sCat}</div>
+            </div>`;
+    };
+
+    container.innerHTML = `
+        <div>${left.map(mapSkill).join('')}</div>
+        <div>${right.map(mapSkill).join('')}</div>
+    `;
+}
+
+function renderProjects(projects) {
+    const featContainer = document.getElementById('featuredProjectsContainer');
+    const otherContainer = document.getElementById('otherProjectsContainer');
+    if(!projects || projects.length === 0) { console.warn("Projects layer blank."); return; }
+
+    const activeProjects = projects.filter(p => {
+        const pub = String(getProp(p, 'Published')).toUpperCase();
+        return pub === 'TRUE' || pub === '1';
+    });
+    
+    const featured = activeProjects.filter(p => {
+        const feat = String(getProp(p, 'Featured')).toUpperCase();
+        return feat === 'TRUE' || feat === '1';
+    });
+    const others = activeProjects.filter(p => {
+        const feat = String(getProp(p, 'Featured')).toUpperCase();
+        return feat !== 'TRUE' && feat !== '1';
+    });
+
+    if(featContainer) {
+        featContainer.innerHTML = featured.map(p => {
+            const pName = getProp(p, 'Name');
+            const pDesc = getProp(p, 'Description');
+            const pImg = getProp(p, 'Image');
+            const pTags = getProp(p, 'Tags');
+            const pLive = getProp(p, 'LiveURL');
+            const pGit = getProp(p, 'GitHubURL');
+            const dEmail = getProp(p, 'DemoEmail');
+            const dPass = getProp(p, 'DemoPassword');
+
+            return `
+                <div class="glass rounded-3xl p-8 mb-8">
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-3xl font-semibold mb-4 gradient-text">🚀 ${pName}</h3>
+                            <p class="text-gray-300 mb-6">${pDesc}</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                ${pTags ? pTags.split(',').map(t => `<span class="project-tag">${t.trim()}</span>`).join('') : ''}
+                            </div>
+                            ${dEmail ? `
+                                <div class="mb-4 text-sm bg-white/5 p-3 rounded-xl border border-white/5">
+                                    <div><span class="text-orange-400 font-semibold">Demo:</span> ${dEmail}</div>
+                                    <div><span class="text-orange-400 font-semibold">Pass:</span> ${dPass}</div>
+                                </div>`: ''}
+                            <div class="flex gap-4">
+                                ${pLive ? `<a href="${pLive}" target="_blank" class="px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-sm font-semibold"><i class="fas fa-external-link-alt mr-2"></i>Live Demo</a>`:''}
+                                ${pGit && pGit !== '#' ? `<a href="${pGit}" target="_blank" class="px-6 py-2 glass rounded-full text-white text-sm border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <img src="${pImg}" class="w-full h-64 object-cover rounded-2xl shadow-2xl" alt="Project Banner">
+                        </div>
+                    </div>
+                </div>`;
+        }).join('');
+    }
+
+    if(otherContainer) {
+        otherContainer.innerHTML = others.map(p => {
+            const pName = getProp(p, 'Name');
+            const pDesc = getProp(p, 'Description');
+            const pImg = getProp(p, 'Image');
+            const pTags = getProp(p, 'Tags');
+            const pLive = getProp(p, 'LiveURL');
+
+            return `
+                <div class="glass rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <img src="${pImg}" class="w-full h-48 object-cover rounded-lg mb-4" alt="Project Image">
+                        <h4 class="text-xl font-semibold mb-2 text-white">${pName}</h4>
+                        <p class="text-gray-300 text-sm mb-4 line-clamp-3">${pDesc}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${pTags ? pTags.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded text-xs">${t.trim()}</span>`).join('') : ''}
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        ${pLive ? `<a href="${pLive}" target="_blank" class="text-orange-400 text-sm font-semibold">View Project <i class="fas fa-arrow-right ml-1"></i></a>`:''}
+                    </div>
+                </div>`;
+        }).join('');
+    }
+}
+
+function renderCertificates(certs) {
+    const container = document.getElementById('certificatesContainer');
+    if(!container || !certs || certs.length === 0) return;
+
+    const activeCerts = certs.filter(c => {
+        const pub = String(getProp(c, 'Published')).toUpperCase();
+        return pub === 'TRUE' || pub === '1';
+    });
+
+    container.innerHTML = activeCerts.map(c => {
+        const cName = getProp(c, 'Name');
+        const cOrg = getProp(c, 'Organization');
+        const cDate = getProp(c, 'Date');
+        const cImg = getProp(c, 'ImageURL');
+        const cVerify = getProp(c, 'VerifyURL');
+        
+        return `
+            <div class="glass rounded-3xl overflow-hidden group border border-white/10 hover:border-orange-500 transition-all duration-300">
+                <div class="relative h-52 overflow-hidden">
+                    <img src="${cImg || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Certificate">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4">
+                        <h3 class="text-white font-bold text-lg leading-tight">${cName}</h3>
+                        <p class="text-gray-300 text-xs mt-1">${cOrg}</p>
+                    </div>
+                </div>
+                <div class="p-4 flex justify-between items-center">
+                    <span class="text-orange-400 text-xs font-semibold">${cDate}</span>
+                    ${cVerify ? `<a href="${cVerify}" target="_blank" class="px-3 py-1 bg-orange-500 text-white rounded-full text-[10px]"><i class="fas fa-external-link-alt mr-1"></i>Verify</a>`:''}
+                </div>
+            </div>`;
+    }).join('');
+}
+
+function renderBlogs(blogsData) {
+    const container = document.getElementById('blogsContainer');
+    if(!container || !blogsData || blogsData.length === 0) return;
+    
+    allBlogs = blogsData.filter(b => {
+        const pub = String(getProp(b, 'Published')).toUpperCase();
+        return pub === 'TRUE' || pub === '1';
+    });
+
+    container.innerHTML = allBlogs.map((b, idx) => {
+        const bTitle = getProp(b, 'Title');
+        const bThumb = getProp(b, 'Thumbnail');
+        const bCat = getProp(b, 'Category');
+        const bDesc = getProp(b, 'Description');
+        const bDate = getProp(b, 'Date');
+        const rTime = getProp(b, 'ReadTime') || 5;
+
+        return `
+            <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/10 hover:border-orange-500 transition-all">
+                <div class="md:w-1/3 h-48 md:h-auto"><img src="${bThumb}" class="w-full h-full object-cover" alt="Blog Thumbnail"></div>
+                <div class="p-6 md:w-2/3 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-bold text-orange-500 uppercase">${bCat || 'Case Study'}</span>
+                            <span class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i>${rTime} min read</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">${bTitle}</h3>
+                        <p class="text-gray-400 text-xs mb-4 line-clamp-3">${bDesc}</p>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-500">${bDate}</span>
+                        <button onclick="openBlogModal(${idx})" class="text-white font-semibold hover:text-orange-500 text-xs flex items-center">Read Full <i class="fas fa-arrow-right ml-1"></i></button>
+                    </div>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+function renderTimeline(exp, edu) {
+    const container = document.getElementById('timelineContainer');
+    if(!container) return;
+
+    const unifiedList = [];
+    if(exp) exp.forEach(i => unifiedList.push({...i, type: 'exp'}));
+    if(edu) edu.forEach(i => unifiedList.push({...i, type: 'edu'}));
+    
+    if(unifiedList.length === 0) return;
+
+    container.innerHTML = unifiedList.map(item => {
+        const period = getProp(item, 'Period');
+        const title = getProp(item, 'Title') || getProp(item, 'Degree');
+        const company = getProp(item, 'Company') || getProp(item, 'Institution');
+        const desc = getProp(item, 'Description');
+        const icon = getProp(item, 'Icon');
+
+        return `
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-period">${period}</span>
+                    <div class="timeline-icon"><i class="fas ${icon || (item.type === 'edu' ? 'fa-graduation-cap' : 'fa-briefcase')}"></i></div>
+                    <h3>${title}</h3>
+                    <span class="timeline-company">${company}</span>
+                    <p class="timeline-description">${desc}</p>
+                </div>
+            </div>`;
+    }).join('');
+}
+
+function openBlogModal(index) {
+    if (!allBlogs[index]) return;
+    const blog = allBlogs[index];
+    const modal = document.getElementById('blogModal');
+    const modalBody = document.getElementById('modalBody');
+    
+    const bCat = getProp(blog, 'Category');
+    const bTitle = getProp(blog, 'Title');
+    const bThumb = getProp(blog, 'Thumbnail');
+    const bContent = getProp(blog, 'Content') || getProp(blog, 'Description');
+
+    modalBody.innerHTML = `
+        <div class="mb-4">
+            <span class="text-orange-500 font-bold uppercase text-xs">${bCat}</span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-bold text-white mb-4">${bTitle}</h1>
+        <img src="${bThumb}" class="w-full h-64 object-cover rounded-xl mb-6">
+        <div class="text-gray-300 leading-relaxed space-y-4 text-sm bg-white/5 p-4 rounded-xl max-h-[300px] overflow-y-auto">
+            ${bContent}
+        </div>`;
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeBlogModal() {
+    document.getElementById('blogModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function initializeChatbotEngine() {
+    const toggle = document.getElementById('chatToggle');
+    const win = document.getElementById('chatWindow');
+    const close = document.getElementById('closeChat');
+    const send = document.getElementById('sendChat');
+    const input = document.getElementById('chatInput');
+    const msgs = document.getElementById('chatMessages');
+
+    if(!toggle || !win) return;
+
+    toggle.addEventListener('click', () => win.classList.remove('hidden'));
+    close.addEventListener('click', () => win.classList.add('hidden'));
+    send.addEventListener('click', pushChatMessage);
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') pushChatMessage(); });
+
+    async function pushChatMessage() {
+        const query = input.value.trim();
+        if (!query) return;
+
+        appendUIMessage(query, 'user');
+        input.value = '';
+
+        const loaderDiv = document.createElement('div');
+        loaderDiv.className = "flex";
+        loaderDiv.innerHTML = `<div class="bg-white/5 text-gray-400 px-4 py-2 rounded-2xl animate-pulse">AI Agent querying data core...</div>`;
+        msgs.appendChild(loaderDiv);
+        msgs.scrollTop = msgs.scrollHeight;
+
+        try {
+            const response = await fetch(`${GAS_API_URL}?action=chat&message=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            loaderDiv.remove();
+            appendUIMessage(data.reply, 'bot');
+        } catch (error) {
+            loaderDiv.remove();
+            appendUIMessage("Connection payload timeout. Core model offline.", 'bot');
+        }
+    }
+
+    function appendUIMessage(text, sender) {
+        const box = document.createElement('div');
+        box.className = sender === 'user' ? "flex justify-end" : "flex";
+        box.innerHTML = sender === 'user' 
+            ? `<div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-2xl max-w-[80%]">${text}</div>`
+            : `<div class="bg-white/10 text-white px-4 py-2 rounded-2xl max-w-[80%]">${text.replace(/\n/g, '<br>')}</div>`;
+        msgs.appendChild(box);
+        msgs.scrollTop = msgs.scrollHeight;
+    }
+}
+
+function initializeFormSubmission() {
+    const form = document.getElementById('contactForm');
+    if(!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const status = document.getElementById('formMessage');
+        const btn = document.getElementById('submitBtn');
+        
+        btn.disabled = true;
+        const origText = btn.innerHTML;
+        btn.textContent = "Processing Stream...";
+
+        const params = new URLSearchParams({
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            subject: document.getElementById('subject').value.trim(),
+            message: document.getElementById('message').value.trim()
         });
 
-        async function loadDataPipeline() {
-            try {
-                const response = await fetch(`${GAS_API_URL}?action=getAllData`);
-                const result = await response.json();
-                console.log("Data Pipeline Response:", result);
-                
-                if (result.success && result.data) {
-                    renderProfile(result.data.profile);
-                    renderSkills(result.data.skills);
-                    renderProjects(result.data.projects);
-                    renderCertificates(result.data.certificates);
-                    renderBlogs(result.data.blogs);
-                    renderTimeline(result.data.experience, result.data.education);
-                }
-            } catch (error) {
-                console.error('Core Engine Sync Error:', error);
-            } finaly: {
-                const loader = document.getElementById('loader');
-                if(loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }
-            }
+        try {
+            await fetch(`${GAS_API_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
+            status.textContent = "✅ Message routed successfully to Google Sheets!";
+            status.className = "mt-4 p-4 rounded-lg text-center bg-green-500/20 text-green-400 border border-green-500/30";
+            form.reset();
+        } catch (error) {
+            status.textContent = "❌ Network routing failure.";
+            status.className = "mt-4 p-4 rounded-lg text-center bg-red-500/20 text-red-400 border border-red-500/30";
+        } finally {
+            status.classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = origText;
+            setTimeout(() => status.classList.add('hidden'), 5000);
         }
-
-        function renderProfile(p) {
-            if(!p) return;
-            
-            const name = p.Name || "";
-            const title = p.Title || "";
-            const email = p.Email || "";
-            const phone = p.Phone || "";
-            const location = p.Location || "";
-            const bio = p.Bio || "";
-            const facebook = p.Facebook || "#";
-            const linkedin = p.LinkedIn || "#";
-            const whatsapp = p.WhatsApp || "";
-            const github = p.GitHub || "#";
-            const profilePic = p.ProfilePic || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
-
-            document.getElementById('navName').textContent = name;
-            document.getElementById('heroName').textContent = name;
-            document.getElementById('heroTitle').textContent = title;
-            document.getElementById('heroBio').textContent = bio;
-            document.getElementById('aboutBio').textContent = bio;
-            document.getElementById('infoLocation').textContent = location;
-            document.getElementById('infoEmail').textContent = email;
-            document.getElementById('infoPhone').textContent = phone;
-            document.getElementById('profileImage').src = profilePic;
-
-            const socials = document.getElementById('socialContainer');
-            if(socials) {
-                socials.innerHTML = `
-                    <a href="${linkedin}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="${github}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="${facebook}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://wa.me/${whatsapp}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                `;
-            }
-        }
-
-        function renderSkills(skills) {
-            const container = document.getElementById('skillsContainer');
-            if (!container || !skills || skills.length === 0) return;
-            
-            const sortedSkills = skills.sort((a, b) => (Number(a.Order) || 99) - (Number(b.Order) || 99));
-            const mid = Math.ceil(sortedSkills.length / 2);
-            const left = sortedSkills.slice(0, mid);
-            const right = sortedSkills.slice(mid);
-
-            const mapSkill = s => `
-                <div class="skill-container">
-                    <div class="skill-header">
-                        <span class="skill-name">${s.Name || ""}</span>
-                        <span class="skill-percentage">${s.Level || 0}%</span>
-                    </div>
-                    <div class="skill-bar">
-                        <div class="skill-progress" style="width: ${s.Level || 0}%"></div>
-                    </div>
-                    <div class="text-sm text-gray-400 mt-1">${s.Category || ""}</div>
-                </div>`;
-
-            container.innerHTML = `
-                <div>${left.map(mapSkill).join('')}</div>
-                <div>${right.map(mapSkill).join('')}</div>
-            `;
-        }
-
-        function renderProjects(projects) {
-            const featContainer = document.getElementById('featuredProjectsContainer');
-            const otherContainer = document.getElementById('otherProjectsContainer');
-            if(!projects || projects.length === 0) return;
-
-            const activeProjects = projects.filter(p => String(p.Published).toUpperCase() === 'TRUE' || p.Published === true);
-            const featured = activeProjects.filter(p => String(p.Featured).toUpperCase() === 'TRUE' || p.Featured === true);
-            const others = activeProjects.filter(p => String(p.Featured).toUpperCase() !== 'TRUE' && p.Featured !== true);
-
-            if(featContainer) {
-                featContainer.innerHTML = featured.map(p => `
-                    <div class="glass rounded-3xl p-8 mb-8">
-                        <div class="grid md:grid-cols-2 gap-8 items-center">
-                            <div>
-                                <h3 class="text-3xl font-semibold mb-4 gradient-text">🚀 ${p.Name || ""}</h3>
-                                <p class="text-gray-300 mb-6">${p.Description || ""}</p>
-                                <div class="flex flex-wrap gap-2 mb-6">
-                                    ${p.Tags ? p.Tags.split(',').map(t => `<span class="project-tag">${t.trim()}</span>`).join('') : ''}
-                                </div>
-                                ${p.DemoEmail ? `
-                                    <div class="mb-4 text-sm bg-white/5 p-3 rounded-xl border border-white/5">
-                                        <div><span class="text-orange-400 font-semibold">Demo:</span> ${p.DemoEmail}</div>
-                                        <div><span class="text-orange-400 font-semibold">Pass:</span> ${p.DemoPassword || ""}</div>
-                                    </div>`: ''}
-                                <div class="flex gap-4">
-                                    ${p.LiveURL ? `<a href="${p.LiveURL}" target="_blank" class="px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-sm font-semibold"><i class="fas fa-external-link-alt mr-2"></i>Live Demo</a>`:''}
-                                    ${p.GitHubURL && p.GitHubURL !== '#' ? `<a href="${p.GitHubURL}" target="_blank" class="px-6 py-2 glass rounded-full text-white text-sm border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <img src="${p.Image || ""}" class="w-full h-64 object-cover rounded-2xl shadow-2xl" alt="Project Banner">
-                            </div>
-                        </div>
-                    </div>`).join('');
-            }
-
-            if(otherContainer) {
-                otherContainer.innerHTML = others.map(p => `
-                    <div class="glass rounded-2xl p-6 flex flex-col justify-between">
-                        <div>
-                            <img src="${p.Image || ""}" class="w-full h-48 object-cover rounded-lg mb-4" alt="Project Image">
-                            <h4 class="text-xl font-semibold mb-2 text-white">${p.Name || ""}</h4>
-                            <p class="text-gray-300 text-sm mb-4 line-clamp-3">${p.Description || ""}</p>
-                            <div class="flex flex-wrap gap-2 mb-4">
-                                ${p.Tags ? p.Tags.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded text-xs">${t.trim()}</span>`).join('') : ''}
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center mt-4">
-                            ${p.LiveURL ? `<a href="${p.LiveURL}" target="_blank" class="text-orange-400 text-sm font-semibold">View Project <i class="fas fa-arrow-right ml-1"></i></a>`:''}
-                        </div>
-                    </div>`).join('');
-            }
-        }
-
-        function renderCertificates(certs) {
-            const container = document.getElementById('certificatesContainer');
-            if(!container || !certs || certs.length === 0) return;
-
-            const activeCerts = certs.filter(c => String(c.Published).toUpperCase() === 'TRUE' || c.Published === true);
-
-            container.innerHTML = activeCerts.map(c => `
-                <div class="glass rounded-3xl overflow-hidden group border border-white/10 hover:border-orange-500 transition-all duration-300">
-                    <div class="relative h-52 overflow-hidden">
-                        <img src="${c.ImageURL || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Certificate">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4">
-                            <h3 class="text-white font-bold text-lg leading-tight">${c.Name || ""}</h3>
-                            <p class="text-gray-300 text-xs mt-1">${c.Organization || ""}</p>
-                        </div>
-                    </div>
-                    <div class="p-4 flex justify-between items-center">
-                        <span class="text-orange-400 text-xs font-semibold">${c.Date || ""}</span>
-                        ${c.VerifyURL ? `<a href="${c.VerifyURL}" target="_blank" class="px-3 py-1 bg-orange-500 text-white rounded-full text-[10px]"><i class="fas fa-external-link-alt mr-1"></i>Verify</a>`:''}
-                    </div>
-                </div>`).join('');
-        }
-
-        function renderBlogs(blogsData) {
-            const container = document.getElementById('blogsContainer');
-            if(!container || !blogsData || blogsData.length === 0) return;
-            
-            allBlogs = blogsData.filter(b => String(b.Published).toUpperCase() === 'TRUE' || b.Published === true);
-
-            container.innerHTML = allBlogs.map((b, idx) => `
-                <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/10 hover:border-orange-500 transition-all">
-                    <div class="md:w-1/3 h-48 md:h-auto"><img src="${b.Thumbnail || ""}" class="w-full h-full object-cover" alt="Blog Thumbnail"></div>
-                    <div class="p-6 md:w-2/3 flex flex-col justify-between">
-                        <div>
-                            <div class="flex justify-between items-center mb-2">
-                                <span class="text-xs font-bold text-orange-500 uppercase">${b.Category || 'Case Study'}</span>
-                                <span class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i>${b.ReadTime || 5} min read</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">${b.Title || ""}</h3>
-                            <p class="text-gray-400 text-xs mb-4 line-clamp-3">${b.Description || ""}</p>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">${b.Date || ""}</span>
-                            <button onclick="openBlogModal(${idx})" class="text-white font-semibold hover:text-orange-500 text-xs flex items-center">Read Full <i class="fas fa-arrow-right ml-1"></i></button>
-                        </div>
-                    </div>
-                </div>`).join('');
-        }
-
-        function renderTimeline(exp, edu) {
-            const container = document.getElementById('timelineContainer');
-            if(!container) return;
-
-            const unifiedList = [];
-            if(exp) exp.forEach(i => unifiedList.push({...i, type: 'exp'}));
-            if(edu) edu.forEach(i => unifiedList.push({...i, type: 'edu'}));
-            
-            if(unifiedList.length === 0) return;
-
-            container.innerHTML = unifiedList.map(item => `
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-period">${item.Period || ""}</span>
-                        <div class="timeline-icon"><i class="fas ${item.Icon || (item.type === 'edu' ? 'fa-graduation-cap' : 'fa-briefcase')}"></i></div>
-                        <h3>${item.Title || item.Degree || ""}</h3>
-                        <span class="timeline-company">${item.Company || item.Institution || ""}</span>
-                        <p class="timeline-description">${item.Description || ""}</p>
-                    </div>
-                </div>`).join('');
-        }
-
-        function openBlogModal(index) {
-            if (!allBlogs[index]) return;
-            const blog = allBlogs[index];
-            const modal = document.getElementById('blogModal');
-            const modalBody = document.getElementById('modalBody');
-            
-            modalBody.innerHTML = `
-                <div class="mb-4">
-                    <span class="text-orange-500 font-bold uppercase text-xs">${blog.Category || ""}</span>
-                </div>
-                <h1 class="text-2xl md:text-3xl font-bold text-white mb-4">${blog.Title || ""}</h1>
-                <img src="${blog.Thumbnail || ""}" class="w-full h-64 object-cover rounded-xl mb-6">
-                <div class="text-gray-300 leading-relaxed space-y-4 text-sm bg-white/5 p-4 rounded-xl max-h-[300px] overflow-y-auto">
-                    ${blog.Content || blog.Description || ""}
-                </div>`;
-            
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeBlogModal() {
-            document.getElementById('blogModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        function initializeChatbotEngine() {
-            const toggle = document.getElementById('chatToggle');
-            const win = document.getElementById('chatWindow');
-            const close = document.getElementById('closeChat');
-            const send = document.getElementById('sendChat');
-            const input = document.getElementById('chatInput');
-            const msgs = document.getElementById('chatMessages');
-
-            if(!toggle || !win) return;
-
-            toggle.addEventListener('click', () => win.classList.remove('hidden'));
-            close.addEventListener('click', () => win.classList.add('hidden'));
-            send.addEventListener('click', pushChatMessage);
-            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') pushChatMessage(); });
-
-            async function pushChatMessage() {
-                const query = input.value.trim();
-                if (!query) return;
-
-                appendUIMessage(query, 'user');
-                input.value = '';
-
-                const loaderDiv = document.createElement('div');
-                loaderDiv.className = "flex";
-                loaderDiv.innerHTML = `<div class="bg-white/5 text-gray-400 px-4 py-2 rounded-2xl animate-pulse">AI Agent querying data core...</div>`;
-                msgs.appendChild(loaderDiv);
-                msgs.scrollTop = msgs.scrollHeight;
-
-                try {
-                    const response = await fetch(`${GAS_API_URL}?action=chat&message=${encodeURIComponent(query)}`);
-                    const data = await response.json();
-                    loaderDiv.remove();
-                    appendUIMessage(data.reply, 'bot');
-                } catch (error) {
-                    loaderDiv.remove();
-                    appendUIMessage("Connection payload timeout. Core model offline.", 'bot');
-                }
-            }
-
-            function appendUIMessage(text, sender) {
-                const box = document.createElement('div');
-                box.className = sender === 'user' ? "flex justify-end" : "flex";
-                box.innerHTML = sender === 'user' 
-                    ? `<div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-2xl max-w-[80%]">${text}</div>`
-                    : `<div class="bg-white/10 text-white px-4 py-2 rounded-2xl max-w-[80%]">${text.replace(/\n/g, '<br>')}</div>`;
-                msgs.appendChild(box);
-                msgs.scrollTop = msgs.scrollHeight;
-            }
-        }
-
-        function initializeFormSubmission() {
-            const form = document.getElementById('contactForm');
-            if(!form) return;
-            
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const status = document.getElementById('formMessage');
-                const btn = document.getElementById('submitBtn');
-                
-                btn.disabled = true;
-                const origText = btn.innerHTML;
-                btn.textContent = "Processing Stream...";
-
-                const params = new URLSearchParams({
-                    name: document.getElementById('name').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    subject: document.getElementById('subject').value.trim(),
-                    message: document.getElementById('message').value.trim()
-                });
-
-                try {
-                    await fetch(`${GAS_API_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-                    status.textContent = "✅ Message routed successfully to Google Sheets!";
-                    status.className = "mt-4 p-4 rounded-lg text-center bg-green-500/20 text-green-400 border border-green-500/30";
-                    form.reset();
-                } catch (error) {
-                    status.textContent = "❌ Network routing failure.";
-                    status.className = "mt-4 p-4 rounded-lg text-center bg-red-500/20 text-red-400 border border-red-500/30";
-                } finally {
-                    status.classList.remove('hidden');
-                    btn.disabled = false;
-                    btn.innerHTML = origText;
-                    setTimeout(() => status.classList.add('hidden'), 5000);
-                }
-            });
-        }
+    });
+}
     </script>
 </body>
 </html>
