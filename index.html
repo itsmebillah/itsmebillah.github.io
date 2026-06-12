@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Professional Portfolio</title>
-    
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230f172a'/><text x='50' y='68' font-size='60' text-anchor='middle' fill='white'>🧑‍💻</text></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -20,12 +17,12 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #1a202c; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(45deg, #FF6B35, #FF8B35); border-radius: 10px; }
-        .glass { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .glass { background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .gradient-text { background: linear-gradient(45deg, #FF6B35, #FF8B35, #FF6B9D); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
         .floating { animation: float 6s ease-in-out infinite; }
         .magnetic-btn { transition: all 0.3s ease; cursor: pointer; }
-        .magnetic-btn:hover { transform: translateY(-2px) scale(1.05); box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3); }
+        .magnetic-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 25px rgba(255, 107, 53, 0.25); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .skill-container { margin-bottom: 1.5rem; }
         .skill-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
@@ -38,23 +35,19 @@
         .timeline-item { position: relative; margin-bottom: 3rem; width: 100%; }
         .timeline-item:nth-child(odd) .timeline-content { margin-left: auto; margin-right: 2rem; text-align: left; padding-right: 4rem; padding-left: 0; }
         .timeline-item:nth-child(even) .timeline-content { margin-left: 2rem; margin-right: auto; text-align: left; padding-left: 4rem; padding-right: 0; }
-        .timeline-content { position: relative; width: 45%; padding: 1.5rem; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 1rem; transition: all 0.3s ease; }
+        .timeline-content { position: relative; width: 45%; padding: 1.5rem; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem; transition: all 0.3s ease; }
         .timeline-content:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(255, 107, 53, 0.2); }
         .timeline-icon { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(45deg, #FF6B35, #FF8B35); color: white; font-size: 1.25rem; }
         .timeline-item:nth-child(odd) .timeline-icon { right: -25px; }
         .timeline-item:nth-child(even) .timeline-icon { left: -25px; }
         .timeline-period { display: inline-block; background: rgba(255, 107, 53, 0.2); color: #FF6B35; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .timeline-content h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; color: white; }
-        .timeline-company { display: block; color: #FF8B35; font-weight: 500; margin-bottom: 0.75rem; font-size: 1rem; }
-        .timeline-description { color: rgba(255, 255, 255, 0.7); line-height: 1.6; font-size: 0.9rem; }
-        .project-tag { display: inline-block; background: rgba(255, 107, 53, 0.2); color: #FF8B35; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; }
+        .project-tag { display: inline-block; background: rgba(255, 107, 53, 0.15); color: #FF8B35; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; }
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 1000; display: none; overflow-y: auto; padding: 2rem; }
-        .modal-content { background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%); max-width: 900px; margin: 0 auto; border-radius: 1.5rem; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.2); position: relative; }
-        .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255, 107, 53, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.25rem; transition: all 0.3s ease; }
-        .modal-close:hover { background: rgba(255, 107, 53, 0.4); transform: rotate(90deg); }
+        .modal-content { background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%); max-width: 900px; margin: 0 auto; border-radius: 1.5rem; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.15); position: relative; }
+        .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255, 107, 53, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.25rem; }
         @media (max-width: 768px) {
             .timeline-container::before { left: 30px; }
-            .timeline-item:nth-child(odd) .timeline-content, .timeline-item:nth-child(even) .timeline-content { width: calc(100% - 80px); margin-left: 80px; text-align: left; padding-left: 1.5rem; padding-right: 1.5rem; }
+            .timeline-item:nth-child(odd) .timeline-content, .timeline-item:nth-child(even) .timeline-content { width: calc(100% - 80px); margin-left: 80px; text-align: left; }
             .timeline-item:nth-child(odd) .timeline-icon, .timeline-item:nth-child(even) .timeline-icon { left: -55px; right: auto; }
         }
     </style>
@@ -63,15 +56,15 @@
 
     <div id="loader" class="fixed inset-0 bg-[#0B1120] flex flex-col justify-center items-center z-50 transition-opacity duration-500">
         <div class="w-12 h-12 border-4 border-orange-500/30 border-t-orange-500 rounded-full animate-spin"></div>
-        <div class="mt-4 text-orange-400 font-medium">Synchronizing Live Sheet Engine...</div>
+        <div class="mt-4 text-orange-400 font-medium tracking-wide">Connecting Data Core & Instantiating AI Core...</div>
     </div>
 
     <div class="particles" id="particles-js"></div>
 
-    <nav class="fixed top-0 left-0 right-0 z-40 glass border-b border-white/10">
+    <nav class="fixed top-0 left-0 right-0 z-40 glass border-b border-white/5 shadow-lg">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="text-2xl font-bold gradient-text" id="navName"></div>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
                 <a href="#home" class="text-gray-300 hover:text-white transition magnetic-btn">Home</a>
                 <a href="#about" class="text-gray-300 hover:text-white transition magnetic-btn">About</a>
                 <a href="#skills" class="text-gray-300 hover:text-white transition magnetic-btn">Skills</a>
@@ -87,15 +80,15 @@
     <section id="home" class="min-h-screen flex items-center justify-center pt-20 px-6">
         <div class="container mx-auto text-center">
             <div class="relative mx-auto w-80 h-80 mb-8 floating">
-                <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full animate-pulse"></div>
-                <img id="profileImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="relative w-72 h-72 rounded-full object-cover mx-auto mt-4 border-4 border-white/20 shadow-2xl" alt="Profile">
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full animate-pulse opacity-40"></div>
+                <img id="profileImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="relative w-72 h-72 rounded-full object-cover mx-auto mt-4 border-4 border-white/10 shadow-2xl" alt="Dynamic Frame">
             </div>
             <h1 id="heroName" class="text-5xl md:text-7xl font-bold mb-4 gradient-text"></h1>
-            <div id="heroTitle" class="text-2xl md:text-3xl text-gray-300 mb-6"></div>
-            <p id="heroBio" class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto"></p>
+            <div id="heroTitle" class="text-xl md:text-2xl text-gray-300 mb-6 font-medium"></div>
+            <p id="heroBio" class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed"></p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-semibold magnetic-btn"><i class="fas fa-briefcase mr-2"></i>View My Work</a>
-                <a href="#contact" class="px-8 py-3 glass border border-white/20 rounded-full text-white font-semibold magnetic-btn"><i class="fas fa-paper-plane mr-2"></i>Get In Touch</a>
+                <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-semibold magnetic-btn"><i class="fas fa-briefcase mr-2"></i>View Engineering Works</a>
+                <a href="#contact" class="px-8 py-3 glass rounded-full text-white font-semibold magnetic-btn"><i class="fas fa-paper-plane mr-2"></i>Secure Channel</a>
             </div>
             <div class="flex justify-center space-x-6 mt-8" id="socialContainer"></div>
         </div>
@@ -103,19 +96,17 @@
 
     <section id="about" class="py-20 px-6">
         <div class="container mx-auto max-w-6xl">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">About Me</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">About Me</h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="glass rounded-3xl p-8">
-                    <h3 class="text-2xl font-semibold mb-4 text-orange-500">My Journey</h3>
+                    <h3 class="text-xl font-semibold mb-4 text-orange-500">Professional Journey</h3>
                     <p id="aboutBio" class="text-gray-300 leading-relaxed"></p>
                 </div>
-                <div class="glass rounded-3xl p-8">
-                    <h3 class="text-2xl font-semibold mb-4 text-orange-500">Quick Facts</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-3 text-lg"></i><span class="text-gray-300" id="infoLocation"></span></div>
-                        <div class="flex items-center"><i class="fas fa-envelope text-orange-500 mr-3 text-lg"></i><span class="text-gray-300" id="infoEmail"></span></div>
-                        <div class="flex items-center"><i class="fas fa-phone text-orange-500 mr-3 text-lg"></i><span class="text-gray-300" id="infoPhone"></span></div>
-                    </div>
+                <div class="glass rounded-3xl p-8 space-y-4">
+                    <h3 class="text-xl font-semibold mb-4 text-orange-500">Telemetry Data</h3>
+                    <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-4 text-lg w-6"></i><span class="text-gray-300" id="infoLocation"></span></div>
+                    <div class="flex items-center"><i class="fas fa-envelope text-orange-500 mr-4 text-lg w-6"></i><span class="text-gray-300" id="infoEmail"></span></div>
+                    <div class="flex items-center"><i class="fas fa-phone text-orange-500 mr-4 text-lg w-6"></i><span class="text-gray-300" id="infoPhone"></span></div>
                 </div>
             </div>
         </div>
@@ -123,14 +114,14 @@
 
     <section id="skills" class="py-20 px-6">
         <div class="container mx-auto max-w-5xl">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Technical Skills</h2>
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Technical Prowess</h2>
             <div class="grid md:grid-cols-2 gap-12" id="skillsContainer"></div>
         </div>
     </section>
 
     <section id="projects" class="py-20 px-6">
         <div class="container mx-auto max-w-6xl">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Featured Projects</h2>
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Featured Architectures</h2>
             <div id="featuredProjectsContainer"></div>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8" id="otherProjectsContainer"></div>
         </div>
@@ -138,69 +129,66 @@
 
     <section id="certificates" class="py-20 px-6">
         <div class="container mx-auto max-w-6xl">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Certifications</h2>
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Certifications</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="certificatesContainer"></div>
         </div>
     </section>
 
     <section id="blogs" class="py-20 px-6">
         <div class="container mx-auto max-w-6xl">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Case Studies & Blogs</h2>
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Case Studies & Logs</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="blogsContainer"></div>
         </div>
     </section>
 
     <section id="experience" class="py-20 px-6">
-        <div class="container mx-auto">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-12 gradient-text">Experience & Education</h2>
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Experience & Academic Path</h2>
             <div class="timeline-container" id="timelineContainer"></div>
         </div>
     </section>
 
     <section id="contact" class="py-20 px-6">
         <div class="container mx-auto max-w-2xl glass rounded-3xl p-8">
-            <h2 class="text-4xl md:text-5xl font-bold text-center mb-8 gradient-text">Get In Touch</h2>
+            <h2 class="text-3xl font-bold text-center mb-8 gradient-text">Gateway Transmission</h2>
             <form id="contactForm" class="space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
-                    <input type="text" id="name" placeholder="Your Name" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
-                    <input type="email" id="email" placeholder="Your Email" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
+                    <input type="text" id="name" placeholder="Your Name" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
+                    <input type="email" id="email" placeholder="Your Email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
                 </div>
-                <input type="text" id="subject" placeholder="Subject" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
-                <textarea id="message" placeholder="Your Message" rows="5" class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" required></textarea>
-                <button type="submit" id="submitBtn" class="w-full py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg text-white font-semibold flex items-center justify-center">
-                    <span id="btnText">Secure Pipeline Transmission</span>
+                <input type="text" id="subject" placeholder="Subject Vector" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
+                <textarea id="message" placeholder="Data Packet Body Content..." rows="5" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required></textarea>
+                <button type="submit" id="submitBtn" class="w-full py-4 bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl font-semibold flex items-center justify-center tracking-wide hover:opacity-90 transition shadow-lg">
+                    Execute Secure Transmission
                 </button>
             </form>
-            <div id="formMessage" class="mt-4 p-4 rounded-lg text-center hidden"></div>
+            <div id="formMessage" class="mt-4 p-4 rounded-xl text-center hidden animate-pulse"></div>
         </div>
     </section>
 
-    <button id="chatToggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-all duration-300">
+    <button id="chatToggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl flex items-center justify-center text-2xl hover:scale-105 transition-all">
         <i class="fas fa-robot"></i>
     </button>
 
-    <div id="chatWindow" class="fixed bottom-24 right-6 w-[95%] sm:w-[400px] h-[500px] glass rounded-3xl overflow-hidden z-50 hidden border border-white/10 shadow-2xl flex flex-col">
-        <div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/20">
+    <div id="chatWindow" class="fixed bottom-24 right-6 w-[92%] sm:w-[400px] h-[520px] glass rounded-3xl overflow-hidden z-50 hidden border border-white/10 shadow-2xl flex flex-col">
+        <div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/30">
             <div>
-                <h3 class="font-bold text-lg text-white">Portfolio AI Assistant</h3>
-                <p class="text-xs text-green-400">Live Architecture Sync Active</p>
+                <h3 class="font-bold text-white text-sm tracking-wide">Orchestrator AI Agent</h3>
+                <p class="text-[11px] text-green-400 font-medium flex items-center"><span class="w-2 h-2 rounded-full bg-green-500 inline-block mr-1.5 animate-ping"></span>Live Context Integration: Active</p>
             </div>
             <button id="closeChat" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
         </div>
-        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm">
-            <div class="flex"><div class="bg-white/10 text-white px-4 py-3 rounded-2xl max-w-[80%]">Processing cloud handshake... AI core ready to parse Live Sheets queries.</div></div>
+        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 text-xs tracking-wide leading-relaxed">
+            <div class="flex"><div class="bg-white/5 text-gray-200 px-4 py-3 rounded-2xl max-w-[85%]">Welcome. I am fully synchronized with Masum's live portfolio infrastructure dataset. Request any insights regarding his projects, technical stack, or background.</div></div>
         </div>
-        <div class="p-4 border-t border-white/10 flex gap-2">
-            <input type="text" id="chatInput" placeholder="Query data core..." class="flex-1 bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-orange-500">
-            <button id="sendChat" class="w-12 h-12 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white flex items-center justify-center"><i class="fas fa-paper-plane"></i></button>
+        <div class="p-3 border-t border-white/10 flex gap-2 bg-black/10">
+            <input type="text" id="chatInput" placeholder="Query data pipeline..." class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-xs focus:outline-none focus:border-orange-500">
+            <button id="sendChat" class="w-10 h-10 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white flex items-center justify-center"><i class="fas fa-paper-plane text-xs"></i></button>
         </div>
     </div>
 
     <div id="blogModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeBlogModal()"><i class="fas fa-times"></i></button>
-            <div id="modalBody"></div>
-        </div>
+        <div class="modal-content"><button class="modal-close" onclick="closeBlogModal()"><i class="fas fa-times"></i></button><div id="modalBody"></div></div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -208,449 +196,406 @@
 
     <script>
         // 🔴 আপনার আসল Google Apps Script Web App URL নিশ্চিত করুন
-const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
-
-let allBlogs = [];
-
-document.addEventListener('DOMContentLoaded', async function() {
-    if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
-    
-    // Particles Configuration safely
-    if(typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
-        particlesJS('particles-js', {
-            particles: {
-                number: { value: 50, density: { enable: true, value_area: 800 } },
-                color: { value: "#FF6B35" },
-                shape: { type: "circle" },
-                opacity: { value: 0.4, random: true },
-                size: { value: 3, random: true },
-                line_linked: { enable: true, distance: 150, color: "#FF6B35", opacity: 0.2, width: 1 },
-                move: { enable: true, speed: 1.5, direction: "none", random: true, out_mode: "out" }
-            }
-        });
-    }
-
-    await loadDataPipeline();
-    initializeChatbotEngine();
-    initializeFormSubmission();
-});
-
-// কেস-ইনসেনসিটিভ অবজেক্ট প্রপার্টি হেল্পার (শিটের কলাম ছোট-বড় হাত যাই হোক যেন ব্রেক না করে)
-function getProp(obj, key) {
-    if (!obj) return "";
-    if (obj.hasOwnProperty(key)) return obj[key];
-    const lowerKey = key.toLowerCase();
-    for (let k in obj) {
-        if (k.toLowerCase() === lowerKey) return obj[k];
-    }
-    return "";
-}
-
-async function loadDataPipeline() {
-    try {
-        console.log("Connecting to live data stream...");
-        const response = await fetch(`${GAS_API_URL}?action=getAllData`);
-        const result = await response.json();
-        console.log("Raw Response Structure:", result);
+        const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwM263dREny57y2nXBCrAvgesWLdITWPHJLjqv2NmALXkCMIK016bZ819bMwzX0hn4t2g/exec';
         
-        // অ্যাপস স্ক্রিপ্ট রেসপন্স অবজেক্টের ডাটা লেয়ার এক্সট্রাকশন
-        if (result && result.success) {
-            const payload = result.data || result;
+        let allBlogs = [];
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
             
-            if (payload) {
-                renderProfile(payload.profile);
-                renderSkills(payload.skills);
-                renderProjects(payload.projects);
-                renderCertificates(payload.certificates);
-                renderBlogs(payload.blogs);
-                renderTimeline(payload.experience, payload.education);
-            } else {
-                console.error("Payload layer missing inside response.");
+            if(typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 45, density: { enable: true, value_area: 800 } },
+                        color: { value: "#FF6B35" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.35, random: true },
+                        size: { value: 2.5, random: true },
+                        line_linked: { enable: true, distance: 140, color: "#FF6B35", opacity: 0.2, width: 1 },
+                        move: { enable: true, speed: 1.2, direction: "none", random: true, out_mode: "out" }
+                    }
+                });
             }
-        } else {
-            console.error("Execution states success as false.");
-        }
-    } catch (error) {
-        console.error('Core Engine Sync Error:', error);
-    } finally {
-        const loader = document.getElementById('loader');
-        if(loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.style.display = 'none', 500);
-        }
-    }
-}
 
-function renderProfile(p) {
-    if(!p) { console.error("Profile payload empty!"); return; }
-    console.log("Mapping Profile:", p);
-    
-    // আপনার প্রম্পট স্কিমা অনুযায়ী ডিফেন্সিভ প্রপার্টি রিডিং
-    const name = getProp(p, 'Name') || "Md. Masum Billah";
-    const title = getProp(p, 'Title');
-    const email = getProp(p, 'Email');
-    const phone = getProp(p, 'Phone');
-    const location = getProp(p, 'Location');
-    const bio = getProp(p, 'Bio');
-    const facebook = getProp(p, 'Facebook') || "#";
-    const linkedin = getProp(p, 'LinkedIn') || "#";
-    const whatsapp = getProp(p, 'WhatsApp');
-    const github = getProp(p, 'GitHub') || "#";
-    const profilePic = getProp(p, 'ProfilePic') || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
-
-    document.getElementById('navName').textContent = name;
-    document.getElementById('heroName').textContent = name;
-    document.getElementById('heroTitle').textContent = title;
-    document.getElementById('heroBio').textContent = bio;
-    document.getElementById('aboutBio').textContent = bio;
-    document.getElementById('infoLocation').textContent = location;
-    document.getElementById('infoEmail').textContent = email;
-    document.getElementById('infoPhone').textContent = phone;
-    document.getElementById('profileImage').src = profilePic;
-
-    const socials = document.getElementById('socialContainer');
-    if(socials) {
-        socials.innerHTML = `
-            <a href="${linkedin}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="${github}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-github"></i></a>
-            <a href="${facebook}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://wa.me/${whatsapp}" class="text-gray-400 hover:text-white text-2xl transition magnetic-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        `;
-    }
-}
-
-function renderSkills(skills) {
-    const container = document.getElementById('skillsContainer');
-    if (!container || !skills || skills.length === 0) { console.warn("Skills layer blank."); return; }
-    
-    const sortedSkills = skills.sort((a, b) => (Number(getProp(a, 'Order')) || 99) - (Number(getProp(b, 'Order')) || 99));
-    const mid = Math.ceil(sortedSkills.length / 2);
-    const left = sortedSkills.slice(0, mid);
-    const right = sortedSkills.slice(mid);
-
-    const mapSkill = s => {
-        const sName = getProp(s, 'Name');
-        const sLevel = getProp(s, 'Level') || 0;
-        const sCat = getProp(s, 'Category');
-        return `
-            <div class="skill-container">
-                <div class="skill-header">
-                    <span class="skill-name">${sName}</span>
-                    <span class="skill-percentage">${sLevel}%</span>
-                </div>
-                <div class="skill-bar">
-                    <div class="skill-progress" style="width: ${sLevel}%"></div>
-                </div>
-                <div class="text-sm text-gray-400 mt-1">${sCat}</div>
-            </div>`;
-    };
-
-    container.innerHTML = `
-        <div>${left.map(mapSkill).join('')}</div>
-        <div>${right.map(mapSkill).join('')}</div>
-    `;
-}
-
-function renderProjects(projects) {
-    const featContainer = document.getElementById('featuredProjectsContainer');
-    const otherContainer = document.getElementById('otherProjectsContainer');
-    if(!projects || projects.length === 0) { console.warn("Projects layer blank."); return; }
-
-    const activeProjects = projects.filter(p => {
-        const pub = String(getProp(p, 'Published')).toUpperCase();
-        return pub === 'TRUE' || pub === '1';
-    });
-    
-    const featured = activeProjects.filter(p => {
-        const feat = String(getProp(p, 'Featured')).toUpperCase();
-        return feat === 'TRUE' || feat === '1';
-    });
-    const others = activeProjects.filter(p => {
-        const feat = String(getProp(p, 'Featured')).toUpperCase();
-        return feat !== 'TRUE' && feat !== '1';
-    });
-
-    if(featContainer) {
-        featContainer.innerHTML = featured.map(p => {
-            const pName = getProp(p, 'Name');
-            const pDesc = getProp(p, 'Description');
-            const pImg = getProp(p, 'Image');
-            const pTags = getProp(p, 'Tags');
-            const pLive = getProp(p, 'LiveURL');
-            const pGit = getProp(p, 'GitHubURL');
-            const dEmail = getProp(p, 'DemoEmail');
-            const dPass = getProp(p, 'DemoPassword');
-
-            return `
-                <div class="glass rounded-3xl p-8 mb-8">
-                    <div class="grid md:grid-cols-2 gap-8 items-center">
-                        <div>
-                            <h3 class="text-3xl font-semibold mb-4 gradient-text">🚀 ${pName}</h3>
-                            <p class="text-gray-300 mb-6">${pDesc}</p>
-                            <div class="flex flex-wrap gap-2 mb-6">
-                                ${pTags ? pTags.split(',').map(t => `<span class="project-tag">${t.trim()}</span>`).join('') : ''}
-                            </div>
-                            ${dEmail ? `
-                                <div class="mb-4 text-sm bg-white/5 p-3 rounded-xl border border-white/5">
-                                    <div><span class="text-orange-400 font-semibold">Demo:</span> ${dEmail}</div>
-                                    <div><span class="text-orange-400 font-semibold">Pass:</span> ${dPass}</div>
-                                </div>`: ''}
-                            <div class="flex gap-4">
-                                ${pLive ? `<a href="${pLive}" target="_blank" class="px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-sm font-semibold"><i class="fas fa-external-link-alt mr-2"></i>Live Demo</a>`:''}
-                                ${pGit && pGit !== '#' ? `<a href="${pGit}" target="_blank" class="px-6 py-2 glass rounded-full text-white text-sm border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <img src="${pImg}" class="w-full h-64 object-cover rounded-2xl shadow-2xl" alt="Project Banner">
-                        </div>
-                    </div>
-                </div>`;
-        }).join('');
-    }
-
-    if(otherContainer) {
-        otherContainer.innerHTML = others.map(p => {
-            const pName = getProp(p, 'Name');
-            const pDesc = getProp(p, 'Description');
-            const pImg = getProp(p, 'Image');
-            const pTags = getProp(p, 'Tags');
-            const pLive = getProp(p, 'LiveURL');
-
-            return `
-                <div class="glass rounded-2xl p-6 flex flex-col justify-between">
-                    <div>
-                        <img src="${pImg}" class="w-full h-48 object-cover rounded-lg mb-4" alt="Project Image">
-                        <h4 class="text-xl font-semibold mb-2 text-white">${pName}</h4>
-                        <p class="text-gray-300 text-sm mb-4 line-clamp-3">${pDesc}</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${pTags ? pTags.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded text-xs">${t.trim()}</span>`).join('') : ''}
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center mt-4">
-                        ${pLive ? `<a href="${pLive}" target="_blank" class="text-orange-400 text-sm font-semibold">View Project <i class="fas fa-arrow-right ml-1"></i></a>`:''}
-                    </div>
-                </div>`;
-        }).join('');
-    }
-}
-
-function renderCertificates(certs) {
-    const container = document.getElementById('certificatesContainer');
-    if(!container || !certs || certs.length === 0) return;
-
-    const activeCerts = certs.filter(c => {
-        const pub = String(getProp(c, 'Published')).toUpperCase();
-        return pub === 'TRUE' || pub === '1';
-    });
-
-    container.innerHTML = activeCerts.map(c => {
-        const cName = getProp(c, 'Name');
-        const cOrg = getProp(c, 'Organization');
-        const cDate = getProp(c, 'Date');
-        const cImg = getProp(c, 'ImageURL');
-        const cVerify = getProp(c, 'VerifyURL');
-        
-        return `
-            <div class="glass rounded-3xl overflow-hidden group border border-white/10 hover:border-orange-500 transition-all duration-300">
-                <div class="relative h-52 overflow-hidden">
-                    <img src="${cImg || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Certificate">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-4">
-                        <h3 class="text-white font-bold text-lg leading-tight">${cName}</h3>
-                        <p class="text-gray-300 text-xs mt-1">${cOrg}</p>
-                    </div>
-                </div>
-                <div class="p-4 flex justify-between items-center">
-                    <span class="text-orange-400 text-xs font-semibold">${cDate}</span>
-                    ${cVerify ? `<a href="${cVerify}" target="_blank" class="px-3 py-1 bg-orange-500 text-white rounded-full text-[10px]"><i class="fas fa-external-link-alt mr-1"></i>Verify</a>`:''}
-                </div>
-            </div>`;
-    }).join('');
-}
-
-function renderBlogs(blogsData) {
-    const container = document.getElementById('blogsContainer');
-    if(!container || !blogsData || blogsData.length === 0) return;
-    
-    allBlogs = blogsData.filter(b => {
-        const pub = String(getProp(b, 'Published')).toUpperCase();
-        return pub === 'TRUE' || pub === '1';
-    });
-
-    container.innerHTML = allBlogs.map((b, idx) => {
-        const bTitle = getProp(b, 'Title');
-        const bThumb = getProp(b, 'Thumbnail');
-        const bCat = getProp(b, 'Category');
-        const bDesc = getProp(b, 'Description');
-        const bDate = getProp(b, 'Date');
-        const rTime = getProp(b, 'ReadTime') || 5;
-
-        return `
-            <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/10 hover:border-orange-500 transition-all">
-                <div class="md:w-1/3 h-48 md:h-auto"><img src="${bThumb}" class="w-full h-full object-cover" alt="Blog Thumbnail"></div>
-                <div class="p-6 md:w-2/3 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-xs font-bold text-orange-500 uppercase">${bCat || 'Case Study'}</span>
-                            <span class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i>${rTime} min read</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 line-clamp-2">${bTitle}</h3>
-                        <p class="text-gray-400 text-xs mb-4 line-clamp-3">${bDesc}</p>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs text-gray-500">${bDate}</span>
-                        <button onclick="openBlogModal(${idx})" class="text-white font-semibold hover:text-orange-500 text-xs flex items-center">Read Full <i class="fas fa-arrow-right ml-1"></i></button>
-                    </div>
-                </div>
-            </div>`;
-    }).join('');
-}
-
-function renderTimeline(exp, edu) {
-    const container = document.getElementById('timelineContainer');
-    if(!container) return;
-
-    const unifiedList = [];
-    if(exp) exp.forEach(i => unifiedList.push({...i, type: 'exp'}));
-    if(edu) edu.forEach(i => unifiedList.push({...i, type: 'edu'}));
-    
-    if(unifiedList.length === 0) return;
-
-    container.innerHTML = unifiedList.map(item => {
-        const period = getProp(item, 'Period');
-        const title = getProp(item, 'Title') || getProp(item, 'Degree');
-        const company = getProp(item, 'Company') || getProp(item, 'Institution');
-        const desc = getProp(item, 'Description');
-        const icon = getProp(item, 'Icon');
-
-        return `
-            <div class="timeline-item">
-                <div class="timeline-content">
-                    <span class="timeline-period">${period}</span>
-                    <div class="timeline-icon"><i class="fas ${icon || (item.type === 'edu' ? 'fa-graduation-cap' : 'fa-briefcase')}"></i></div>
-                    <h3>${title}</h3>
-                    <span class="timeline-company">${company}</span>
-                    <p class="timeline-description">${desc}</p>
-                </div>
-            </div>`;
-    }).join('');
-}
-
-function openBlogModal(index) {
-    if (!allBlogs[index]) return;
-    const blog = allBlogs[index];
-    const modal = document.getElementById('blogModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    const bCat = getProp(blog, 'Category');
-    const bTitle = getProp(blog, 'Title');
-    const bThumb = getProp(blog, 'Thumbnail');
-    const bContent = getProp(blog, 'Content') || getProp(blog, 'Description');
-
-    modalBody.innerHTML = `
-        <div class="mb-4">
-            <span class="text-orange-500 font-bold uppercase text-xs">${bCat}</span>
-        </div>
-        <h1 class="text-2xl md:text-3xl font-bold text-white mb-4">${bTitle}</h1>
-        <img src="${bThumb}" class="w-full h-64 object-cover rounded-xl mb-6">
-        <div class="text-gray-300 leading-relaxed space-y-4 text-sm bg-white/5 p-4 rounded-xl max-h-[300px] overflow-y-auto">
-            ${bContent}
-        </div>`;
-    
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeBlogModal() {
-    document.getElementById('blogModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
-function initializeChatbotEngine() {
-    const toggle = document.getElementById('chatToggle');
-    const win = document.getElementById('chatWindow');
-    const close = document.getElementById('closeChat');
-    const send = document.getElementById('sendChat');
-    const input = document.getElementById('chatInput');
-    const msgs = document.getElementById('chatMessages');
-
-    if(!toggle || !win) return;
-
-    toggle.addEventListener('click', () => win.classList.remove('hidden'));
-    close.addEventListener('click', () => win.classList.add('hidden'));
-    send.addEventListener('click', pushChatMessage);
-    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') pushChatMessage(); });
-
-    async function pushChatMessage() {
-        const query = input.value.trim();
-        if (!query) return;
-
-        appendUIMessage(query, 'user');
-        input.value = '';
-
-        const loaderDiv = document.createElement('div');
-        loaderDiv.className = "flex";
-        loaderDiv.innerHTML = `<div class="bg-white/5 text-gray-400 px-4 py-2 rounded-2xl animate-pulse">AI Agent querying data core...</div>`;
-        msgs.appendChild(loaderDiv);
-        msgs.scrollTop = msgs.scrollHeight;
-
-        try {
-            const response = await fetch(`${GAS_API_URL}?action=chat&message=${encodeURIComponent(query)}`);
-            const data = await response.json();
-            loaderDiv.remove();
-            appendUIMessage(data.reply, 'bot');
-        } catch (error) {
-            loaderDiv.remove();
-            appendUIMessage("Connection payload timeout. Core model offline.", 'bot');
-        }
-    }
-
-    function appendUIMessage(text, sender) {
-        const box = document.createElement('div');
-        box.className = sender === 'user' ? "flex justify-end" : "flex";
-        box.innerHTML = sender === 'user' 
-            ? `<div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2 rounded-2xl max-w-[80%]">${text}</div>`
-            : `<div class="bg-white/10 text-white px-4 py-2 rounded-2xl max-w-[80%]">${text.replace(/\n/g, '<br>')}</div>`;
-        msgs.appendChild(box);
-        msgs.scrollTop = msgs.scrollHeight;
-    }
-}
-
-function initializeFormSubmission() {
-    const form = document.getElementById('contactForm');
-    if(!form) return;
-    
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const status = document.getElementById('formMessage');
-        const btn = document.getElementById('submitBtn');
-        
-        btn.disabled = true;
-        const origText = btn.innerHTML;
-        btn.textContent = "Processing Stream...";
-
-        const params = new URLSearchParams({
-            name: document.getElementById('name').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            subject: document.getElementById('subject').value.trim(),
-            message: document.getElementById('message').value.trim()
+            await loadDataPipelineStream();
+            initializeChatbotEngine();
+            initializeFormSubmission();
         });
 
-        try {
-            await fetch(`${GAS_API_URL}?${params.toString()}`, { method: 'GET', mode: 'no-cors' });
-            status.textContent = "✅ Message routed successfully to Google Sheets!";
-            status.className = "mt-4 p-4 rounded-lg text-center bg-green-500/20 text-green-400 border border-green-500/30";
-            form.reset();
-        } catch (error) {
-            status.textContent = "❌ Network routing failure.";
-            status.className = "mt-4 p-4 rounded-lg text-center bg-red-500/20 text-red-400 border border-red-500/30";
-        } finally {
-            status.classList.remove('hidden');
-            btn.disabled = false;
-            btn.innerHTML = origText;
-            setTimeout(() => status.classList.add('hidden'), 5000);
+        // কেস-ইনসেনসিティブ এবং সেফ ফলব্যাক প্রপার্টি রিডিং অবজেক্ট হেল্পার
+        function readObjProp(obj, targetKey) {
+            if (!obj) return "";
+            if (obj.hasOwnProperty(targetKey)) return obj[targetKey];
+            const lowerTarget = targetKey.toLowerCase();
+            for (let k in obj) {
+                if (k.toLowerCase() === lowerTarget) return obj[k];
+            }
+            return "";
         }
-    });
-}
+
+        async function loadDataPipelineStream() {
+            try {
+                console.log("Fetching live pipeline architecture...");
+                const response = await fetch(`${GAS_API_URL}?action=getAllData`);
+                const result = await response.json();
+                console.log("Pipeline payload extracted:", result);
+                
+                if (result) {
+                    const payload = result.data || result;
+                    
+                    if (payload.profile || payload.skills || payload.projects) {
+                        renderProfile(payload.profile);
+                        renderSkills(payload.skills);
+                        renderProjects(payload.projects);
+                        renderCertificates(payload.certificates);
+                        renderBlogs(payload.blogs);
+                        renderTimeline(payload.experience, payload.education);
+                    }
+                }
+            } catch (error) {
+                console.error('Data pipeline stream sync failure:', error);
+            } finally {
+                const loader = document.getElementById('loader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }
+            }
+        }
+
+        function renderProfile(p) {
+            if(!p) return;
+            const name = readObjProp(p, 'Name') || "Md. Masum Billah";
+            const title = readObjProp(p, 'Title') || "Data Analyst & Automation Expert";
+            const bio = readObjProp(p, 'Bio');
+            const loc = readObjProp(p, 'Location');
+            const email = readObjProp(p, 'Email');
+            const phone = readObjProp(p, 'Phone');
+            const fb = readObjProp(p, 'Facebook') || "#";
+            const ln = readObjProp(p, 'LinkedIn') || "#";
+            const wa = readObjProp(p, 'WhatsApp');
+            const gh = readObjProp(p, 'GitHub') || "#";
+            const pic = readObjProp(p, 'ProfilePic') || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
+
+            document.getElementById('navName').textContent = name;
+            document.getElementById('heroName').textContent = name;
+            document.getElementById('heroTitle').textContent = title;
+            document.getElementById('heroBio').textContent = bio;
+            document.getElementById('aboutBio').textContent = bio;
+            document.getElementById('infoLocation').textContent = loc;
+            document.getElementById('infoEmail').textContent = email;
+            document.getElementById('infoPhone').textContent = phone;
+            document.getElementById('profileImage').src = pic;
+
+            const socials = document.getElementById('socialContainer');
+            if(socials) {
+                socials.innerHTML = `
+                    <a href="${ln}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="${gh}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="${fb}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://wa.me/${wa}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                `;
+            }
+        }
+
+        function renderSkills(skills) {
+            const container = document.getElementById('skillsContainer');
+            if (!container || !skills || skills.length === 0) return;
+            
+            const sorted = skills.sort((a, b) => (Number(readObjProp(a, 'Order')) || 99) - (Number(readObjProp(b, 'Order')) || 99));
+            const mid = Math.ceil(sorted.length / 2);
+            const left = sorted.slice(0, mid);
+            const right = sorted.slice(mid);
+
+            const mapSkill = s => {
+                const name = readObjProp(s, 'Name');
+                const level = readObjProp(s, 'Level') || 0;
+                const cat = readObjProp(s, 'Category');
+                return `
+                    <div class="skill-container">
+                        <div class="skill-header">
+                            <span class="skill-name">${name}</span>
+                            <span class="skill-percentage">${level}%</span>
+                        </div>
+                        <div class="skill-bar"><div class="skill-progress" style="width: ${level}%"></div></div>
+                        <div class="text-[11px] text-gray-500 mt-1 uppercase tracking-wider">${cat}</div>
+                    </div>`;
+            };
+            container.innerHTML = `<div>${left.map(mapSkill).join('')}</div><div>${right.map(mapSkill).join('')}</div>`;
+        }
+
+        function renderProjects(projects) {
+            const featContainer = document.getElementById('featuredProjectsContainer');
+            const otherContainer = document.getElementById('otherProjectsContainer');
+            if(!projects || projects.length === 0) return;
+
+            const featured = projects.filter(p => String(readObjProp(p, 'Featured')).toUpperCase() === 'TRUE' || readObjProp(p, 'Featured') === true);
+            const others = projects.filter(p => String(readObjProp(p, 'Featured')).toUpperCase() !== 'TRUE' && readObjProp(p, 'Featured') !== true);
+
+            if(featContainer) {
+                featContainer.innerHTML = featured.map(p => {
+                    const name = readObjProp(p, 'Name');
+                    const desc = readObjProp(p, 'Description');
+                    const img = readObjProp(p, 'Image');
+                    const tags = readObjProp(p, 'Tags');
+                    const live = readObjProp(p, 'LiveURL');
+                    const git = readObjProp(p, 'GitHubURL');
+                    const de = readObjProp(p, 'DemoEmail');
+                    const dp = readObjProp(p, 'DemoPassword');
+
+                    return `
+                        <div class="glass rounded-3xl p-8 mb-8 border border-white/10">
+                            <div class="grid md:grid-cols-2 gap-8 items-center">
+                                <div>
+                                    <h3 class="text-2xl font-bold mb-3 gradient-text">🚀 ${name}</h3>
+                                    <p class="text-gray-300 text-sm leading-relaxed mb-5">${desc}</p>
+                                    <div class="flex flex-wrap gap-1.5 mb-5">
+                                        ${tags ? tags.split(',').map(t => `<span class="project-tag">${t.trim()}</span>`).join('') : ''}
+                                    </div>
+                                    ${de ? `
+                                        <div class="mb-5 text-xs bg-white/5 p-3 rounded-xl border border-white/5 space-y-1 tracking-wide">
+                                            <div><span class="text-orange-400 font-semibold">Demo Access:</span> ${de}</div>
+                                            <div><span class="text-orange-400 font-semibold">Pass:</span> ${dp}</div>
+                                        </div>`: ''}
+                                    <div class="flex gap-4">
+                                        ${live ? `<a href="${live}" target="_blank" class="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-xs font-semibold tracking-wide"><i class="fas fa-external-link-alt mr-2"></i>Live Framework</a>`:''}
+                                        ${git && git !== '#' ? `<a href="${git}" target="_blank" class="px-5 py-2.5 glass rounded-full text-white text-xs font-semibold tracking-wide border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
+                                    </div>
+                                </div>
+                                <div class="text-center"><img src="${img}" class="w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10" alt="Engine Node"></div>
+                            </div>
+                        </div>`;
+                }).join('');
+            }
+
+            if(otherContainer) {
+                otherContainer.innerHTML = others.map(p => {
+                    const name = readObjProp(p, 'Name');
+                    const desc = readObjProp(p, 'Description');
+                    const img = readObjProp(p, 'Image');
+                    const tags = readObjProp(p, 'Tags');
+                    const live = readObjProp(p, 'LiveURL');
+
+                    return `
+                        <div class="glass rounded-2xl p-5 flex flex-col justify-between border border-white/5 hover:border-orange-500/30 transition duration-300">
+                            <div>
+                                <img src="${img}" class="w-full h-40 object-cover rounded-xl mb-4 border border-white/5" alt="Node Frame">
+                                <h4 class="text-lg font-bold mb-2 text-white">${name}</h4>
+                                <p class="text-gray-400 text-xs mb-4 line-clamp-3 leading-relaxed">${desc}</p>
+                                <div class="flex flex-wrap gap-1 mb-2">
+                                    ${tags ? tags.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded text-[10px]">${t.trim()}</span>`).join('') : ''}
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mt-4">
+                                ${live ? `<a href="${live}" target="_blank" class="text-orange-400 text-xs font-semibold flex items-center">Initialize Node <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i></a>`:''}
+                            </div>
+                        </div>`;
+                }).join('');
+            }
+        }
+
+        function renderCertificates(certs) {
+            const container = document.getElementById('certificatesContainer');
+            if(!container || !certs || certs.length === 0) return;
+
+            container.innerHTML = certs.map(c => {
+                const name = readObjProp(c, 'Name');
+                const org = readObjProp(c, 'Organization');
+                const date = readObjProp(c, 'Date');
+                const img = readObjProp(c, 'ImageURL');
+                const verify = readObjProp(c, 'VerifyURL');
+                return `
+                    <div class="glass rounded-3xl overflow-hidden group border border-white/5 hover:border-orange-500/40 transition duration-300">
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${img || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Accreditation Node">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-4">
+                                <h3 class="text-white font-bold text-sm leading-snug">${name}</h3>
+                                <p class="text-gray-400 text-[11px] mt-0.5">${org}</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex justify-between items-center bg-black/10 text-[11px]">
+                            <span class="text-orange-400 font-medium">${date}</span>
+                            ${verify ? `<a href="${verify}" target="_blank" class="px-3 py-1 bg-orange-500/20 hover:bg-orange-500 text-orange-300 hover:text-white rounded-full transition"><i class="fas fa-external-link-alt mr-1"></i>Verify</a>`:''}
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderBlogs(blogsData) {
+            const container = document.getElementById('blogsContainer');
+            if(!container || !blogsData || blogsData.length === 0) return;
+            allBlogs = blogsData;
+
+            container.innerHTML = blogsData.map((b, idx) => {
+                const title = readObjProp(b, 'Title');
+                const thumb = readObjProp(b, 'Thumbnail');
+                const cat = readObjProp(b, 'Category');
+                const desc = readObjProp(b, 'Description');
+                const date = readObjProp(b, 'Date');
+                const rTime = readObjProp(b, 'ReadTime') || 5;
+
+                return `
+                    <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/5 hover:border-orange-500/30 transition">
+                        <div class="md:w-1/3 h-40 md:h-auto"><img src="${thumb}" class="w-full h-full object-cover" alt="Log Frame"></div>
+                        <div class="p-5 md:w-2/3 flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1.5 text-[10px]">
+                                    <span class="font-bold text-orange-500 uppercase tracking-wider">${cat || 'Case Study'}</span>
+                                    <span class="text-gray-500"><i class="far fa-clock mr-1"></i>${rTime} min read</span>
+                                </div>
+                                <h3 class="text-base font-bold text-white mb-1.5 line-clamp-2 leading-tight">${title}</h3>
+                                <p class="text-gray-400 text-[11px] mb-4 line-clamp-3 leading-relaxed">${desc}</p>
+                            </div>
+                            <div class="flex justify-between items-center text-[11px]">
+                                <span class="text-gray-500">${date}</span>
+                                <button onclick="openBlogModal(${idx})" class="text-white font-semibold hover:text-orange-500 flex items-center">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderTimeline(exp, edu) {
+            const container = document.getElementById('timelineContainer');
+            if(!container) return;
+
+            const unifiedList = [];
+            if(exp) exp.forEach(i => unifiedList.push({...i, blockType: 'exp'}));
+            if(edu) edu.forEach(i => unifiedList.push({...i, blockType: 'edu'}));
+            if(unifiedList.length === 0) return;
+
+            container.innerHTML = unifiedList.map(item => {
+                const period = readObjProp(item, 'Period');
+                const title = readObjProp(item, 'Title') || readObjProp(item, 'Degree');
+                const center = readObjProp(item, 'Company') || readObjProp(item, 'Institution');
+                const desc = readObjProp(item, 'Description');
+                const icon = readObjProp(item, 'Icon');
+
+                return `
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <span class="timeline-period">${period}</span>
+                            <div class="timeline-icon"><i class="fas ${icon || (item.blockType === 'edu' ? 'fa-graduation-cap' : 'fa-briefcase')}"></i></div>
+                            <h3 class="text-base font-bold text-white">${title}</h3>
+                            <span class="timeline-company text-xs">${center}</span>
+                            <p class="timeline-description text-xs mt-2 leading-relaxed text-gray-400">${desc}</p>
+                        </div>
+                    </div>`;
+            }).join('');
+        }
+
+        function openBlogModal(index) {
+            if (!allBlogs[index]) return;
+            const blog = allBlogs[index];
+            const modal = document.getElementById('blogModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            const cat = readObjProp(blog, 'Category');
+            const title = readObjProp(blog, 'Title');
+            const thumb = readObjProp(blog, 'Thumbnail');
+            const content = readObjProp(blog, 'Content') || readObjProp(blog, 'Description');
+
+            modalBody.innerHTML = `
+                <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
+                <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
+                <img src="${thumb}" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
+                    ${content}
+                </div>`;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blogModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function initializeChatbotEngine() {
+            const toggle = document.getElementById('chatToggle');
+            const win = document.getElementById('chatWindow');
+            const close = document.getElementById('closeChat');
+            const send = document.getElementById('sendChat');
+            const input = document.getElementById('chatInput');
+            const msgs = document.getElementById('chatMessages');
+
+            if(!toggle || !win) return;
+
+            toggle.addEventListener('click', () => win.classList.remove('hidden'));
+            close.addEventListener('click', () => win.classList.add('hidden'));
+            send.addEventListener('click', dispatchChatMessagePipeline);
+            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') dispatchChatMessagePipeline(); });
+
+            async function dispatchChatMessagePipeline() {
+                const message = input.value.trim();
+                if (!message) return;
+
+                appendMsg(message, 'user');
+                input.value = '';
+
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = "flex";
+                typingIndicator.innerHTML = `<div class="bg-white/5 text-gray-500 px-4 py-2 rounded-2xl animate-pulse text-[11px]">Agent executing context lookup...</div>`;
+                msgs.appendChild(typingIndicator);
+                msgs.scrollTop = msgs.scrollHeight;
+
+                try {
+                    const response = await fetch(`${API_URL || GAS_API_URL}?action=chat&message=${encodeURIComponent(message)}`);
+                    const result = await response.json();
+                    typingIndicator.remove();
+                    appendMsg(result.reply, 'bot');
+                } catch (error) {
+                    typingIndicator.remove();
+                    appendMsg("Data link layer timeout. Agent core dropped packet.", 'bot');
+                }
+            }
+
+            function appendMsg(text, sender) {
+                const box = document.createElement('div');
+                box.className = sender === 'user' ? "flex justify-end" : "flex";
+                box.innerHTML = sender === 'user' 
+                    ? `<div class="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-4 py-2.5 rounded-2xl max-w-[85%] font-medium">${text}</div>`
+                    : `<div class="bg-white/10 text-gray-200 px-4 py-2.5 rounded-2xl max-w-[85%]">${text.replace(/\n/g, '<br>')}</div>`;
+                msgs.appendChild(box);
+                msgs.scrollTop = msgs.scrollHeight;
+            }
+        }
+
+        function initializeFormSubmission() {
+            const form = document.getElementById('contactForm');
+            if(!form) return;
+            
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const status = document.getElementById('formMessage');
+                const btn = document.getElementById('submitBtn');
+                
+                btn.disabled = true;
+                btn.textContent = "Streaming Packet To Sheets Core...";
+
+                const queryParams = new URLSearchParams({
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    subject: document.getElementById('subject').value.trim(),
+                    message: document.getElementById('message').value.trim()
+                });
+
+                try {
+                    await fetch(`${GAS_API_URL}?${queryParams.toString()}`, { method: 'GET', mode: 'no-cors' });
+                    status.textContent = "✅ System handshake confirmation: Data saved to Google Sheet submissions.";
+                    status.className = "mt-4 p-4 rounded-xl text-center text-xs font-semibold bg-green-500/10 text-green-400 border border-green-500/20";
+                    form.reset();
+                } catch (error) {
+                    status.textContent = "❌ Core pipeline connection timed out.";
+                    status.className = "mt-4 p-4 rounded-xl text-center text-xs font-semibold bg-red-500/10 text-red-400 border border-red-500/20";
+                } finally {
+                    status.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.textContent = "Execute Secure Transmission";
+                    setTimeout(() => status.classList.add('hidden'), 5000);
+                }
+            });
+        }
     </script>
 </body>
 </html>
