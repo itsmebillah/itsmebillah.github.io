@@ -253,22 +253,25 @@ async function loadDataPipeline() {
         const result = await response.json();
         console.log("Raw Response Structure:", result);
         
-        // অ্যাপস স্ক্রিপ্ট রেসপন্স অবজেক্টের ডাটা লেয়ার এক্সট্রাকশন
-        if (result && result.success) {
+        // ফিক্সড কন্ডিশন: success না থাকলেও ডাটা অবজেক্ট বা প্রোফাইল থাকলেই রেন্ডারিং শুরু হবে
+        if (result) {
+            // যদি রেসপন্সের ভেতর আলাদা 'data' লেয়ার থাকে তা নিবে, অন্যথায় ডিরেক্ট অবজেক্ট রিড করবে
             const payload = result.data || result;
             
-            if (payload) {
+            // চেক করা হচ্ছে প্রোফাইল বা স্কিলস অবজেক্টটি ভেতরে এক্সিস্ট করে কি না
+            if (payload.profile || payload.skills || payload.Projects || payload.profile) {
+                console.log("Validation passed! Extracting payload fields...");
                 renderProfile(payload.profile);
                 renderSkills(payload.skills);
-                renderProjects(payload.projects);
-                renderCertificates(payload.certificates);
-                renderBlogs(payload.blogs);
-                renderTimeline(payload.experience, payload.education);
+                renderProjects(payload.projects || payload.Projects);
+                renderCertificates(payload.certificates || payload.Certificates);
+                renderBlogs(payload.blogs || payload.Blogs);
+                renderTimeline(payload.experience || payload.Experience, payload.education || payload.Education);
             } else {
-                console.error("Payload layer missing inside response.");
+                console.error("Payload nested sheets properties missing inside response.");
             }
         } else {
-            console.error("Execution states success as false.");
+            console.error("Null or invalid response structure received from API.");
         }
     } catch (error) {
         console.error('Core Engine Sync Error:', error);
