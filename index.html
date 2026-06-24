@@ -963,6 +963,7 @@
             const title = escapeHtml(readObjProp(blog, 'Title'));
             const thumb = sanitizeUrl(readObjProp(blog, 'Thumbnail'), { image: true, allowImageData: true });
             const docId = readObjProp(blog, 'DocID') || readObjProp(blog, 'GoogleDocID');
+            const slug = readObjProp(blog, 'Slug');
 
             modalBody.innerHTML = `
                 <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
@@ -976,11 +977,16 @@
             
             try {
                 let content = escapeHtml(readObjProp(blog, 'Description'));
-                if (docId) {
-                    const response = await fetch(`${GAS_API_URL}?action=getBlog&docId=${encodeURIComponent(docId)}`);
-                    if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
-                    const result = await response.json();
-                    if (result && result.success && result.content) content = sanitizeHtml(result.content);
+                const blogParams = new URLSearchParams({ action: 'getBlog' });
+                if (docId) blogParams.set('docId', docId);
+                if (slug) blogParams.set('slug', slug);
+                blogParams.set('title', readObjProp(blog, 'Title'));
+                const response = await fetch(`${GAS_API_URL}?${blogParams.toString()}`);
+                if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
+                const result = await response.json();
+                if (result && result.success && result.content) {
+                    const sanitizedContent = sanitizeHtml(result.content);
+                    if (sanitizedContent.trim()) content = sanitizedContent;
                 }
                 
                 modalBody.innerHTML = `
