@@ -491,6 +491,102 @@
             return "";
         }
 
+        function escapeHtml(value) {
+            return String(value || "").replace(/[&<>"']/g, char => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[char]);
+        }
+
+        function sanitizeUrl(value, options = {}) {
+            const url = String(value || "").trim();
+            if (!url || url === "#") return url === "#" ? "#" : "";
+
+            if (options.allowImageData && /^data:image\/(png|jpe?g|gif|webp);base64,[a-z0-9+/=]+$/i.test(url)) {
+                return url;
+            }
+
+            try {
+                const parsed = new URL(url, window.location.origin);
+                const allowedProtocols = options.image ? ['http:', 'https:'] : ['http:', 'https:', 'mailto:', 'tel:'];
+                return allowedProtocols.includes(parsed.protocol) ? parsed.href : "";
+            } catch (error) {
+                return "";
+            }
+        }
+
+        function sanitizeHtml(value) {
+            const allowedTags = new Set(['P', 'BR', 'STRONG', 'B', 'EM', 'I', 'UL', 'OL', 'LI', 'A', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'CODE', 'PRE']);
+            const blockedTags = new Set(['SCRIPT', 'IFRAME', 'OBJECT', 'EMBED', 'SVG', 'MATH', 'STYLE', 'LINK', 'META']);
+            const template = document.createElement('template');
+            template.innerHTML = String(value || "");
+
+            const cleanNode = node => {
+                if (node.nodeType === Node.COMMENT_NODE) {
+                    node.remove();
+                    return;
+                }
+
+                if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+                const tag = node.tagName;
+                if (blockedTags.has(tag)) {
+                    node.remove();
+                    return;
+                }
+
+                if (!allowedTags.has(tag)) {
+                    node.replaceWith(document.createTextNode(node.textContent || ""));
+                    return;
+                }
+
+                [...node.attributes].forEach(attr => {
+                    const name = attr.name.toLowerCase();
+                    const value = attr.value || "";
+                    if (name.startsWith('on') || name === 'style' || name === 'srcdoc') {
+                        node.removeAttribute(attr.name);
+                        return;
+                    }
+
+                    if (tag === 'A' && name === 'href') {
+                        const safeHref = sanitizeUrl(value);
+                        if (safeHref) {
+                            node.setAttribute('href', safeHref);
+                            node.setAttribute('target', '_blank');
+                            node.setAttribute('rel', 'noopener noreferrer');
+                        } else {
+                            node.removeAttribute(attr.name);
+                        }
+                        return;
+                    }
+
+                    if (tag === 'A' && (name === 'target' || name === 'rel')) return;
+                    node.removeAttribute(attr.name);
+                });
+
+                [...node.childNodes].forEach(cleanNode);
+            };
+
+            [...template.content.childNodes].forEach(cleanNode);
+            return template.innerHTML;
+        }
+
+        function sanitizeIconClass(value) {
+            return String(value || "")
+                .split(/\s+/)
+                .filter(cls => /^fa[srbld]?$/.test(cls) || /^fa-[a-z0-9-]+$/i.test(cls))
+                .join(" ");
+        }
+
+        function sanitizePercent(value) {
+            const number = Number(value);
+            if (!Number.isFinite(number)) return 0;
+            return Math.max(0, Math.min(100, number));
+        }
+
         function initializeMobileNavigation() {
             const toggle = document.getElementById('mobileNavToggle');
             const panel = document.getElementById('mobileNavPanel');
@@ -567,10 +663,11 @@
             const loc = readObjProp(p, 'Location');
             const email = readObjProp(p, 'Email');
             const phone = readObjProp(p, 'Phone');
-            const fb = readObjProp(p, 'Facebook') || "#";
-            const ln = readObjProp(p, 'LinkedIn') || "#";
+            const fb = sanitizeUrl(readObjProp(p, 'Facebook')) || "#";
+            const ln = sanitizeUrl(readObjProp(p, 'LinkedIn')) || "#";
             const wa = readObjProp(p, 'WhatsApp');
-            const gh = readObjProp(p, 'GitHub') || "#";
+            const waUrl = sanitizeUrl(String(wa || "").startsWith("http") ? wa : `https://wa.me/${String(wa || "").replace(/\D/g, "")}`) || "#";
+            const gh = sanitizeUrl(readObjProp(p, 'GitHub')) || "#";
             const pic = readObjProp(p, 'ProfilePic') || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
 
             document.getElementById('navName').textContent = name;
@@ -581,15 +678,15 @@
             document.getElementById('infoLocation').textContent = loc;
             document.getElementById('infoEmail').textContent = email;
             document.getElementById('infoPhone').textContent = phone;
-            document.getElementById('profileImage').src = pic;
+            document.getElementById('profileImage').src = sanitizeUrl(pic, { image: true, allowImageData: true }) || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
 
             const socials = document.getElementById('socialContainer');
             if(socials) {
                 socials.innerHTML = `
-                    <a href="${ln}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="${gh}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="${fb}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="https://wa.me/${wa}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="${escapeHtml(ln)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                    <a href="${escapeHtml(gh)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                    <a href="${escapeHtml(fb)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
+                    <a href="${escapeHtml(waUrl)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
                 `;
             }
         }
@@ -604,9 +701,9 @@
             const right = sorted.slice(mid);
 
             const mapSkill = s => {
-                const name = readObjProp(s, 'Name');
-                const level = readObjProp(s, 'Level') || 0;
-                const cat = readObjProp(s, 'Category');
+                const name = escapeHtml(readObjProp(s, 'Name'));
+                const level = sanitizePercent(readObjProp(s, 'Level') || 0);
+                const cat = escapeHtml(readObjProp(s, 'Category'));
                 return `
                     <div class="skill-container">
                         <div class="skill-header">
@@ -630,14 +727,14 @@
 
             if(featContainer) {
                 featContainer.innerHTML = featured.map(p => {
-                    const name = readObjProp(p, 'Name');
-                    const desc = readObjProp(p, 'Description');
-                    const img = readObjProp(p, 'Image');
+                    const name = escapeHtml(readObjProp(p, 'Name'));
+                    const desc = escapeHtml(readObjProp(p, 'Description'));
+                    const img = sanitizeUrl(readObjProp(p, 'Image'), { image: true, allowImageData: true });
                     const tags = readObjProp(p, 'Tags');
-                    const live = readObjProp(p, 'LiveURL');
-                    const git = readObjProp(p, 'GitHubURL');
-                    const de = readObjProp(p, 'DemoEmail');
-                    const dp = readObjProp(p, 'DemoPassword');
+                    const live = sanitizeUrl(readObjProp(p, 'LiveURL'));
+                    const git = sanitizeUrl(readObjProp(p, 'GitHubURL'));
+                    const de = escapeHtml(readObjProp(p, 'DemoEmail'));
+                    const dp = escapeHtml(readObjProp(p, 'DemoPassword'));
 
                     return `
                         <div class="glass rounded-3xl p-8 mb-8 border border-white/10">
@@ -646,7 +743,7 @@
                                     <h3 class="text-2xl font-bold mb-3 gradient-text">🚀 ${name}</h3>
                                     <p class="text-gray-300 text-sm leading-relaxed mb-5">${desc}</p>
                                     <div class="flex flex-wrap gap-1.5 mb-5">
-                                        ${tags ? tags.split(',').map(t => `<span class="project-tag">${t.trim()}</span>`).join('') : ''}
+                                        ${tags ? tags.split(',').map(t => `<span class="project-tag">${escapeHtml(t.trim())}</span>`).join('') : ''}
                                     </div>
                                     ${de ? `
                                         <div class="mb-5 text-xs bg-white/5 p-3 rounded-xl border border-white/5 space-y-1 tracking-wide">
@@ -654,11 +751,11 @@
                                             <div><span class="text-orange-400 font-semibold">Pass:</span> ${dp}</div>
                                         </div>`: ''}
                                     <div class="flex gap-4">
-                                        ${live ? `<a href="${live}" target="_blank" class="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-xs font-semibold tracking-wide"><i class="fas fa-external-link-alt mr-2"></i>Live Framework</a>`:''}
-                                        ${git && git !== '#' ? `<a href="${git}" target="_blank" class="px-5 py-2.5 glass rounded-full text-white text-xs font-semibold tracking-wide border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
+                                        ${live ? `<a href="${escapeHtml(live)}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white text-xs font-semibold tracking-wide"><i class="fas fa-external-link-alt mr-2"></i>Live Framework</a>`:''}
+                                        ${git && git !== '#' ? `<a href="${escapeHtml(git)}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 glass rounded-full text-white text-xs font-semibold tracking-wide border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
                                     </div>
                                 </div>
-                                <div class="text-center"><img src="${img}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10" alt="Engine Node"></div>
+                                <div class="text-center"><img src="${escapeHtml(img)}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10" alt="Engine Node"></div>
                             </div>
                         </div>`;
                 }).join('');
@@ -666,24 +763,24 @@
 
             if(otherContainer) {
                 otherContainer.innerHTML = others.map(p => {
-                    const name = readObjProp(p, 'Name');
-                    const desc = readObjProp(p, 'Description');
-                    const img = readObjProp(p, 'Image');
+                    const name = escapeHtml(readObjProp(p, 'Name'));
+                    const desc = escapeHtml(readObjProp(p, 'Description'));
+                    const img = sanitizeUrl(readObjProp(p, 'Image'), { image: true, allowImageData: true });
                     const tags = readObjProp(p, 'Tags');
-                    const live = readObjProp(p, 'LiveURL');
+                    const live = sanitizeUrl(readObjProp(p, 'LiveURL'));
 
                     return `
                         <div class="glass rounded-2xl p-5 flex flex-col justify-between border border-white/5 hover:border-orange-500/30 transition duration-300">
                             <div>
-                                <img src="${img}" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-xl mb-4 border border-white/5" alt="Node Frame">
+                                <img src="${escapeHtml(img)}" loading="lazy" decoding="async" class="w-full h-40 object-cover rounded-xl mb-4 border border-white/5" alt="Node Frame">
                                 <h4 class="text-lg font-bold mb-2 text-white">${name}</h4>
                                 <p class="text-gray-400 text-xs mb-4 line-clamp-3 leading-relaxed">${desc}</p>
                                 <div class="flex flex-wrap gap-1 mb-2">
-                                    ${tags ? tags.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded text-[10px]">${t.trim()}</span>`).join('') : ''}
+                                    ${tags ? tags.split(',').slice(0,3).map(t => `<span class="px-2 py-0.5 bg-orange-500/10 text-orange-400 rounded text-[10px]">${escapeHtml(t.trim())}</span>`).join('') : ''}
                                 </div>
                             </div>
                             <div class="flex justify-between items-center mt-4">
-                                ${live ? `<a href="${live}" target="_blank" class="text-orange-400 text-xs font-semibold flex items-center">Initialize Node <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i></a>`:''}
+                                ${live ? `<a href="${escapeHtml(live)}" target="_blank" rel="noopener noreferrer" class="text-orange-400 text-xs font-semibold flex items-center">Initialize Node <i class="fas fa-arrow-right ml-1.5 text-[10px]"></i></a>`:''}
                             </div>
                         </div>`;
                 }).join('');
@@ -695,15 +792,15 @@
             if(!container || !certs || certs.length === 0) return;
 
             container.innerHTML = certs.map(c => {
-                const name = readObjProp(c, 'Name');
-                const org = readObjProp(c, 'Organization');
-                const date = readObjProp(c, 'Date');
-                const img = readObjProp(c, 'ImageURL');
-                const verify = readObjProp(c, 'VerifyURL');
+                const name = escapeHtml(readObjProp(c, 'Name'));
+                const org = escapeHtml(readObjProp(c, 'Organization'));
+                const date = escapeHtml(readObjProp(c, 'Date'));
+                const img = sanitizeUrl(readObjProp(c, 'ImageURL'), { image: true, allowImageData: true });
+                const verify = sanitizeUrl(readObjProp(c, 'VerifyURL'));
                 return `
                     <div class="glass rounded-3xl overflow-hidden group border border-white/5 hover:border-orange-500/40 transition duration-300">
                         <div class="relative h-48 overflow-hidden">
-                            <img src="${img || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400'}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Accreditation Node">
+                            <img src="${escapeHtml(img || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400')}" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Accreditation Node">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-4">
                                 <h3 class="text-white font-bold text-sm leading-snug">${name}</h3>
                                 <p class="text-gray-400 text-[11px] mt-0.5">${org}</p>
@@ -711,7 +808,7 @@
                         </div>
                         <div class="p-4 flex justify-between items-center bg-black/10 text-[11px]">
                             <span class="text-orange-400 font-medium">${date}</span>
-                            ${verify ? `<a href="${verify}" target="_blank" class="px-3 py-1 bg-orange-500/20 hover:bg-orange-500 text-orange-300 hover:text-white rounded-full transition"><i class="fas fa-external-link-alt mr-1"></i>Verify</a>`:''}
+                            ${verify ? `<a href="${escapeHtml(verify)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1 bg-orange-500/20 hover:bg-orange-500 text-orange-300 hover:text-white rounded-full transition"><i class="fas fa-external-link-alt mr-1"></i>Verify</a>`:''}
                         </div>
                     </div>`;
             }).join('');
@@ -723,16 +820,16 @@
             allBlogs = blogsData;
 
             container.innerHTML = blogsData.map((b, idx) => {
-                const title = readObjProp(b, 'Title');
-                const thumb = readObjProp(b, 'Thumbnail');
-                const cat = readObjProp(b, 'Category');
-                const desc = readObjProp(b, 'Description');
-                const date = readObjProp(b, 'Date');
-                const rTime = readObjProp(b, 'ReadTime') || 5;
+                const title = escapeHtml(readObjProp(b, 'Title'));
+                const thumb = sanitizeUrl(readObjProp(b, 'Thumbnail'), { image: true, allowImageData: true });
+                const cat = escapeHtml(readObjProp(b, 'Category'));
+                const desc = escapeHtml(readObjProp(b, 'Description'));
+                const date = escapeHtml(readObjProp(b, 'Date'));
+                const rTime = escapeHtml(readObjProp(b, 'ReadTime') || 5);
 
                 return `
                     <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/5 hover:border-orange-500/30 transition">
-                        <div class="md:w-1/3 h-40 md:h-auto"><img src="${thumb}" loading="lazy" decoding="async" class="w-full h-full object-cover" alt="Log Frame"></div>
+                        <div class="md:w-1/3 h-40 md:h-auto"><img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" class="w-full h-full object-cover" alt="Log Frame"></div>
                         <div class="p-5 md:w-2/3 flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-center mb-1.5 text-[10px]">
@@ -761,11 +858,11 @@
             if(unifiedList.length === 0) return;
 
             container.innerHTML = unifiedList.map(item => {
-                const period = readObjProp(item, 'Period');
-                const title = readObjProp(item, 'Title') || readObjProp(item, 'Degree');
-                const center = readObjProp(item, 'Company') || readObjProp(item, 'Institution');
-                const desc = readObjProp(item, 'Description');
-                const icon = readObjProp(item, 'Icon');
+                const period = escapeHtml(readObjProp(item, 'Period'));
+                const title = escapeHtml(readObjProp(item, 'Title') || readObjProp(item, 'Degree'));
+                const center = escapeHtml(readObjProp(item, 'Company') || readObjProp(item, 'Institution'));
+                const desc = escapeHtml(readObjProp(item, 'Description'));
+                const icon = sanitizeIconClass(readObjProp(item, 'Icon'));
 
                 return `
                     <div class="timeline-item">
@@ -786,15 +883,15 @@
             const modal = document.getElementById('blogModal');
             const modalBody = document.getElementById('modalBody');
             
-            const cat = readObjProp(blog, 'Category');
-            const title = readObjProp(blog, 'Title');
-            const thumb = readObjProp(blog, 'Thumbnail');
+            const cat = escapeHtml(readObjProp(blog, 'Category'));
+            const title = escapeHtml(readObjProp(blog, 'Title'));
+            const thumb = sanitizeUrl(readObjProp(blog, 'Thumbnail'), { image: true, allowImageData: true });
             const docId = readObjProp(blog, 'DocID') || readObjProp(blog, 'GoogleDocID');
 
             modalBody.innerHTML = `
                 <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
                 <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                <img src="${thumb}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
                 <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
                     <div class="animate-pulse text-gray-500">Loading full case study...</div>
                 </div>`;
@@ -802,18 +899,18 @@
             document.body.style.overflow = 'hidden';
             
             try {
-                let content = readObjProp(blog, 'Description');
+                let content = escapeHtml(readObjProp(blog, 'Description'));
                 if (docId) {
                     const response = await fetch(`${GAS_API_URL}?action=getBlog&docId=${encodeURIComponent(docId)}`);
                     if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
                     const result = await response.json();
-                    if (result && result.success && result.content) content = result.content;
+                    if (result && result.success && result.content) content = sanitizeHtml(result.content);
                 }
                 
                 modalBody.innerHTML = `
                     <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
                     <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                    <img src="${thumb}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
                     <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
                         ${content}
                     </div>`;
@@ -822,9 +919,9 @@
                 modalBody.innerHTML = `
                     <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
                     <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                    <img src="${thumb}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
                     <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
-                        ${readObjProp(blog, 'Description') || 'Blog content could not be loaded. Please try again later.'}
+                        ${escapeHtml(readObjProp(blog, 'Description') || 'Blog content could not be loaded. Please try again later.')}
                     </div>`;
             }
         }
