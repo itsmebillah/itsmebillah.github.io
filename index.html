@@ -564,10 +564,16 @@
         }
 
         function sanitizeHtml(value) {
-            const allowedTags = new Set(['P', 'BR', 'STRONG', 'B', 'EM', 'I', 'UL', 'OL', 'LI', 'A', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'CODE', 'PRE']);
+            const allowedTags = new Set(['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'P', 'DIV', 'SPAN', 'BR', 'STRONG', 'B', 'EM', 'I', 'UL', 'OL', 'LI', 'A', 'BLOCKQUOTE', 'IMG', 'CODE', 'PRE']);
             const blockedTags = new Set(['SCRIPT', 'IFRAME', 'OBJECT', 'EMBED', 'SVG', 'MATH', 'STYLE', 'LINK', 'META']);
             const template = document.createElement('template');
             template.innerHTML = String(value || "");
+
+            const unwrapNode = node => {
+                const fragment = document.createDocumentFragment();
+                [...node.childNodes].forEach(child => fragment.appendChild(child));
+                node.replaceWith(fragment);
+            };
 
             const cleanNode = node => {
                 if (node.nodeType === Node.COMMENT_NODE) {
@@ -584,7 +590,8 @@
                 }
 
                 if (!allowedTags.has(tag)) {
-                    node.replaceWith(document.createTextNode(node.textContent || ""));
+                    [...node.childNodes].forEach(cleanNode);
+                    unwrapNode(node);
                     return;
                 }
 
@@ -608,9 +615,33 @@
                         return;
                     }
 
+                    if (tag === 'IMG' && name === 'src') {
+                        const safeSrc = sanitizeUrl(value, { image: true, allowImageData: true });
+                        if (safeSrc) {
+                            node.setAttribute('src', safeSrc);
+                            node.setAttribute('loading', 'lazy');
+                            node.setAttribute('decoding', 'async');
+                        } else {
+                            node.removeAttribute(attr.name);
+                        }
+                        return;
+                    }
+
+                    if (tag === 'IMG' && ['alt', 'title', 'width', 'height', 'loading', 'decoding'].includes(name)) {
+                        if ((name === 'loading' && value !== 'lazy') || (name === 'decoding' && value !== 'async')) {
+                            node.removeAttribute(attr.name);
+                        }
+                        return;
+                    }
+
                     if (tag === 'A' && (name === 'target' || name === 'rel')) return;
                     node.removeAttribute(attr.name);
                 });
+
+                if (tag === 'IMG' && !node.getAttribute('src')) {
+                    node.remove();
+                    return;
+                }
 
                 [...node.childNodes].forEach(cleanNode);
             };
