@@ -10,6 +10,7 @@
     <meta name="msvalidate.01" content="BING_WEBMASTER_VERIFICATION_TOKEN">
     <link rel="preconnect" href="https://script.googleusercontent.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.postimg.cc">
     <link rel="canonical" href="https://itsmebillah.github.io/">
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Md Masum Billah | Data Analyst & Automation Developer Bangladesh">
@@ -370,7 +371,7 @@
         </div>
     </section>
 
-    <button id="chatToggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl flex items-center justify-center text-2xl hover:scale-105 transition-all">
+    <button id="chatToggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl flex items-center justify-center text-2xl hover:scale-105 transition-all" aria-label="Open chat assistant">
         <i class="fas fa-robot"></i>
     </button>
 
@@ -395,8 +396,8 @@
         <div class="modal-content"><button class="modal-close" onclick="closeBlogModal()"><i class="fas fa-times"></i></button><div id="modalBody"></div></div>
     </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
 
     <script>
         // 🔴 আপনার আসল Google Apps Script Web App URL নিশ্চিত করুন
@@ -720,10 +721,10 @@
             const socials = document.getElementById('socialContainer');
             if(socials) {
                 socials.innerHTML = `
-                    <a href="${escapeHtml(ln)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
-                    <a href="${escapeHtml(gh)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
-                    <a href="${escapeHtml(fb)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook"></i></a>
-                    <a href="${escapeHtml(waUrl)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
+                    <a href="${escapeHtml(ln)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer" aria-label="Visit LinkedIn profile"><i class="fab fa-linkedin"></i></a>
+                    <a href="${escapeHtml(gh)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile"><i class="fab fa-github"></i></a>
+                    <a href="${escapeHtml(fb)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer" aria-label="Visit Facebook profile"><i class="fab fa-facebook"></i></a>
+                    <a href="${escapeHtml(waUrl)}" class="text-gray-400 hover:text-white text-xl transition magnetic-btn" target="_blank" rel="noopener noreferrer" aria-label="Open WhatsApp chat"><i class="fab fa-whatsapp"></i></a>
                 `;
             }
         }
