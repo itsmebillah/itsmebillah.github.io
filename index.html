@@ -8,11 +8,11 @@
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="GOOGLE_SEARCH_CONSOLE_VERIFICATION_TOKEN">
     <meta name="msvalidate.01" content="BING_WEBMASTER_VERIFICATION_TOKEN">
-    <link rel="canonical" href="https://itsmebillah.github.io/itsmebillah/">
+    <link rel="canonical" href="https://itsmebillah.github.io/">
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Md Masum Billah | Data Analyst & Automation Developer Bangladesh">
     <meta property="og:description" content="Portfolio of Md Masum Billah, a Data Analyst and Automation Developer in Bangladesh building dashboards, analytics systems, and workflow automations.">
-    <meta property="og:url" content="https://itsmebillah.github.io/itsmebillah/">
+    <meta property="og:url" content="https://itsmebillah.github.io/">
     <meta property="og:site_name" content="Md Masum Billah Portfolio">
     <meta property="og:image" content="https://i.postimg.cc/26DtqzQr/1777886932477.jpg">
     <meta property="profile:first_name" content="Md Masum">
@@ -27,7 +27,7 @@
       "@type": "Person",
       "name": "Md. Masum Billah",
       "alternateName": ["Masum Billah", "itsmebillah"],
-      "url": "https://itsmebillah.github.io/itsmebillah/",
+      "url": "https://itsmebillah.github.io/",
       "image": "https://i.postimg.cc/26DtqzQr/1777886932477.jpg",
       "jobTitle": "Data Analyst | Automation Developer | Business Intelligence Specialist",
       "description": "Data Analyst and Automation Developer specializing in data analysis, automation, business intelligence dashboards, and Google Apps Script solutions.",
@@ -112,6 +112,12 @@
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 1000; display: none; overflow-y: auto; padding: 2rem; }
         .modal-content { background: linear-gradient(135deg, #0B1120 0%, #1a202c 100%); max-width: 900px; margin: 0 auto; border-radius: 1.5rem; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.15); position: relative; }
         .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255, 107, 53, 0.2); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.25rem; }
+        .mobile-nav-panel { max-height: 0; opacity: 0; transform: translateY(-8px); overflow: hidden; transition: max-height 0.35s ease, opacity 0.25s ease, transform 0.25s ease; }
+        .mobile-nav-panel.open { max-height: 520px; opacity: 1; transform: translateY(0); }
+        .mobile-nav-toggle .bar { display: block; width: 20px; height: 2px; margin: 4px 0; border-radius: 999px; background: currentColor; transition: transform 0.25s ease, opacity 0.2s ease; }
+        .mobile-nav-toggle.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .mobile-nav-toggle.open .bar:nth-child(2) { opacity: 0; }
+        .mobile-nav-toggle.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
         body.portfolio-loading > :not(#loader) { visibility: hidden; }
         #loader { --loader-progress: 0; --loader-percent: 0%; --plug-shift: 0px; --plug-shift-neg: 0px; --cable-shift: 0px; --cable-shift-neg: 0px; background: radial-gradient(circle at 50% 28%, #ffffff 0%, #f8fafc 42%, #eef2f7 100%); opacity: 1; }
         #loader.loader-online { background: radial-gradient(circle at 50% 28%, #ffffff 0%, #f8fafc 42%, #eef2f7 100%); }
@@ -237,17 +243,38 @@
     <div class="particles" id="particles-js"></div>
 
     <nav class="fixed top-0 left-0 right-0 z-40 glass border-b border-white/5 shadow-lg">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold gradient-text" id="navName"></div>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#home" class="text-gray-300 hover:text-white transition magnetic-btn">Home</a>
-                <a href="#about" class="text-gray-300 hover:text-white transition magnetic-btn">About</a>
-                <a href="#skills" class="text-gray-300 hover:text-white transition magnetic-btn">Skills</a>
-                <a href="#projects" class="text-gray-300 hover:text-white transition magnetic-btn">Projects</a>
-                <a href="#certificates" class="text-gray-300 hover:text-white transition magnetic-btn">Certificates</a>
-                <a href="#blogs" class="text-gray-300 hover:text-white transition magnetic-btn">Case Studies</a>
-                <a href="#experience" class="text-gray-300 hover:text-white transition magnetic-btn">Experience</a>
-                <a href="#contact" class="text-gray-300 hover:text-white transition magnetic-btn">Contact</a>
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold gradient-text" id="navName"></div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#home" class="text-gray-300 hover:text-white transition magnetic-btn">Home</a>
+                    <a href="#about" class="text-gray-300 hover:text-white transition magnetic-btn">About</a>
+                    <a href="#skills" class="text-gray-300 hover:text-white transition magnetic-btn">Skills</a>
+                    <a href="#projects" class="text-gray-300 hover:text-white transition magnetic-btn">Projects</a>
+                    <a href="#certificates" class="text-gray-300 hover:text-white transition magnetic-btn">Certificates</a>
+                    <a href="#blogs" class="text-gray-300 hover:text-white transition magnetic-btn">Case Studies</a>
+                    <a href="#experience" class="text-gray-300 hover:text-white transition magnetic-btn">Experience</a>
+                    <a href="#contact" class="text-gray-300 hover:text-white transition magnetic-btn">Contact</a>
+                </div>
+                <button id="mobileNavToggle" class="mobile-nav-toggle md:hidden w-11 h-11 rounded-xl glass text-gray-200 flex items-center justify-center border border-white/10" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileNavPanel">
+                    <span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </span>
+                </button>
+            </div>
+            <div id="mobileNavPanel" class="mobile-nav-panel md:hidden">
+                <div class="mt-4 grid gap-2 rounded-2xl bg-black/30 border border-white/10 p-3 backdrop-blur-xl">
+                    <a href="#home" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Home</a>
+                    <a href="#about" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">About</a>
+                    <a href="#skills" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Skills</a>
+                    <a href="#projects" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Projects</a>
+                    <a href="#certificates" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Certificates</a>
+                    <a href="#blogs" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Case Studies</a>
+                    <a href="#experience" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Experience</a>
+                    <a href="#contact" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Contact</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -448,6 +475,7 @@
             await loadDataPipelineStream();
             initializeChatbotEngine();
             updatePortfolioLoader('ai');
+            initializeMobileNavigation();
             initializeFormSubmission();
             completePortfolioLoader();
         });
@@ -461,6 +489,42 @@
                 if (k.toLowerCase() === lowerTarget) return obj[k];
             }
             return "";
+        }
+
+        function initializeMobileNavigation() {
+            const toggle = document.getElementById('mobileNavToggle');
+            const panel = document.getElementById('mobileNavPanel');
+            const links = document.querySelectorAll('.mobile-nav-link');
+            if (!toggle || !panel) return;
+
+            const closeMenu = () => {
+                toggle.classList.remove('open');
+                panel.classList.remove('open');
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.setAttribute('aria-label', 'Open navigation menu');
+            };
+
+            const openMenu = () => {
+                toggle.classList.add('open');
+                panel.classList.add('open');
+                toggle.setAttribute('aria-expanded', 'true');
+                toggle.setAttribute('aria-label', 'Close navigation menu');
+            };
+
+            toggle.addEventListener('click', (event) => {
+                event.stopPropagation();
+                panel.classList.contains('open') ? closeMenu() : openMenu();
+            });
+
+            links.forEach(link => link.addEventListener('click', closeMenu));
+            document.addEventListener('click', (event) => {
+                if (!panel.classList.contains('open')) return;
+                if (panel.contains(event.target) || toggle.contains(event.target)) return;
+                closeMenu();
+            });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeMenu();
+            });
         }
 
         async function loadDataPipelineStream() {
@@ -716,7 +780,7 @@
             }).join('');
         }
 
-        function openBlogModal(index) {
+        async function openBlogModal(index) {
             if (!allBlogs[index]) return;
             const blog = allBlogs[index];
             const modal = document.getElementById('blogModal');
@@ -725,17 +789,44 @@
             const cat = readObjProp(blog, 'Category');
             const title = readObjProp(blog, 'Title');
             const thumb = readObjProp(blog, 'Thumbnail');
-            const content = readObjProp(blog, 'Content') || readObjProp(blog, 'Description');
+            const docId = readObjProp(blog, 'DocID') || readObjProp(blog, 'GoogleDocID');
 
             modalBody.innerHTML = `
                 <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
                 <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
                 <img src="${thumb}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
                 <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
-                    ${content}
+                    <div class="animate-pulse text-gray-500">Loading full case study...</div>
                 </div>`;
             modal.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            
+            try {
+                let content = readObjProp(blog, 'Description');
+                if (docId) {
+                    const response = await fetch(`${GAS_API_URL}?action=getBlog&docId=${encodeURIComponent(docId)}`);
+                    if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
+                    const result = await response.json();
+                    if (result && result.success && result.content) content = result.content;
+                }
+                
+                modalBody.innerHTML = `
+                    <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
+                    <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
+                    <img src="${thumb}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                    <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
+                        ${content}
+                    </div>`;
+            } catch (error) {
+                console.error('Blog content fetch failure:', error);
+                modalBody.innerHTML = `
+                    <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
+                    <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
+                    <img src="${thumb}" loading="lazy" decoding="async" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                    <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
+                        ${readObjProp(blog, 'Description') || 'Blog content could not be loaded. Please try again later.'}
+                    </div>`;
+            }
         }
 
         function closeBlogModal() {
