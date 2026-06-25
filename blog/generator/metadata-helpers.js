@@ -47,7 +47,7 @@ function excerptFromContent(content, maxLength = 155) {
 
     const trimmed = text.slice(0, maxLength + 1);
     const lastSpace = trimmed.lastIndexOf(" ");
-    return `${trimmed.slice(0, lastSpace > 80 ? lastSpace : maxLength).trim()}...`;
+    return `${trimmed.slice(0, lastSpace > 80 ? lastSpace : maxLength - 3).trim()}...`;
 }
 
 function ensureLength(value, fallback, maxLength) {
@@ -56,7 +56,7 @@ function ensureLength(value, fallback, maxLength) {
 
     const trimmed = text.slice(0, maxLength + 1);
     const lastSpace = trimmed.lastIndexOf(" ");
-    return `${trimmed.slice(0, lastSpace > 30 ? lastSpace : maxLength).trim()}...`;
+    return `${trimmed.slice(0, lastSpace > 30 ? lastSpace : maxLength - 3).trim()}...`;
 }
 
 function normalizeDate(value) {
@@ -124,8 +124,8 @@ function generateHomepageMetadata(options = {}) {
 
 function generateBlogMetadata(blog = {}, content = "", options = {}) {
     const config = { ...DEFAULT_METADATA_CONFIG, ...options };
-    const slug = normalizeSlug(blog.Slug || blog.slug);
     const rawTitle = normalizeText(blog.Title || blog.title);
+    const slug = normalizeSlug(blog.Slug || blog.slug || rawTitle || "untitled-article");
     const title = ensureLength(rawTitle, "Untitled Article", 60);
     const contentSource = content || blog.Content || blog.content || "";
     const descriptionFallback = excerptFromContent(contentSource) || `Read ${title} by ${config.author}.`;
