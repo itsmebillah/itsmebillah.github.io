@@ -142,208 +142,30 @@
 </head>
 <body class="portfolio-loading">
 
-    <div id="loader" class="fixed inset-0 flex flex-col justify-center items-center z-50 transition-opacity duration-500" aria-live="polite" aria-busy="true">
-        <div class="portfolio-loader-shell">
-            <div class="portfolio-loader-stage" aria-hidden="true">
-                <div class="loader-ground"></div>
-                <div class="stone-marker"><div class="stone-base"></div></div>
-                <div class="cave-entrance"></div>
-                <div class="loader-bush left"></div>
-                <div class="loader-bush mid"></div>
-                <div class="loader-bush right"></div>
-                <div class="loader-rock left"></div>
-                <div class="loader-rock right"></div>
-                <div class="portfolio-loader-glow"></div>
-                <div class="power-cable left"></div>
-                <div class="power-cable right"></div>
-                <div class="portfolio-loader-character">
-                    <div class="cave-hair"></div>
-                    <div class="cave-head"></div>
-                    <div class="cave-face">••</div>
-                    <div class="cave-body"></div>
-                    <div class="cave-arm left"></div>
-                    <div class="cave-arm right"></div>
-                    <div class="cave-leg left"></div>
-                    <div class="cave-leg right"></div>
-                </div>
-                <div class="power-plug left"></div>
-                <div class="power-plug right"></div>
-                <div class="spark-burst"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-            </div>
-            <div class="loader-title" id="loaderTitle">Connecting the pieces...</div>
-            <div class="loader-subtitle" id="loaderSubtitle">Please wait a moment, something awesome is loading.</div>
-            <div class="loader-progress-track"><div class="loader-progress-fill"></div></div>
-            <div class="loader-percent" id="loaderPercent">0%</div>
-            <div class="loader-steps">
-                <div class="loader-step" data-loader-step="sheets">Google Sheets</div>
-                <div class="loader-step" data-loader-step="apps">Apps Script</div>
-                <div class="loader-step" data-loader-step="ai">AI Engine</div>
-                <div class="loader-step" data-loader-step="portfolio">Portfolio Data</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="particles" id="particles-js"></div>
-
-    <nav class="fixed top-0 left-0 right-0 z-40 glass border-b border-white/5 shadow-lg" aria-label="Primary navigation">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text" id="navName"></div>
-                <div class="hidden md:flex space-x-8 text-sm font-medium">
-                    <a href="#home" class="text-gray-300 hover:text-white transition magnetic-btn">Home</a>
-                    <a href="#about" class="text-gray-300 hover:text-white transition magnetic-btn">About</a>
-                    <a href="#skills" class="text-gray-300 hover:text-white transition magnetic-btn">Skills</a>
-                    <a href="#projects" class="text-gray-300 hover:text-white transition magnetic-btn">Projects</a>
-                    <a href="#certificates" class="text-gray-300 hover:text-white transition magnetic-btn">Certificates</a>
-                    <a href="#blogs" class="text-gray-300 hover:text-white transition magnetic-btn">Case Studies</a>
-                    <a href="#experience" class="text-gray-300 hover:text-white transition magnetic-btn">Experience</a>
-                    <a href="#contact" class="text-gray-300 hover:text-white transition magnetic-btn">Contact</a>
-                </div>
-                <button id="mobileNavToggle" class="mobile-nav-toggle md:hidden w-11 h-11 rounded-xl glass text-gray-200 flex items-center justify-center border border-white/10" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileNavPanel">
-                    <span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </span>
-                </button>
-            </div>
-            <div id="mobileNavPanel" class="mobile-nav-panel md:hidden">
-                <div class="mt-4 grid gap-2 rounded-2xl bg-black/30 border border-white/10 p-3 backdrop-blur-xl">
-                    <a href="#home" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Home</a>
-                    <a href="#about" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">About</a>
-                    <a href="#skills" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Skills</a>
-                    <a href="#projects" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Projects</a>
-                    <a href="#certificates" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Certificates</a>
-                    <a href="#blogs" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Case Studies</a>
-                    <a href="#experience" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Experience</a>
-                    <a href="#contact" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Contact</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div data-component="components/loader.html"></div>
+    <div data-component="components/particles.html"></div>
+    <div data-component="components/navbar.html"></div>
 
     <main id="main-content">
-    <section id="home" class="min-h-screen flex items-center justify-center pt-20 px-6">
-        <div class="container mx-auto text-center">
-            <div class="relative mx-auto w-80 h-80 mb-8 floating">
-                <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full animate-pulse opacity-40"></div>
-                <img id="profileImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" fetchpriority="high" width="288" height="288" class="relative w-72 h-72 rounded-full object-cover mx-auto mt-4 border-4 border-white/10 shadow-2xl" alt="Portrait of Md Masum Billah">
-            </div>
-            <h1 id="heroName" class="text-5xl md:text-7xl font-bold mb-4 gradient-text"></h1>
-            <div id="heroTitle" class="text-xl md:text-2xl text-gray-300 mb-6 font-medium"></div>
-            <p id="heroBio" class="text-lg text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed"></p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="#projects" class="px-8 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-white font-semibold magnetic-btn"><i class="fas fa-briefcase mr-2"></i>View Engineering Works</a>
-                <a href="https://drive.google.com/uc?export=download&id=1AGm--2_soUpLvUB1a16xf-w4KHbF1I48" class="px-8 py-3 glass rounded-full text-white font-semibold magnetic-btn" target="_blank" rel="noopener noreferrer"><i class="fas fa-download mr-2"></i>Download CV</a>
-                <a href="#contact" class="px-8 py-3 glass rounded-full text-white font-semibold magnetic-btn"><i class="fas fa-paper-plane mr-2"></i>Secure Channel</a>
-            </div>
-            <div class="flex justify-center space-x-6 mt-8" id="socialContainer"></div>
-        </div>
-    </section>
-
-    <section id="about" class="py-20 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">About Me</h2>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="glass rounded-3xl p-8">
-                    <h3 class="text-xl font-semibold mb-4 text-orange-500">Professional Journey</h3>
-                    <p id="aboutBio" class="text-gray-300 leading-relaxed"></p>
-                </div>
-                <div class="glass rounded-3xl p-8 space-y-4">
-                    <h3 class="text-xl font-semibold mb-4 text-orange-500">Telemetry Data</h3>
-                    <div class="flex items-center"><i class="fas fa-map-marker-alt text-orange-500 mr-4 text-lg w-6"></i><span class="text-gray-300" id="infoLocation"></span></div>
-                    <div class="flex items-center"><i class="fas fa-envelope text-orange-500 mr-4 text-lg w-6"></i><span class="text-gray-300" id="infoEmail"></span></div>
-                    <div class="flex items-center"><i class="fas fa-phone text-orange-500 mr-4 text-lg w-6"></i><span class="text-gray-300" id="infoPhone"></span></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="py-20 px-6">
-        <div class="container mx-auto max-w-5xl">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Technical Prowess</h2>
-            <div class="grid md:grid-cols-2 gap-12" id="skillsContainer"></div>
-        </div>
-    </section>
-
-    <section id="projects" class="py-20 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Featured Architectures</h2>
-            <div id="featuredProjectsContainer"></div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8" id="otherProjectsContainer"></div>
-        </div>
-    </section>
-
-    <section id="certificates" class="py-20 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Certifications</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="certificatesContainer"></div>
-        </div>
-    </section>
-
-    <section id="blogs" class="py-20 px-6">
-        <div class="container mx-auto max-w-6xl">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Case Studies & Logs</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10" id="blogsContainer"></div>
-        </div>
-    </section>
-
-    <section id="experience" class="py-20 px-6">
-        <div class="container mx-auto max-w-4xl">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Experience & Academic Path</h2>
-            <div class="timeline-container" id="timelineContainer"></div>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 px-6">
-        <div class="container mx-auto max-w-2xl glass rounded-3xl p-8">
-            <h2 class="text-3xl font-bold text-center mb-8 gradient-text">Gateway Transmission</h2>
-            <form id="contactForm" class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <input type="text" id="name" placeholder="Your Name" aria-label="Your Name" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
-                    <input type="email" id="email" placeholder="Your Email" aria-label="Your Email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
-                </div>
-                <input type="text" id="subject" placeholder="Subject Vector" aria-label="Subject" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required>
-                <textarea id="message" placeholder="Data Packet Body Content..." aria-label="Message" rows="5" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500" required></textarea>
-                <button type="submit" id="submitBtn" class="w-full py-4 bg-gradient-to-r from-orange-500 to-pink-500 rounded-xl font-semibold flex items-center justify-center tracking-wide hover:opacity-90 transition shadow-lg">
-                    Execute Secure Transmission
-                </button>
-            </form>
-            <div id="formMessage" class="mt-4 p-4 rounded-xl text-center hidden animate-pulse"></div>
-        </div>
-    </section>
+        <div data-component="components/hero.html"></div>
+        <div data-component="components/about.html"></div>
+        <div data-component="components/skills.html"></div>
+        <div data-component="components/projects.html"></div>
+        <div data-component="components/certificates.html"></div>
+        <div data-component="components/blogs.html"></div>
+        <div data-component="components/experience.html"></div>
+        <div data-component="components/contact.html"></div>
     </main>
 
-    <button id="chatToggle" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-2xl flex items-center justify-center text-2xl hover:scale-105 transition-all" aria-label="Open chat assistant">
-        <i class="fas fa-robot"></i>
-    </button>
-
-    <div id="chatWindow" class="fixed bottom-24 right-6 w-[92%] sm:w-[400px] h-[520px] glass rounded-3xl overflow-hidden z-50 hidden border border-white/10 shadow-2xl flex flex-col">
-        <div class="p-4 border-b border-white/10 flex justify-between items-center bg-black/30">
-            <div>
-                <h3 class="font-bold text-white text-sm tracking-wide">Orchestrator AI Agent</h3>
-                <p class="text-[11px] text-green-400 font-medium flex items-center"><span class="w-2 h-2 rounded-full bg-green-500 inline-block mr-1.5 animate-ping"></span>Live Context Integration: Active</p>
-            </div>
-            <button id="closeChat" class="text-gray-400 hover:text-white" type="button" aria-label="Close chat assistant"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 text-xs tracking-wide leading-relaxed">
-            <div class="flex"><div class="bg-white/5 text-gray-200 px-4 py-3 rounded-2xl max-w-[85%]">Welcome. I am fully synchronized with Masum's live portfolio infrastructure dataset. Request any insights regarding his projects, technical stack, or background.</div></div>
-        </div>
-        <div class="p-3 border-t border-white/10 flex gap-2 bg-black/10">
-            <input type="text" id="chatInput" placeholder="Query data pipeline..." aria-label="Chat message" class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 text-xs focus:outline-none focus:border-orange-500">
-            <button id="sendChat" class="w-10 h-10 rounded-xl bg-gradient-to-r from-orange-500 to-pink-500 text-white flex items-center justify-center" type="button" aria-label="Send chat message"><i class="fas fa-paper-plane text-xs"></i></button>
-        </div>
-    </div>
-
-    <div id="blogModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="blogModalTitle">
-        <div class="modal-content"><button class="modal-close" onclick="closeBlogModal()" type="button" aria-label="Close case study"><i class="fas fa-times"></i></button><div id="modalBody"></div></div>
-    </div>
+    <div data-component="components/chat.html"></div>
+    <div data-component="components/blog-modal.html"></div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
 
         <script src="assets/js/config.js"></script>
     <script src="assets/js/seo.js"></script>
+    <script src="assets/js/component-loader.js"></script>
     <script src="assets/modules/ui.js"></script>
     <script src="assets/js/utils.js"></script>
     <script src="assets/js/api.js"></script>

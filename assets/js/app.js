@@ -1,4 +1,4 @@
-        document.addEventListener('DOMContentLoaded', async function() {
+        async function initializePortfolioApp() {
             if (typeof applySEOConfig === 'function') applySEOConfig();
             if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
             
@@ -23,6 +23,18 @@
             initializeMobileNavigation();
             initializeFormSubmission();
             completePortfolioLoader();
-        });
+        }
 
-        // কেস-ইনসেনসিティブ এবং সেফ ফলব্যাক প্রপার্টি রিডিং অবজেক্ট হেল্পার
+        function bootstrapPortfolioApp() {
+            if (window.__portfolioComponentsLoaded) {
+                initializePortfolioApp();
+                return;
+            }
+            document.addEventListener('portfolio:components-loaded', initializePortfolioApp, { once: true });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootstrapPortfolioApp);
+        } else {
+            bootstrapPortfolioApp();
+        }
