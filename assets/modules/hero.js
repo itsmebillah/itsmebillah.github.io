@@ -22,6 +22,7 @@
             document.getElementById('infoEmail').textContent = email;
             document.getElementById('infoPhone').textContent = phone;
             document.getElementById('profileImage').src = sanitizeUrl(pic, { image: true, allowImageData: true }) || "https://i.postimg.cc/66D9MZLk/Gemini-Generated-Image-4q2cn54q2cn54q2c.png";
+            document.getElementById('profileImage').alt = `Portrait of ${name}`;
 
             const socials = document.getElementById('socialContainer');
             if(socials) {
@@ -33,4 +34,3 @@
                 `;
             }
         }
-

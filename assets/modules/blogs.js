@@ -13,7 +13,7 @@
 
                 return `
                     <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/5 hover:border-orange-500/30 transition">
-                        <div class="md:w-1/3 h-40 md:h-auto"><img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="400" height="160" class="w-full h-full object-cover" alt="Log Frame"></div>
+                        <div class="md:w-1/3 h-40 md:h-auto"><img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="400" height="160" class="w-full h-full object-cover" alt="${title} case study thumbnail"></div>
                         <div class="p-5 md:w-2/3 flex flex-col justify-between">
                             <div>
                                 <div class="flex justify-between items-center mb-1.5 text-[10px]">
@@ -25,7 +25,7 @@
                             </div>
                             <div class="flex justify-between items-center text-[11px]">
                                 <span class="text-gray-500">${date}</span>
-                                <button onclick="openBlogModal(${idx})" class="text-white font-semibold hover:text-orange-500 flex items-center">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
+                                <button onclick="openBlogModal(${idx})" type="button" class="text-white font-semibold hover:text-orange-500 flex items-center">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
                             </div>
                         </div>
                     </div>`;
@@ -46,8 +46,8 @@
 
             modalBody.innerHTML = `
                 <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
-                <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
+                <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
                 <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
                     <div class="animate-pulse text-gray-500">Loading full case study...</div>
                 </div>`;
@@ -70,8 +70,8 @@
                 
                 modalBody.innerHTML = `
                     <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
-                    <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                    <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
+                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
                     <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
                         ${content}
                     </div>`;
@@ -79,8 +79,8 @@
                 console.error('Blog content fetch failure:', error);
                 modalBody.innerHTML = `
                     <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
-                    <h1 class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10">
+                    <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
+                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
                     <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
                         ${escapeHtml(readObjProp(blog, 'Description') || 'Blog content could not be loaded. Please try again later.')}
                     </div>`;
@@ -91,4 +91,3 @@
             document.getElementById('blogModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
-

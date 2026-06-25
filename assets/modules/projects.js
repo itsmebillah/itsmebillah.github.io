@@ -36,7 +36,7 @@
                                         ${git && git !== '#' ? `<a href="${escapeHtml(git)}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 glass rounded-full text-white text-xs font-semibold tracking-wide border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
                                     </div>
                                 </div>
-                                <div class="text-center"><img src="${escapeHtml(img)}" loading="lazy" decoding="async" width="800" height="448" class="w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10" alt="Engine Node"></div>
+                                <div class="text-center"><img src="${escapeHtml(img)}" loading="lazy" decoding="async" width="800" height="448" class="w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10" alt="${name} project preview"></div>
                             </div>
                         </div>`;
                 }).join('');
@@ -53,7 +53,7 @@
                     return `
                         <div class="glass rounded-2xl p-5 flex flex-col justify-between border border-white/5 hover:border-orange-500/30 transition duration-300">
                             <div>
-                                <img src="${escapeHtml(img)}" loading="lazy" decoding="async" width="400" height="160" class="w-full h-40 object-cover rounded-xl mb-4 border border-white/5" alt="Node Frame">
+                                <img src="${escapeHtml(img)}" loading="lazy" decoding="async" width="400" height="160" class="w-full h-40 object-cover rounded-xl mb-4 border border-white/5" alt="${name} project preview">
                                 <h4 class="text-lg font-bold mb-2 text-white">${name}</h4>
                                 <p class="text-gray-400 text-xs mb-4 line-clamp-3 leading-relaxed">${desc}</p>
                                 <div class="flex flex-wrap gap-1 mb-2">
@@ -67,4 +67,3 @@
                 }).join('');
             }
         }
-

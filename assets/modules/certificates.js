@@ -11,7 +11,7 @@
                 return `
                     <div class="glass rounded-3xl overflow-hidden group border border-white/5 hover:border-orange-500/40 transition duration-300">
                         <div class="relative h-48 overflow-hidden">
-                            <img src="${escapeHtml(img || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400')}" loading="lazy" decoding="async" width="400" height="192" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="Accreditation Node">
+                            <img src="${escapeHtml(img || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400')}" loading="lazy" decoding="async" width="400" height="192" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${name} certificate from ${org}">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-4">
                                 <h3 class="text-white font-bold text-sm leading-snug">${name}</h3>
                                 <p class="text-gray-400 text-[11px] mt-0.5">${org}</p>
@@ -24,4 +24,3 @@
                     </div>`;
             }).join('');
         }
-

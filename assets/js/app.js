@@ -1,4 +1,5 @@
         document.addEventListener('DOMContentLoaded', async function() {
+            if (typeof applySEOConfig === 'function') applySEOConfig();
             if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
             
             if(typeof particlesJS !== 'undefined' && document.getElementById('particles-js')) {
