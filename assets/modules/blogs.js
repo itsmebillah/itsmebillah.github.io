@@ -40,15 +40,17 @@
             
             const cat = escapeHtml(readObjProp(blog, 'Category'));
             const title = escapeHtml(readObjProp(blog, 'Title'));
+            const desc = escapeHtml(readObjProp(blog, 'Description'));
             const thumb = sanitizeUrl(readObjProp(blog, 'Thumbnail'), { image: true, allowImageData: true });
             const docId = readObjProp(blog, 'DocID') || readObjProp(blog, 'GoogleDocID');
             const slug = readObjProp(blog, 'Slug');
 
             modalBody.innerHTML = `
-                <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
-                <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
-                <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
+                <div class="mb-2"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
+                <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">${title}</h1>
+                ${desc ? `<p class="text-gray-400 text-xs leading-relaxed mb-4">${desc}</p>` : ''}
+                <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-32 sm:h-36 md:h-40 object-cover rounded-xl mb-4 border border-white/10" alt="${title} case study image">
+                <div class="blog-article-content text-gray-300 text-xs bg-white/5 p-5 rounded-xl max-h-[420px] md:max-h-[460px] overflow-y-auto font-normal">
                     <div class="animate-pulse text-gray-500">Loading full case study...</div>
                 </div>`;
             modal.style.display = 'block';
@@ -64,22 +66,28 @@
                 if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
                 const result = await response.json();
                 if (!String(contentSource || "").trim() && result && result.success && result.content) contentSource = result.content;
+                const hasArticleContent = String(contentSource || "").trim();
+                const descriptionLead = hasArticleContent && desc ? `<p class="text-gray-400 text-xs leading-relaxed mb-4">${desc}</p>` : '';
                 const content = renderMixedBlogContent(contentSource || readObjProp(blog, 'Description') || 'No content available.');
                 
                 modalBody.innerHTML = `
-                    <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
-                    <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
-                    <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
+                    <div class="mb-2"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
+                    <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">${title}</h1>
+                    ${descriptionLead}
+                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-32 sm:h-36 md:h-40 object-cover rounded-xl mb-4 border border-white/10" alt="${title} case study image">
+                    <div class="blog-article-content text-gray-300 text-xs bg-white/5 p-5 rounded-xl max-h-[420px] md:max-h-[460px] overflow-y-auto font-normal">
                         ${content}
                     </div>`;
             } catch (error) {
                 console.error('Blog content fetch failure:', error);
+                const hasFallbackContent = String(readObjProp(blog, 'Content') || "").trim();
+                const fallbackDescriptionLead = hasFallbackContent && desc ? `<p class="text-gray-400 text-xs leading-relaxed mb-4">${desc}</p>` : '';
                 modalBody.innerHTML = `
-                    <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
-                    <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
-                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
-                    <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
+                    <div class="mb-2"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
+                    <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-3 leading-tight">${title}</h1>
+                    ${fallbackDescriptionLead}
+                    <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-32 sm:h-36 md:h-40 object-cover rounded-xl mb-4 border border-white/10" alt="${title} case study image">
+                    <div class="blog-article-content text-gray-300 text-xs bg-white/5 p-5 rounded-xl max-h-[420px] md:max-h-[460px] overflow-y-auto font-normal">
                         ${renderMixedBlogContent(readObjProp(blog, 'Content') || readObjProp(blog, 'Description') || 'No content available.')}
                     </div>`;
             }

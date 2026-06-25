@@ -109,6 +109,15 @@
         .loader-step::before { content: '•'; color: rgba(255,255,255,0.35); display: inline-block; width: 1.25rem; }
         .loader-step.done { color: #E5E7EB; }
         .loader-step.done::before { content: '✓'; color: #FF8B35; }
+        .blog-article-content { line-height: 1.8; }
+        .blog-article-content > div { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+        .blog-article-content p { margin: 0 0 1rem !important; line-height: 1.8 !important; }
+        .blog-article-content h1, .blog-article-content h2, .blog-article-content h3, .blog-article-content h4, .blog-article-content h5, .blog-article-content h6 { margin: 1.45rem 0 0.75rem !important; line-height: 1.28 !important; }
+        .blog-article-content h1:first-child, .blog-article-content h2:first-child, .blog-article-content h3:first-child { margin-top: 0 !important; }
+        .blog-article-content ul, .blog-article-content ol { margin: 0 0 1.15rem 1.25rem !important; padding-left: 1rem !important; line-height: 1.8 !important; }
+        .blog-article-content li { margin-bottom: 0.5rem !important; }
+        .blog-article-content blockquote { margin: 1.25rem 0 !important; line-height: 1.75 !important; }
+        .blog-article-content img { display: block; max-width: 100%; height: auto; object-fit: cover; border-radius: 0.75rem; margin: 1.25rem 0; }
         @media (max-width: 768px) {
             .timeline-container::before { left: 30px; }
             .timeline-item:nth-child(odd) .timeline-content, .timeline-item:nth-child(even) .timeline-content { width: calc(100% - 80px); margin-left: 80px; text-align: left; }
