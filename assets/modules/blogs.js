@@ -55,7 +55,7 @@
             document.body.style.overflow = 'hidden';
             
             try {
-                let content = escapeHtml(readObjProp(blog, 'Description'));
+                let contentSource = readObjProp(blog, 'Content');
                 const blogParams = new URLSearchParams({ action: 'getBlog' });
                 if (docId) blogParams.set('docId', docId);
                 if (slug) blogParams.set('slug', slug);
@@ -63,10 +63,8 @@
                 const response = await fetch(`${GAS_API_URL}?${blogParams.toString()}`);
                 if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
                 const result = await response.json();
-                if (result && result.success && result.content) {
-                    const sanitizedContent = sanitizeHtml(result.content);
-                    if (sanitizedContent.trim()) content = sanitizedContent;
-                }
+                if (!String(contentSource || "").trim() && result && result.success && result.content) contentSource = result.content;
+                const content = renderMixedBlogContent(contentSource || readObjProp(blog, 'Description') || 'No content available.');
                 
                 modalBody.innerHTML = `
                     <div class="mb-3"><span class="text-orange-500 font-bold uppercase text-[11px] tracking-widest">${cat}</span></div>
@@ -82,7 +80,7 @@
                     <h1 id="blogModalTitle" class="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">${title}</h1>
                     <img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="800" height="224" class="w-full h-56 object-cover rounded-xl mb-5 border border-white/10" alt="${title} case study image">
                     <div class="text-gray-300 leading-relaxed space-y-4 text-xs bg-white/5 p-4 rounded-xl max-h-[260px] overflow-y-auto font-normal">
-                        ${escapeHtml(readObjProp(blog, 'Description') || 'Blog content could not be loaded. Please try again later.')}
+                        ${renderMixedBlogContent(readObjProp(blog, 'Content') || readObjProp(blog, 'Description') || 'No content available.')}
                     </div>`;
             }
         }

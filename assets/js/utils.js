@@ -41,6 +41,19 @@
             const template = document.createElement('template');
             template.innerHTML = String(value || "");
 
+            const sanitizeInlineStyle = styleValue => {
+                const style = String(styleValue || "");
+                if (!style.trim()) return "";
+                return style
+                    .split(';')
+                    .map(rule => rule.trim())
+                    .filter(rule => {
+                        if (!rule || !rule.includes(':')) return false;
+                        return !/(expression\s*\(|javascript\s*:|vbscript\s*:|data\s*:|@import)/i.test(rule);
+                    })
+                    .join('; ');
+            };
+
             const unwrapNode = node => {
                 const fragment = document.createDocumentFragment();
                 [...node.childNodes].forEach(child => fragment.appendChild(child));
@@ -70,8 +83,18 @@
                 [...node.attributes].forEach(attr => {
                     const name = attr.name.toLowerCase();
                     const value = attr.value || "";
-                    if (name.startsWith('on') || name === 'style' || name === 'srcdoc') {
+                    if (name.startsWith('on') || name === 'srcdoc') {
                         node.removeAttribute(attr.name);
+                        return;
+                    }
+
+                    if (name === 'style') {
+                        const safeStyle = sanitizeInlineStyle(value);
+                        if (safeStyle) {
+                            node.setAttribute('style', safeStyle);
+                        } else {
+                            node.removeAttribute(attr.name);
+                        }
                         return;
                     }
 
@@ -122,6 +145,20 @@
             return template.innerHTML;
         }
 
+        function renderMixedBlogContent(value) {
+            const text = String(value || "").trim();
+            if (!text) return "";
+
+            if (/<[a-z][\s\S]*>/i.test(text)) {
+                return sanitizeHtml(text);
+            }
+
+            return `<p>${escapeHtml(text)
+                .replace(/\r\n/g, '\n')
+                .replace(/\n{2,}/g, '</p><p>')
+                .replace(/\n/g, '<br>')}</p>`;
+        }
+
         function sanitizeIconClass(value) {
             return String(value || "")
                 .split(/\s+/)
@@ -134,4 +171,3 @@
             if (!Number.isFinite(number)) return 0;
             return Math.max(0, Math.min(100, number));
         }
-
