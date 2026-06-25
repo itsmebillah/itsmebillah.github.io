@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "generatedAt": null,
+  "source": {
+    "cms": "Google Sheets",
+    "api": "Apps Script",
+    "endpointAction": "getAllData",
+    "sheet": "Blogs",
+    "slugField": "Slug",
+    "statusField": "Published"
+  },
+  "routing": {
+    "basePath": "/blog/",
+    "pagePattern": "/blog/{slug}/",
+    "outputPattern": "blog/{slug}/index.html"
+  },
+  "templates": {
+    "page": "blog/templates/blog.template.html",
+    "seo": "blog/templates/seo.template.html"
+  },
+  "features": {
+    "categories": true,
+    "tags": true,
+    "relatedPosts": true,
+    "search": true,
+    "rss": true,
+    "pagination": true,
+    "draftMode": true,
+    "scheduledPublishing": true
+  },
+  "requiredFields": [
+    "Title",
+    "Slug",
+    "Description",
+    "Content",
+    "Thumbnail",
+    "Category",
+    "Date",
+    "Published"
+  ],
+  "optionalFields": [
+    "Keywords",
+    "Tags",
+    "Author",
+    "ReadTime",
+    "DocID",
+    "GoogleDocID",
+    "ScheduledAt",
+    "UpdatedAt"
+  ],
+  "pages": []
+}

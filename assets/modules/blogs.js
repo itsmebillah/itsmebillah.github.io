@@ -1,3 +1,17 @@
+        function getBlogSlug(blog) {
+            return String(readObjProp(blog, 'Slug') || "")
+                .trim()
+                .toLowerCase()
+                .replace(/[^a-z0-9-]/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+
+        function getBlogUrl(blog) {
+            const slug = getBlogSlug(blog);
+            return slug ? `/blog/${slug}/` : '';
+        }
+
         function renderBlogs(blogsData) {
             const container = document.getElementById('blogsContainer');
             if(!container || !blogsData || blogsData.length === 0) return;
@@ -10,9 +24,11 @@
                 const desc = escapeHtml(readObjProp(b, 'Description'));
                 const date = escapeHtml(readObjProp(b, 'Date'));
                 const rTime = escapeHtml(readObjProp(b, 'ReadTime') || 5);
+                const slug = escapeHtml(getBlogSlug(b));
+                const blogUrl = escapeHtml(getBlogUrl(b));
 
                 return `
-                    <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/5 hover:border-orange-500/30 transition">
+                    <div class="glass rounded-3xl overflow-hidden flex flex-col md:flex-row border border-white/5 hover:border-orange-500/30 transition" data-blog-slug="${slug}" data-blog-url="${blogUrl}">
                         <div class="md:w-1/3 h-40 md:h-auto"><img src="${escapeHtml(thumb)}" loading="lazy" decoding="async" width="400" height="160" class="w-full h-full object-cover" alt="${title} case study thumbnail"></div>
                         <div class="p-5 md:w-2/3 flex flex-col justify-between">
                             <div>
@@ -25,7 +41,7 @@
                             </div>
                             <div class="flex justify-between items-center text-[11px]">
                                 <span class="text-gray-500">${date}</span>
-                                <button onclick="openBlogModal(${idx})" type="button" class="text-white font-semibold hover:text-orange-500 flex items-center">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
+                                <button onclick="openBlogModal(${idx})" type="button" class="text-white font-semibold hover:text-orange-500 flex items-center" data-blog-slug="${slug}" data-blog-url="${blogUrl}">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
                             </div>
                         </div>
                     </div>`;
@@ -97,3 +113,5 @@
             document.getElementById('blogModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
+
+        window.getBlogUrl = getBlogUrl;

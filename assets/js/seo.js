@@ -1,13 +1,17 @@
         const SEO_CONFIG = {
             language: 'en',
             title: 'Md Masum Billah | Data Analyst & Automation Developer Bangladesh',
-            description: 'Md Masum Billah is a Data Analyst and Automation Developer in Bangladesh, specializing in Power BI, SQL, Google Apps Script, Excel, and workflow automation.',
+            description: 'Portfolio of Md Masum Billah, a Data Analyst and Automation Developer in Bangladesh specializing in Power BI, SQL, Google Apps Script, Excel, business intelligence, and workflow automation.',
             keywords: 'Md Masum Billah, Data Analyst Bangladesh, Automation Developer, Power BI Developer, SQL Analyst, Google Apps Script Developer, Excel Automation, Business Intelligence',
             canonical: 'https://itsmebillah.github.io/',
             robots: 'index, follow',
+            crawlerRobots: 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
             author: 'Md. Masum Billah',
             image: 'https://i.postimg.cc/26DtqzQr/1777886932477.jpg',
             imageAlt: 'Portrait of Md Masum Billah',
+            imageType: 'image/jpeg',
+            imageWidth: '1200',
+            imageHeight: '630',
             og: {
                 type: 'profile',
                 locale: 'en_US',
@@ -72,7 +76,7 @@
                         '@id': 'https://itsmebillah.github.io/#website',
                         url: 'https://itsmebillah.github.io/',
                         name: 'Md Masum Billah Portfolio',
-                        description: 'Portfolio of Md Masum Billah, a Data Analyst and Automation Developer in Bangladesh.',
+                        description: 'Portfolio of Md Masum Billah, a Data Analyst and Automation Developer in Bangladesh specializing in business intelligence and workflow automation.',
                         inLanguage: 'en',
                         publisher: {
                             '@id': 'https://itsmebillah.github.io/#organization'
@@ -117,8 +121,11 @@
             upsertMeta('meta[name="description"]', { name: 'description' }, config.description);
             upsertMeta('meta[name="keywords"]', { name: 'keywords' }, config.keywords);
             upsertMeta('meta[name="robots"]', { name: 'robots' }, config.robots);
+            upsertMeta('meta[name="googlebot"]', { name: 'googlebot' }, config.crawlerRobots);
+            upsertMeta('meta[name="bingbot"]', { name: 'bingbot' }, config.crawlerRobots);
             upsertMeta('meta[name="author"]', { name: 'author' }, config.author);
             upsertMeta('meta[name="language"]', { name: 'language' }, config.language === 'en' ? 'English' : config.language);
+            upsertMeta('meta[name="application-name"]', { name: 'application-name' }, config.og && config.og.siteName);
 
             upsertMeta('meta[property="og:type"]', { property: 'og:type' }, config.og && config.og.type);
             upsertMeta('meta[property="og:locale"]', { property: 'og:locale' }, config.og && config.og.locale);
@@ -127,7 +134,11 @@
             upsertMeta('meta[property="og:url"]', { property: 'og:url' }, config.canonical);
             upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name' }, config.og && config.og.siteName);
             upsertMeta('meta[property="og:image"]', { property: 'og:image' }, config.image);
+            upsertMeta('meta[property="og:image:secure_url"]', { property: 'og:image:secure_url' }, config.image);
+            upsertMeta('meta[property="og:image:type"]', { property: 'og:image:type' }, config.imageType);
             upsertMeta('meta[property="og:image:alt"]', { property: 'og:image:alt' }, config.imageAlt);
+            upsertMeta('meta[property="og:image:width"]', { property: 'og:image:width' }, config.imageWidth);
+            upsertMeta('meta[property="og:image:height"]', { property: 'og:image:height' }, config.imageHeight);
 
             upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card' }, config.twitter && config.twitter.card);
             upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title' }, config.title);
