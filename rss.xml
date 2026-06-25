@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:media="http://search.yahoo.com/mrss/"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Md Masum Billah Portfolio Blog</title>
+    <description>Latest portfolio articles, case studies, and business intelligence insights by Md. Masum Billah.</description>
+    <link>https://itsmebillah.github.io/</link>
+    <atom:link href="https://itsmebillah.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <lastBuildDate>Thu, 25 Jun 2026 19:23:31 GMT</lastBuildDate>
+    <pubDate>Wed, 11 Nov 2026 18:00:00 GMT</pubDate>
+    <managingEditor>Md. Masum Billah</managingEditor>
+    <webMaster>Md. Masum Billah</webMaster>
+    <ttl>60</ttl>
+    <item>
+      <title>Data Analysis &amp; Storytelling for Better Decisions</title>
+      <description><![CDATA[Exploring how modern organizations turn raw data into actionable insights, smarter decisions, and measurable business outcomes.]]></description>
+      <link>https://itsmebillah.github.io/blog/data-analysis-career-business-guide/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/data-analysis-career-business-guide/</guid>
+      <pubDate>Wed, 11 Nov 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Business Intelligence</category>
+      <content:encoded><![CDATA[Exploring how modern organizations turn raw data into actionable insights, smarter decisions, and measurable business outcomes.]]></content:encoded>
+      <media:content url="https://i.postimg.cc/mkXdcZs3/Chat-GPT-Image-Jun-5-2026-11-47-09-PM.png" medium="image" />
+    </item>
+    <item>
+      <title>PT CPI Sales Target &amp; Gap Analytics Portal</title>
+      <description><![CDATA[A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission, sales performance tracking, gap analysis, KPI monitoring, and executive-level reporting across TSM, RSM, and Head Office teams.]]></description>
+      <link>https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/</guid>
+      <pubDate>Fri, 05 Jun 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Automation &amp; Business Intelligence</category>
+      <content:encoded><![CDATA[A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission, sales performance tracking, gap analysis, KPI monitoring, and executive-level reporting across TSM, RSM, and Head Office teams.]]></content:encoded>
+      <media:content url="https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png" medium="image" />
+    </item>
+    <item>
+      <title>Revenue Optimization &amp; Customer Segmentation for a Telecom Giant</title>
+      <description><![CDATA[A comprehensive case study detailing how advanced data analytics, SQL, and Python were leveraged to optimize revenue streams and segment customer base for a leading telecom company, leading to a 20% increase in ARPU.]]></description>
+      <link>https://itsmebillah.github.io/blog/telecom-revenue-optimization-case-study/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/telecom-revenue-optimization-case-study/</guid>
+      <pubDate>Fri, 06 Mar 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Data Analytics</category>
+      <content:encoded><![CDATA[A comprehensive case study detailing how advanced data analytics, SQL, and Python were leveraged to optimize revenue streams and segment customer base for a leading telecom company, leading to a 20% increase in ARPU.]]></content:encoded>
+      <media:content url="https://www.subex.com/wp-content/uploads/2024/10/Customer-Segmentation-in-the-Telecom-Industry.jpg" medium="image" />
+    </item>
+    <item>
+      <title>Strategic Business Intelligence: Transformational Data Analytics for Retail Giants</title>
+      <description><![CDATA[Exploring how advanced Business Intelligence, data analytics, and strategic reporting empower retail organizations to optimize performance, improve decision-making, and drive sustainable growth at scale.]]></description>
+      <link>https://itsmebillah.github.io/blog/retail-bi-case-study/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/retail-bi-case-study/</guid>
+      <pubDate>Thu, 26 Feb 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Business Intelligence</category>
+      <content:encoded><![CDATA[Exploring how advanced Business Intelligence, data analytics, and strategic reporting empower retail organizations to optimize performance, improve decision-making, and drive sustainable growth at scale.]]></content:encoded>
+      <media:content url="https://i.postimg.cc/xqVrVFcX/Screenshot-2025-07-28-111331.png" medium="image" />
+    </item>
+    <item>
+      <title>Advanced Customer Churn Analysis for Retail Growth</title>
+      <description><![CDATA[An in-depth case study on using SQL and Python to identify at-risk customers and designing a data-driven retention strategy that saved $50k in potential revenue.]]></description>
+      <link>https://itsmebillah.github.io/blog/advanced-customer-churn-analysis/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/advanced-customer-churn-analysis/</guid>
+      <pubDate>Thu, 22 Jan 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Business Intelligence</category>
+      <content:encoded><![CDATA[An in-depth case study on using SQL and Python to identify at-risk customers and designing a data-driven retention strategy that saved $50k in potential revenue.]]></content:encoded>
+      <media:content url="https://www.hashstudioz.com/blog/wp-content/uploads/2025/02/Churn-Prediction-in-Retail-How-Data-Analytics-Improves-Customer-Retention-1.png" medium="image" />
+    </item>
+    <item>
+      <title>Optimizing E-commerce Sales using SQL &amp; Power BI</title>
+      <description><![CDATA[A detailed case study on how I analyzed 1 year of sales data to identify churn patterns and increase revenue by 15%]]></description>
+      <link>https://itsmebillah.github.io/blog/ecommerce-sales-analysis-case-study/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/ecommerce-sales-analysis-case-study/</guid>
+      <pubDate>Sat, 10 Jan 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Data Analytics</category>
+      <content:encoded><![CDATA[A detailed case study on how I analyzed 1 year of sales data to identify churn patterns and increase revenue by 15%]]></content:encoded>
+      <media:content url="https://i.postimg.cc/Hnp5vTtn/Screenshot-2025-07-28-110516.png" medium="image" />
+    </item>
+  </channel>
+</rss>

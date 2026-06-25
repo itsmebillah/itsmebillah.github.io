@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "generatedAt": "2026-06-25T19:26:02.679Z",
+  "source": "Google Sheets via Apps Script",
+  "fields": {
+    "blog": [
+      "title",
+      "description",
+      "content",
+      "keywords",
+      "category"
+    ],
+    "project": [
+      "title",
+      "description",
+      "technologies"
+    ],
+    "certificate": [
+      "title",
+      "issuer",
+      "skills"
+    ],
+    "experience": [
+      "title",
+      "organization",
+      "description"
+    ],
+    "skill": [
+      "title",
+      "category"
+    ]
+  },
+  "items": [
+    {
+      "type": "blog",
+      "id": "blog:ecommerce-sales-analysis-case-study",
+      "url": "https://itsmebillah.github.io/blog/ecommerce-sales-analysis-case-study/",
+      "title": "Optimizing E-commerce Sales using SQL & Power BI",
+      "description": "A detailed case study on how I analyzed 1 year of sales data to identify churn patterns and increase revenue by 15%",
+      "content": "Optimizing E-commerce Sales Using SQL & Power BI Turning raw transaction data into actionable insights that drive revenue growth, customer retention, and smarter business decisions. Executive Summary E-commerce businesses generate massive amounts of transactional data every day. However, data alone does not create value. In this project, I used SQL for data preparation and Power BI for interactive analytics to uncover sales trends, customer behavior, product performance, and revenue opportunities that support data-driven business decisions. 1. Business Challenge E-commerce companies often collect thousands of transactions daily, but identifying meaningful business insights can be difficult. Management needed visibility into revenue trends, customer purchasing patterns, product performance, and profitability across categories. Data becomes valuable only when it helps answer business questions. 2. Data Preparation with SQL The first step was transforming raw transactional data into a structured dataset suitable for analysis. Data cleaning and validation Removing duplicate records Handling missing values Creating calculated business metrics Building analytical views for reporting SQL enabled efficient querying and transformation of large datasets, creating a reliable foundation for business intelligence reporting. 3. Building the Power BI Dashboard After preparing the data, I developed an interactive Power BI dashboard that provides stakeholders with a comprehensive view of business performance. Total Revenue Analysis Profitability Tracking Sales Trends Over Time Top Performing Products Customer Segmentation Insights Regional Performance Analysis Interactive dashboards transform static reports into decision-making tools. 4. Key Business Insights Through data exploration and visualization, several important patterns emerged. Revenue concentration among a small group of products Seasonal sales fluctuations High-value customer segments Underperforming product categories Regional differences in purchasing behavior These findings created opportunities for inventory optimization, targeted marketing campaigns, and customer retention strategies. 5. KPI Framework To measure business performance effectively, the dashboard focused on several key metrics. Total Revenue Total Orders Average Order Value (AOV) Gross Profit Customer Lifetime Value Repeat Purchase Rate Top Product Contribution What gets measured gets managed. 6. Business Impact By centralizing business metrics into a single dashboard, stakeholders gained immediate visibility into performance. Faster decision-making Improved inventory planning Enhanced marketing effectiveness Better customer targeting Greater operational transparency The dashboard reduced reporting time while increasing the accessibility of business insights across departments. 7. Conclusion SQL and Power BI together create a powerful analytics ecosystem for modern e-commerce businesses. SQL provides the structure and reliability needed for data preparation, while Power BI transforms that data into meaningful business insights. The goal of analytics is not reporting data — it is enabling smarter business decisions.",
+      "category": "Data Analytics"
+    },
+    {
+      "type": "blog",
+      "id": "blog:advanced-customer-churn-analysis",
+      "url": "https://itsmebillah.github.io/blog/advanced-customer-churn-analysis/",
+      "title": "Advanced Customer Churn Analysis for Retail Growth",
+      "description": "An in-depth case study on using SQL and Python to identify at-risk customers and designing a data-driven retention strategy that saved $50k in potential revenue.",
+      "content": "1. Overview of the Problem In the competitive retail industry, retaining customers is more cost-effective than acquiring new ones. My client, a mid-sized e-commerce platform, noticed a 25% drop in repeat purchases over six months. I was tasked to find the \"Why\" behind this trend. 2. The Data Stack Used SQL: For querying 1.2 million rows of transaction data. Python (Pandas): For data cleaning and handling missing values. Power BI: For creating a high-impact executive dashboard. 3. Key Insights Discovered After performing RFM (Recency, Frequency, Monetary) Analysis , I uncovered three critical insights: Insight A: 40% of churned customers had a shipping delay of more than 5 days. Insight B: Customers who used \"Discount Codes\" on their first purchase were 3x more likely to churn. 4. Strategic Recommendations Based on the data, I proposed the following actions: Implement an Automated Email Trigger for customers who haven't visited in 30 days. Revise the \"First Purchase\" discount to a \"Second Purchase\" loyalty reward. 5. Final Impact The implementation of these strategies resulted in a 12% reduction in churn within the first quarter and an estimated $50,000 increase in projected annual revenue.",
+      "category": "Business Intelligence"
+    },
+    {
+      "type": "blog",
+      "id": "blog:retail-bi-case-study",
+      "url": "https://itsmebillah.github.io/blog/retail-bi-case-study/",
+      "title": "Strategic Business Intelligence: Transformational Data Analytics for Retail Giants",
+      "description": "Exploring how advanced Business Intelligence, data analytics, and strategic reporting empower retail organizations to optimize performance, improve decision-making, and drive sustainable growth at scale.",
+      "content": "Introduction: The Power of Data-Driven Decisions In today's digital economy, data is more than just numbers; it's the lifeblood of strategic growth. This case study explores a comprehensive Business Intelligence transformation for a multinational retail corporation facing declining margins and customer retention issues. Executive Summary By leveraging a modern data stack (SQL, Python, and Power BI), we identified over $1.2M in annual cost-saving opportunities and improved customer lifetime value (CLV) by 18% within the first six months. 1. Problem Statement: The Blind Spots The client operated across 150+ locations but suffered from Information Silos . Decision-makers lacked a \"Single Source of Truth,\" leading to: Inconsistent Reporting: Different departments showed different sales figures. Inventory Bloat: Overstocking of low-demand items costing $200k/month in storage. Churn Blindness: No way to predict when a VIP customer was about to leave. 2. The Technical Blueprint (Data Engineering) Before analysis, we had to build a robust pipeline. Here is the breakdown of the Data Stack : Phase Tool Used Outcome Extraction SQL / ETL Unified 5TB of raw data Transformation Python (Pandas) 99.9% Data Accuracy Visualization Power BI Real-time Dashboarding ... To be continued in the next update ...",
+      "category": "Business Intelligence"
+    },
+    {
+      "type": "blog",
+      "id": "blog:telecom-revenue-optimization-case-study",
+      "url": "https://itsmebillah.github.io/blog/telecom-revenue-optimization-case-study/",
+      "title": "Revenue Optimization & Customer Segmentation for a Telecom Giant",
+      "description": "A comprehensive case study detailing how advanced data analytics, SQL, and Python were leveraged to optimize revenue streams and segment customer base for a leading telecom company, leading to a 20% increase in ARPU.",
+      "content": "Revenue Optimization & Customer Segmentation for a Telecom Giant In the hyper-competitive telecommunications industry, understanding customer behavior and optimizing revenue streams are paramount. This case study details a project undertaken for a major telecom provider to address challenges related to declining Average Revenue Per User (ARPU) and a lack of targeted marketing strategies. Executive Summary By implementing advanced data analytics techniques, including K-Means Clustering for customer segmentation and SQL-based revenue analysis, we identified key areas for improvement. This led to the development of three distinct customer segments and tailored marketing campaigns, resulting in a 20% increase in ARPU for the targeted segments and an overall 8% revenue uplift within nine months. 1. The Business Challenge: Stagnant Growth & Untapped Potential The client, a prominent telecom operator, was struggling with: Declining ARPU: Average Revenue Per User was flatlining despite a growing subscriber base. Generic Marketing: One-size-fits-all campaigns were yielding low conversion rates. High Churn in Specific Segments: Inability to identify and retain high-value customers at risk. Underperforming Product Bundles: Lack of insight into which service combinations truly resonated with users. 2. Data Sources & Engineering: Laying the Foundation A robust data infrastructure was critical. We integrated and cleaned data from various sources: Billing Records: Detailed usage, subscription tiers, and payment history (5TB+). CRM Data: Customer demographics, service requests, and interaction logs. Network Usage Data: Call duration, data consumption, and peak usage times. Marketing Campaign Data: Response rates and offer uptake. Data Cleaning & Transformation: Utilizing SQL (PostgreSQL) for initial data extraction and aggregation, followed by Python (Pandas, NumPy) for handling missing values, standardizing formats, and feature engineering. This ensured a high-quality dataset for advanced analytics. 3. Advanced Analytics: Unveiling Customer Segments 3.1. Customer Segmentation (K-Means Clustering) To move beyond generic marketing, we applied unsupervised machine learning. Feature Selection: Key features included ARPU, data usage, call duration, contract length, and customer tenure. Model Application: K-Means Clustering was chosen for its interpretability and efficiency in grouping similar customers. Optimal K: The Elbow Method indicated that K=3 was the optimal number of segments. 3.2. Segment Profiling & Key Characteristics Each segment was deeply profiled to understand their unique behaviors and preferences: Segment 1: The \"Digital Natives\" (35% of customer base) High data usage, low call duration. Early adopters of new services. Responsive to digital marketing. Segment 2: The \"Family Connectors\" (45% of customer base) Moderate data, high call duration, often multiple lines. Value stability and bundled family plans. Responsive to loyalty programs. Segment 3: The \"Budget Conscious\" (20% of customer base) Low usage across all services, price-sensitive. High churn risk if better deals emerge. Responsive to cost-saving promotions. 4. Revenue Optimization & Targeted Strategies With clear segments, we could develop specific strategies to boost ARPU and reduce churn: Digital Natives: Introduced tiered \"unlimited\" data plans with cloud storage bundles. Family Connectors: Launched value-added family entertainment packages and multi-line discounts. Budget Conscious: Created pre-emptive loyalty discounts for long-term customers and clearer, affordable data-only plans. 5. Impact & Future Recommendations The tailored strategies significantly impacted the client’s bottom line: 20% ARPU Increase: Achieved within targeted segments (Digital Natives, Family Connectors). 15% Churn Reduction: Among the Budget Conscious segment. 8% Overall Revenue Uplift: Across the entire customer base. Future Outlook: The client is now exploring predictive churn models using machine learning to proactively identify at-risk customers before they churn, further solidifying their market position. --- End of Case Study ---",
+      "category": "Data Analytics"
+    },
+    {
+      "type": "blog",
+      "id": "blog:data-analysis-career-business-guide",
+      "url": "https://itsmebillah.github.io/blog/data-analysis-career-business-guide/",
+      "title": "Data Analysis & Storytelling for Better Decisions",
+      "description": "Exploring how modern organizations turn raw data into actionable insights, smarter decisions, and measurable business outcomes.",
+      "content": "Data Analysis, Storytelling & Decision-Making How modern organizations transform raw data into clarity, confidence, and measurable business impact. Executive Summary This article presents a comprehensive view of how data analysis, when combined with strong business understanding and storytelling, becomes a strategic asset rather than a reporting function. Through real-world scenarios, analytical thinking frameworks, and decision-driven examples, we explore how organizations move from data overload to actionable insight . 1. The Illusion of Being “Data-Driven” Most modern organizations proudly describe themselves as data-driven. Dashboards are everywhere. KPIs are tracked daily. Reports are generated automatically. Yet, when critical decisions arise, conversations often shift from data to instinct, seniority, or urgency. This contradiction exists because having data is not the same as understanding data . Data does not create value by existing. Value appears only when data changes decisions. 2. What Data Analysis Actually Means in Practice In theory, data analysis is often explained as a sequence of steps: collect data, clean it, analyze it, visualize it. In practice, it is a much more iterative and human process. A data analyst constantly moves between three questions: What is happening? Why is it happening? What should change because of this? Tools like SQL, Python, or BI platforms help answer parts of these questions, but they never replace reasoning. 3. The Invisible Work: Cleaning and Shaping Data One of the least visible but most critical parts of data analysis is data preparation. Real-world datasets are messy by default. Missing values, inconsistent formats, duplicated records, and incorrect entries are common. Analysts often spend 60–70% of their time preparing data before any meaningful analysis begins. This work rarely appears in presentations, but without it, insights become unreliable. 4. From Metrics to Meaning Metrics alone rarely tell a complete story. For example, an average revenue figure may look stable, while underlying customer behavior is changing rapidly. Without segmentation, trends remain hidden. Without context, numbers remain abstract. Insight is not about knowing more numbers. It is about knowing which numbers matter.",
+      "category": "Business Intelligence"
+    },
+    {
+      "type": "blog",
+      "id": "blog:pt-cpi-sales-target-gap-analytics-portal",
+      "url": "https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/",
+      "title": "PT CPI Sales Target & Gap Analytics Portal",
+      "description": "A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission, sales performance tracking, gap analysis, KPI monitoring, and executive-level reporting across TSM, RSM, and Head Office teams.",
+      "content": "Building a centralized sales target management and performance analytics platform using Google Apps Script, Google Sheets, and a custom business intelligence dashboard. Executive Summary PT Consumer Products Industries required a centralized system for collecting monthly sales targets, monitoring field performance, tracking reporting compliance, and analyzing sales gaps across multiple regions. To solve this challenge, I designed and developed a cloud-based Sales Target & Gap Analytics Portal that enables Territory Sales Managers (TSMs) to submit targets while providing executives with real-time visibility into organizational performance. 1. Business Challenge Managing sales targets across multiple territories and field teams was becoming increasingly difficult through spreadsheets and manual reporting processes. Management lacked visibility into target achievement, sales performance, and submission compliance at both regional and national levels. Manual target collection process No centralized reporting system Difficulty tracking TSM submissions Limited performance visibility No real-time target vs actual comparison Time-consuming report consolidation As the organization grew, spreadsheet-driven processes could no longer support business decision-making effectively. 2. Solution Architecture I developed a centralized web application using Google Workspace technologies and a custom analytics engine. Google Apps Script Backend Google Sheets Database Layer HTML & JavaScript Frontend Tailwind CSS User Interface Role-Based Authentication System Dynamic Analytics Engine The platform serves as a single source of truth for sales targets, reporting compliance, and performance analytics. 3. Multi-Level User Management The application was designed with hierarchical access control to ensure each user only sees information relevant to their role. Territory Sales Manager (TSM) Regional Sales Manager (RSM) Office Users System Administrators User authentication dynamically determines which dashboard and features are accessible after login. 4. Dynamic Target Entry Portal One of the core challenges was simplifying target submission for field teams. Instead of entering data into multiple spreadsheets, TSMs interact with a dynamic matrix interface that automatically generates target entry grids based on assigned dealers, sales representatives, territories, and products. Auto-generated target matrix Dealer-wise planning Product-wise allocation Territory-level targeting Historical submission loading 5. Executive Analytics Dashboard For management, I developed an executive dashboard focused on performance monitoring and decision support. Target Volume KPI Financial Target Value Actual Sales Performance Gap Analysis Achievement Percentage Submission Tracking Executives can instantly identify underperforming territories and take corrective action without waiting for manual reports. 6. Gap Analysis Engine The most valuable feature of the platform is the Gap Analytics Engine. By combining target data with actual sales records, the system automatically calculates performance variance across every level of the organization. Target Quantity Target Value Actual Quantity Actual Revenue Sales Gap Achievement Percentage The dashboard transforms raw sales data into actionable business intelligence. 7. Reporting Compliance Tracker A dedicated submission tracker monitors reporting compliance across all active TSMs. Management can instantly identify which territories have submitted monthly targets and which teams require follow-up. Submission Monitoring Pending TSM Detection Compliance Tracking Real-Time Status Updates 8. Business Impact The implementation significantly improved operational efficiency and reporting visibility throughout the organization. Reduced manual reporting effort Improved reporting compliance Faster executive decision-making Real-time performance visibility Centralized business intelligence Scalable reporting architecture 9. Conclusion The PT CPI Sales Target & Gap Analytics Portal transformed a fragmented reporting process into a centralized analytics platform. By combining automation, business intelligence, and cloud-based technologies, the system now provides both operational teams and executives with the tools needed to plan, monitor, and optimize sales performance effectively. The real value of analytics is not measuring performance — it is enabling better business decisions.",
+      "category": "Automation & Business Intelligence"
+    },
+    {
+      "type": "project",
+      "id": "project:autopilot-business-system",
+      "url": "https://script.google.com/macros/s/AKfycbzJwA27QizVfbsVt3uJl1_mdJxAaU5dU0qFvUvESSNS1Fv277UCerV5-1qiP9dU0aY5/exec",
+      "title": "Autopilot Business System",
+      "description": "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script",
+      "technologies": [
+        "Google Apps Script",
+        "Automation",
+        "Google Sheets API"
+      ]
+    },
+    {
+      "type": "project",
+      "id": "project:car-sales-analysis",
+      "url": "https://app.powerbi.com/view?r=eyJrIjoiNzVlYzIyNzEtYjc2Ni00MjY4LWJlYTAtOWUzYTBlZTdhMjVkIiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
+      "title": "Car Sales Analysis",
+      "description": "Vehicle sales trends and profitability analysis with Power BI dashboard",
+      "technologies": [
+        "Power BI",
+        "SQL",
+        "Data Analysis",
+        "Dashboard"
+      ]
+    },
+    {
+      "type": "project",
+      "id": "project:hr-analytics-dashboard",
+      "url": "https://app.powerbi.com/view?r=eyJrIjoiMjBhNzM1MDEtNTZiYy00MGM1LWJhM2MtY2NlZmYyZTA0ZjQ4IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
+      "title": "HR Analytics Dashboard",
+      "description": "Employee performance and retention analysis with advanced SQL queries",
+      "technologies": [
+        "Power BI",
+        "SQL",
+        "HR Analytics",
+        "Dashboard"
+      ]
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:sql-basic-certificate-hackerrank",
+      "url": "https://www.hackerrank.com/certificates/8300df884084",
+      "title": "SQL (Basic) Certificate",
+      "issuer": "HackerRank",
+      "skills": [
+        "It includes simple queries",
+        "relationships",
+        "and aggregators."
+      ]
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:sql-intermediate-certificate-hackerrank",
+      "url": "https://www.hackerrank.com/certificates/4db0c16757aa",
+      "title": "SQL (Intermediate) Certificate",
+      "issuer": "HackerRank",
+      "skills": [
+        "It includes complex joins",
+        "unions",
+        "and sub-queries."
+      ]
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:python-programming-for-beginners-analystbuilder",
+      "url": "https://www.analystbuilder.com/achievements/verify/EY0VQ83JGK?r=vgidCVcAlFNjV4Zgwagi0uOBt",
+      "title": "Python Programming for Beginners",
+      "issuer": "AnalystBuilder"
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:advanced-mysql-for-data-analysis-analystbuilder",
+      "url": "https://www.analystbuilder.com/achievements/verify/N89XBITP8M?r=EBd1otx7xeaxP1SWwGo01hVCr",
+      "title": "Advanced MySQL for Data Analysis",
+      "issuer": "AnalystBuilder"
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:excel-for-data-analytics-analystbuilder",
+      "url": "https://www.analystbuilder.com/achievements/verify/SO9RP6CCDB?r=G0H6JyqOWXT7ghOFyEpQC1fSR",
+      "title": "Excel for Data Analytics",
+      "issuer": "AnalystBuilder"
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:mysql-for-data-analytics-analystbuilder",
+      "url": "https://www.analystbuilder.com/achievements/verify/8TZX5ICRH4?r=ja2NyeumhzwTJKQBZfnWUibvv",
+      "title": "MySQL for Data Analytics",
+      "issuer": "AnalystBuilder",
+      "skills": [
+        "sql"
+      ]
+    },
+    {
+      "type": "experience",
+      "id": "experience:mis-executive-p-t-consumer-products-industries-june-2026-present",
+      "url": "#experience",
+      "title": "MIS Executive",
+      "organization": "P.T. Consumer Products Industries",
+      "description": "Prepared MIS and KPI reports, analyzed sales performance, built Excel/Power BI dashboards, managed large datasets, and automated reporting processes to improve efficiency and accuracy."
+    },
+    {
+      "type": "experience",
+      "id": "experience:data-analyst-data-solution-360-june-2025-may-2026",
+      "url": "#experience",
+      "title": "Data Analyst",
+      "organization": "Data Solution 360",
+      "description": "Developed automated data pipelines reducing manual reporting time by 70%. Designed Google Apps Script automations for seamless business workflows. Built custom automation for certificate generation and CRM email triggers."
+    },
+    {
+      "type": "experience",
+      "id": "experience:accounts-executive-orient-button-ltd-2023-2025",
+      "url": "#experience",
+      "title": "Accounts Executive",
+      "organization": "Orient Button Ltd.",
+      "description": "Created advanced Excel dashboards for financial KPIs and variance trends. Automated recurring monthly reporting using VBA and Google Sheets. Managed and analyzed sales and expense data across departments."
+    },
+    {
+      "type": "skill",
+      "id": "skill:google-apps-script-automation",
+      "url": "#skills",
+      "title": "Google Apps Script",
+      "category": "Automation"
+    },
+    {
+      "type": "skill",
+      "id": "skill:sql-data-analysis",
+      "url": "#skills",
+      "title": "SQL",
+      "category": "Data Analysis"
+    },
+    {
+      "type": "skill",
+      "id": "skill:python-programming",
+      "url": "#skills",
+      "title": "Python",
+      "category": "Programming"
+    },
+    {
+      "type": "skill",
+      "id": "skill:excel-data-analysis",
+      "url": "#skills",
+      "title": "Excel",
+      "category": "Data Analysis"
+    },
+    {
+      "type": "skill",
+      "id": "skill:power-bi-data-visualization",
+      "url": "#skills",
+      "title": "Power BI",
+      "category": "Data Visualization"
+    },
+    {
+      "type": "skill",
+      "id": "skill:data-analysis-analytics",
+      "url": "#skills",
+      "title": "Data Analysis",
+      "category": "Analytics"
+    },
+    {
+      "type": "skill",
+      "id": "skill:automation-technical",
+      "url": "#skills",
+      "title": "Automation",
+      "category": "Technical"
+    },
+    {
+      "type": "skill",
+      "id": "skill:marketing-analytics-business",
+      "url": "#skills",
+      "title": "Marketing Analytics",
+      "category": "Business"
+    }
+  ]
+}
