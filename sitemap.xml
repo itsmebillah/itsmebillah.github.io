@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <!-- Homepage canonical URL. -->
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
     <loc>https://itsmebillah.github.io/</loc>
-    <lastmod>2026-06-26</lastmod>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -14,5 +15,4 @@
       <image:caption>Portrait of Md Masum Billah</image:caption>
     </image:image>
   </url>
-  <!-- Future generated blog pages should be added as canonical /blog/{slug}/ entries only after static blog pages exist. -->
 </urlset>

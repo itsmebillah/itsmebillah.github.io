@@ -7,6 +7,20 @@ const SITE_CONFIG = {
     defaultImage: "https://i.postimg.cc/26DtqzQr/1777886932477.jpg"
 };
 
+const {
+    generateBlogPageJsonLd,
+    generateBreadcrumbSchema,
+    generateHomepageJsonLd,
+    validateJsonLd
+} = require("./schema-helpers");
+
+const {
+    generateBlogMetadata,
+    generateHomepageMetadata,
+    validateMetadata,
+    validateMetadataCollection
+} = require("./metadata-helpers");
+
 function normalizeSlug(slug) {
     return String(slug || "")
         .trim()
@@ -28,35 +42,12 @@ function splitList(value) {
 }
 
 function generateMeta(blog, options = {}) {
-    const site = { ...SITE_CONFIG, ...options };
-    const slug = normalizeSlug(blog.Slug || blog.slug);
-    const title = String(blog.Title || blog.title || "").trim();
-    const description = String(blog.Description || blog.description || "").trim();
-    const keywords = splitList(blog.Keywords || blog.keywords).join(", ");
-    const canonical = generateCanonical(slug, site.siteUrl);
-    const image = String(blog.Thumbnail || blog.featuredImage || site.defaultImage).trim();
-    const category = String(blog.Category || blog.category || "").trim();
-    const publishDate = String(blog.Date || blog.publishDate || "").trim();
-    const author = String(blog.Author || blog.author || site.author).trim();
-
-    return {
-        slug,
-        title,
-        description,
-        keywords,
-        canonical,
-        image,
-        imageAlt: `${title} featured image`,
-        category,
-        publishDate,
-        author,
-        robots: "index, follow"
-    };
+    return generateBlogMetadata(blog, options.content || blog.Content || blog.content || "", { ...SITE_CONFIG, ...options });
 }
 
 function generateOpenGraph(meta, options = {}) {
     const site = { ...SITE_CONFIG, ...options };
-    return {
+    return meta.og || {
         type: "article",
         locale: "en_US",
         title: meta.title,
@@ -69,7 +60,7 @@ function generateOpenGraph(meta, options = {}) {
 }
 
 function generateTwitterCard(meta) {
-    return {
+    return meta.twitter || {
         card: "summary_large_image",
         title: meta.title,
         description: meta.description,
@@ -89,32 +80,21 @@ function generateBreadcrumb(meta, options = {}) {
 
 function generateBlogJsonLd(meta, content, options = {}) {
     const site = { ...SITE_CONFIG, ...options };
-    return JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        headline: meta.title,
-        description: meta.description,
-        image: meta.image,
-        author: {
-            "@type": "Person",
-            name: meta.author,
-            url: site.authorUrl
-        },
-        publisher: {
-            "@type": "Organization",
-            name: site.siteName,
-            logo: {
-                "@type": "ImageObject",
-                url: site.defaultImage
-            }
-        },
-        mainEntityOfPage: meta.canonical,
-        datePublished: meta.publishDate,
-        dateModified: meta.publishDate,
-        articleSection: meta.category,
-        keywords: meta.keywords,
-        articleBody: String(content || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
-    }, null, 2);
+    return generateBlogPageJsonLd(meta, content, site);
+}
+
+function generatePageSeo(blog, content = "", options = {}) {
+    const meta = generateBlogMetadata(blog, content, { ...SITE_CONFIG, ...options });
+    return {
+        ...meta,
+        og: generateOpenGraph(meta, options),
+        twitter: generateTwitterCard(meta),
+        jsonLd: generateBlogJsonLd(meta, content, options)
+    };
+}
+
+function generateHomepageSeo(options = {}) {
+    return generateHomepageMetadata({ ...SITE_CONFIG, ...options });
 }
 
 if (typeof module !== "undefined") {
@@ -123,9 +103,17 @@ if (typeof module !== "undefined") {
         normalizeSlug,
         generateCanonical,
         generateMeta,
+        generatePageSeo,
+        generateHomepageSeo,
         generateOpenGraph,
         generateTwitterCard,
         generateBreadcrumb,
-        generateBlogJsonLd
+        generateBreadcrumbSchema,
+        generateHomepageJsonLd,
+        generateBlogPageJsonLd,
+        generateBlogJsonLd,
+        validateJsonLd,
+        validateMetadata,
+        validateMetadataCollection
     };
 }
