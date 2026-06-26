@@ -14,6 +14,7 @@ const CONFIG_FILE = path.join(ROOT_DIR, "assets", "js", "config.js");
 const BLOG_TEMPLATE_FILE = path.join(ROOT_DIR, "blog", "templates", "blog.template.html");
 const SEO_TEMPLATE_FILE = path.join(ROOT_DIR, "blog", "templates", "seo.template.html");
 const MANIFEST_FILE = path.join(ROOT_DIR, "blog", "blogs-manifest.json");
+const BLOG_INDEX_FILE = path.join(ROOT_DIR, "blog", "index.html");
 
 function readApiUrl() {
     const config = fs.readFileSync(CONFIG_FILE, "utf8");
@@ -58,6 +59,10 @@ function dateIso(value) {
 
 function absoluteBlogUrl(slug) {
     return `${SITE_CONFIG.siteUrl.replace(/\/$/, "")}/blog/${slug}/`;
+}
+
+function escapeJsonForScript(value) {
+    return String(value || "").replace(/<\//g, "<\\/");
 }
 
 function sanitizeUrl(value, options = {}) {
@@ -171,6 +176,157 @@ function buildRelatedCard(article) {
     </a>`;
 }
 
+function buildBlogIndexCard(article) {
+    return `<a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="./${escapeHtml(article.slug)}/">
+        <img src="${escapeHtml(article.image)}" alt="${escapeHtml(article.title)} thumbnail" loading="lazy" decoding="async" width="600" height="338" class="h-44 w-full object-cover">
+        <div class="p-5">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">${escapeHtml(article.category || "Case Study")}</span>
+            <h2 class="mt-2 text-lg font-bold text-white leading-snug">${escapeHtml(article.title)}</h2>
+            <p class="mt-3 text-sm text-gray-400 line-clamp-3">${escapeHtml(article.description)}</p>
+            <div class="mt-4 flex flex-wrap gap-2 text-xs text-gray-500">
+                <span>${escapeHtml(article.author)}</span>
+                <span aria-hidden="true">&middot;</span>
+                <time datetime="${escapeHtml(dateIso(article.date))}">${escapeHtml(formatDate(article.date))}</time>
+                <span aria-hidden="true">&middot;</span>
+                <span>${estimateReadingTime(article.content)} min read</span>
+            </div>
+        </div>
+    </a>`;
+}
+
+function buildBlogIndexJsonLd(articles) {
+    const siteUrl = SITE_CONFIG.siteUrl.replace(/\/$/, "");
+    const pageUrl = `${siteUrl}/blog/`;
+    return escapeJsonForScript(JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "@id": `${pageUrl}#collection`,
+                "name": "Case Studies",
+                "description": "Published data analytics, business intelligence, and automation case studies by Md. Masum Billah.",
+                "url": pageUrl,
+                "inLanguage": SITE_CONFIG.language,
+                "isPartOf": {
+                    "@id": `${siteUrl}/#website`
+                },
+                "mainEntity": {
+                    "@type": "ItemList",
+                    "itemListElement": articles.map((article, index) => ({
+                        "@type": "ListItem",
+                        "position": index + 1,
+                        "url": absoluteBlogUrl(article.slug),
+                        "name": article.title
+                    }))
+                }
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": `${siteUrl}/`
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "Blog",
+                        "item": pageUrl
+                    }
+                ]
+            }
+        ]
+    }, null, 2));
+}
+
+function buildBlogIndexHtml(articles) {
+    const siteUrl = SITE_CONFIG.siteUrl.replace(/\/$/, "");
+    const pageUrl = `${siteUrl}/blog/`;
+    const title = "Case Studies | Md Masum Billah";
+    const description = "Explore published data analytics, business intelligence, and automation case studies by Md. Masum Billah.";
+    const keywords = "Md Masum Billah blog, data analytics case studies, business intelligence case studies, automation case studies, Power BI, SQL";
+    const image = SITE_CONFIG.defaultImage;
+    const cards = articles.length
+        ? articles.map(buildBlogIndexCard).join("\n")
+        : `<p class="text-sm text-gray-400">No published articles are available yet.</p>`;
+
+    return `<!DOCTYPE html>
+<html lang="${escapeHtml(SITE_CONFIG.language)}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeHtml(description)}">
+    <meta name="keywords" content="${escapeHtml(keywords)}">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="author" content="${escapeHtml(SITE_CONFIG.author)}">
+    <link rel="canonical" href="${escapeHtml(pageUrl)}">
+    <link rel="alternate" type="application/rss+xml" title="Md Masum Billah Portfolio Blog RSS Feed" href="${escapeHtml(`${siteUrl}/rss.xml`)}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="${escapeHtml(title)}">
+    <meta property="og:description" content="${escapeHtml(description)}">
+    <meta property="og:image" content="${escapeHtml(image)}">
+    <meta property="og:image:secure_url" content="${escapeHtml(image)}">
+    <meta property="og:image:alt" content="Md Masum Billah Portfolio Blog social preview image">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="${escapeHtml(pageUrl)}">
+    <meta property="og:site_name" content="${escapeHtml(SITE_CONFIG.siteName)}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(title)}">
+    <meta name="twitter:description" content="${escapeHtml(description)}">
+    <meta name="twitter:image" content="${escapeHtml(image)}">
+    <script type="application/ld+json">${buildBlogIndexJsonLd(articles)}</script>
+    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//i.postimg.cc">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.postimg.cc">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../assets/css/main.css" rel="stylesheet">
+    <style>
+        .blog-index-shell { min-height: 100vh; padding: 6rem 1.25rem 3rem; }
+        .blog-index-container { width: min(100%, 1120px); margin: 0 auto; }
+        .article-card-link { display: block; height: 100%; }
+        @media (max-width: 768px) { .blog-index-shell { padding-top: 5rem; } }
+    </style>
+</head>
+<body>
+    <main class="blog-index-shell" id="blog-index">
+        <section class="blog-index-container">
+            <nav class="mb-8 text-xs text-gray-400" aria-label="Breadcrumb">
+                <a href="../" class="hover:text-white transition">Home</a>
+                <span class="mx-2 text-gray-600">/</span>
+                <span class="text-orange-400">Case Studies</span>
+            </nav>
+            <header class="mb-10">
+                <span class="inline-flex items-center rounded-full bg-orange-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-orange-400">Blog</span>
+                <h1 class="mt-4 text-3xl md:text-5xl font-extrabold leading-tight text-white">Case Studies</h1>
+                <p class="mt-5 text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl">${escapeHtml(description)}</p>
+            </header>
+            <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                ${cards}
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+`;
+}
+
+function writeBlogIndex(articles) {
+    fs.writeFileSync(BLOG_INDEX_FILE, buildBlogIndexHtml(articles), "utf8");
+}
+
 function normalizeBlog(blog, content, index) {
     const slug = normalizeSlug(readField(blog, "Slug"));
     const title = String(readField(blog, "Title") || "Untitled Article").trim();
@@ -227,7 +383,7 @@ function buildTemplateData(article, articles, templateContent) {
         .slice(0, 3);
     const renderedContent = renderMixedContent(article.content, article.description);
     const seo = generatePageSeo(article.source, article.content, { content: article.content });
-    seo.jsonLd = generatePageSeo({ ...article.source, Slug: article.slug }, article.content).jsonLd;
+    seo.jsonLd = escapeJsonForScript(generatePageSeo({ ...article.source, Slug: article.slug }, article.content).jsonLd);
 
     const metadataValidation = validateMetadata(seo);
     if (!metadataValidation.valid) throw new Error(`${article.slug}: ${metadataValidation.errors.join(" ")}`);
@@ -308,6 +464,7 @@ async function generateBlogPages() {
         fs.writeFileSync(path.join(outputDir, "index.html"), html, "utf8");
         generatedPages.push(article);
     });
+    writeBlogIndex(generatedPages);
 
     const generatedAt = new Date().toISOString();
     updateManifest(generatedPages, generatedAt);
@@ -315,6 +472,7 @@ async function generateBlogPages() {
     return {
         generatedAt,
         generatedCount: generatedPages.length,
+        blogIndex: `${SITE_CONFIG.siteUrl.replace(/\/$/, "")}/blog/`,
         generatedUrls: generatedPages.map(article => absoluteBlogUrl(article.slug)),
         duplicateSlugs,
         invalidSlugs
@@ -336,5 +494,6 @@ module.exports = {
     generateBlogPages,
     renderMixedContent,
     sanitizeHtml,
-    estimateReadingTime
+    estimateReadingTime,
+    buildBlogIndexHtml
 };
