@@ -6,7 +6,7 @@
   xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
     <loc>https://itsmebillah.github.io/</loc>
-    <lastmod>2026-06-25</lastmod>
+    <lastmod>2026-06-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -14,5 +14,41 @@
       <image:title>Md Masum Billah</image:title>
       <image:caption>Portrait of Md Masum Billah</image:caption>
     </image:image>
+  </url>
+  <url>
+    <loc>https://itsmebillah.github.io/blog/ecommerce-sales-analysis-case-study/</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://itsmebillah.github.io/blog/advanced-customer-churn-analysis/</loc>
+    <lastmod>2026-01-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://itsmebillah.github.io/blog/retail-bi-case-study/</loc>
+    <lastmod>2026-02-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://itsmebillah.github.io/blog/telecom-revenue-optimization-case-study/</loc>
+    <lastmod>2026-03-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://itsmebillah.github.io/blog/data-analysis-career-business-guide/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/</loc>
+    <lastmod>2026-06-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

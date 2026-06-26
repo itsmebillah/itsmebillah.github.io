@@ -41,7 +41,7 @@
                             </div>
                             <div class="flex justify-between items-center text-[11px]">
                                 <span class="text-gray-500">${date}</span>
-                                <button onclick="openBlogModal(${idx})" type="button" class="text-white font-semibold hover:text-orange-500 flex items-center" data-blog-slug="${slug}" data-blog-url="${blogUrl}">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
+                                <button onclick="openBlogArticle(${idx})" type="button" class="text-white font-semibold hover:text-orange-500 flex items-center" data-blog-slug="${slug}" data-blog-url="${blogUrl}">Read Segment <i class="fas fa-arrow-right ml-1.5 text-[9px]"></i></button>
                             </div>
                         </div>
                     </div>`;
@@ -114,4 +114,15 @@
             document.body.style.overflow = 'auto';
         }
 
+        function openBlogArticle(index) {
+            if (!allBlogs[index]) return;
+            const blogUrl = getBlogUrl(allBlogs[index]);
+            if (blogUrl) {
+                window.location.href = blogUrl;
+                return;
+            }
+            openBlogModal(index);
+        }
+
         window.getBlogUrl = getBlogUrl;
+        window.openBlogArticle = openBlogArticle;

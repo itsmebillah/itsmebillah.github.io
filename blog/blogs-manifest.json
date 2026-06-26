@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": null,
+  "generatedAt": "2026-06-26T04:20:06.777Z",
   "source": {
     "cms": "Google Sheets",
     "api": "Apps Script",
@@ -48,5 +48,54 @@
     "ScheduledAt",
     "UpdatedAt"
   ],
-  "pages": []
+  "pages": [
+    {
+      "title": "Data Analysis & Storytelling for Better Decisions",
+      "slug": "data-analysis-career-business-guide",
+      "url": "/blog/data-analysis-career-business-guide/",
+      "output": "blog/data-analysis-career-business-guide/index.html",
+      "category": "Business Intelligence",
+      "published": true
+    },
+    {
+      "title": "PT CPI Sales Target & Gap Analytics Portal",
+      "slug": "pt-cpi-sales-target-gap-analytics-portal",
+      "url": "/blog/pt-cpi-sales-target-gap-analytics-portal/",
+      "output": "blog/pt-cpi-sales-target-gap-analytics-portal/index.html",
+      "category": "Automation & Business Intelligence",
+      "published": true
+    },
+    {
+      "title": "Revenue Optimization & Customer Segmentation for a Telecom Giant",
+      "slug": "telecom-revenue-optimization-case-study",
+      "url": "/blog/telecom-revenue-optimization-case-study/",
+      "output": "blog/telecom-revenue-optimization-case-study/index.html",
+      "category": "Data Analytics",
+      "published": true
+    },
+    {
+      "title": "Strategic Business Intelligence: Transformational Data Analytics for Retail Giants",
+      "slug": "retail-bi-case-study",
+      "url": "/blog/retail-bi-case-study/",
+      "output": "blog/retail-bi-case-study/index.html",
+      "category": "Business Intelligence",
+      "published": true
+    },
+    {
+      "title": "Advanced Customer Churn Analysis for Retail Growth",
+      "slug": "advanced-customer-churn-analysis",
+      "url": "/blog/advanced-customer-churn-analysis/",
+      "output": "blog/advanced-customer-churn-analysis/index.html",
+      "category": "Business Intelligence",
+      "published": true
+    },
+    {
+      "title": "Optimizing E-commerce Sales using SQL & Power BI",
+      "slug": "ecommerce-sales-analysis-case-study",
+      "url": "/blog/ecommerce-sales-analysis-case-study/",
+      "output": "blog/ecommerce-sales-analysis-case-study/index.html",
+      "category": "Data Analytics",
+      "published": true
+    }
+  ]
 }

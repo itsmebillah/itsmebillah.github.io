@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT CPI Sales Target &amp; Gap Analytics Portal</title>
+<meta name="description" content="A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission,...">
+<meta name="keywords" content="Automation &amp; Business Intelligence, CPI, Sales, Target, Gap, Analytics, Portal, Business Intelligence, Data Analysis, Dashboard, Portfolio">
+<meta name="author" content="Md. Masum Billah">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="PT CPI Sales Target &amp; Gap Analytics Portal">
+<meta property="og:description" content="A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission,...">
+<meta property="og:url" content="https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/">
+<meta property="og:site_name" content="Md Masum Billah Portfolio">
+<meta property="og:image" content="https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png">
+<meta property="og:image:secure_url" content="https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png">
+<meta property="og:image:alt" content="PT CPI Sales Target &amp; Gap Analytics Portal featured image">
+<meta property="article:published_time" content="2026-06-05T18:00:00.000Z">
+<meta property="article:modified_time" content="2026-06-05T18:00:00.000Z">
+<meta property="article:author" content="https://itsmebillah.github.io/#person">
+<meta property="article:section" content="Automation &amp; Business Intelligence">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PT CPI Sales Target &amp; Gap Analytics Portal">
+<meta name="twitter:description" content="A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission,...">
+<meta name="twitter:image" content="https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png">
+<meta name="twitter:image:alt" content="PT CPI Sales Target &amp; Gap Analytics Portal featured image">
+
+<script type="application/ld+json" id="blog-structured-data">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://itsmebillah.github.io/#organization",
+      "name": "Md Masum Billah Portfolio",
+      "url": "https://itsmebillah.github.io",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://i.postimg.cc/26DtqzQr/1777886932477.jpg"
+      },
+      "founder": {
+        "@id": "https://itsmebillah.github.io/#person"
+      }
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "PT CPI Sales Target & Gap Analytics Portal",
+      "description": "A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission,...",
+      "image": [
+        "https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Md. Masum Billah",
+        "url": "https://itsmebillah.github.io/#person"
+      },
+      "publisher": {
+        "@id": "https://itsmebillah.github.io/#organization"
+      },
+      "datePublished": "2026-06-05T18:00:00.000Z",
+      "dateModified": "2026-06-05T18:00:00.000Z",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/"
+      },
+      "keywords": [
+        "Automation & Business Intelligence",
+        "CPI",
+        "Sales",
+        "Target",
+        "Gap",
+        "Analytics",
+        "Portal",
+        "Business Intelligence",
+        "Data Analysis",
+        "Dashboard",
+        "Portfolio"
+      ],
+      "articleSection": "Automation & Business Intelligence",
+      "url": "https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/",
+      "articleBody": "Building a centralized sales target management and performance analytics platform using Google Apps Script, Google Sheets, and a custom business intelligence dashboard. Executive Summary PT Consumer Products Industries required a centralized system for collecting monthly sales targets, monitoring field performance, tracking reporting compliance, and analyzing sales gaps across multiple regions. To solve this challenge, I designed and developed a cloud-based Sales Target & Gap Analytics Portal that enables Territory Sales Managers (TSMs) to submit targets while providing executives with real-time visibility into organizational performance. 1. Business Challenge Managing sales targets across multiple territories and field teams was becoming increasingly difficult through spreadsheets and manual reporting processes. Management lacked visibility into target achievement, sales performance, and submission compliance at both regional and national levels. Manual target collection process No centralized reporting system Difficulty tracking TSM submissions Limited performance visibility No real-time target vs actual comparison Time-consuming report consolidation As the organization grew, spreadsheet-driven processes could no longer support business decision-making effectively. 2. Solution Architecture I developed a centralized web application using Google Workspace technologies and a custom analytics engine. Google Apps Script Backend Google Sheets Database Layer HTML & JavaScript Frontend Tailwind CSS User Interface Role-Based Authentication System Dynamic Analytics Engine The platform serves as a single source of truth for sales targets, reporting compliance, and performance analytics. 3. Multi-Level User Management The application was designed with hierarchical access control to ensure each user only sees information relevant to their role. Territory Sales Manager (TSM) Regional Sales Manager (RSM) Office Users System Administrators User authentication dynamically determines which dashboard and features are accessible after login. 4. Dynamic Target Entry Portal One of the core challenges was simplifying target submission for field teams. Instead of entering data into multiple spreadsheets, TSMs interact with a dynamic matrix interface that automatically generates target entry grids based on assigned dealers, sales representatives, territories, and products. Auto-generated target matrix Dealer-wise planning Product-wise allocation Territory-level targeting Historical submission loading 5. Executive Analytics Dashboard For management, I developed an executive dashboard focused on performance monitoring and decision support. Target Volume KPI Financial Target Value Actual Sales Performance Gap Analysis Achievement Percentage Submission Tracking Executives can instantly identify underperforming territories and take corrective action without waiting for manual reports. 6. Gap Analysis Engine The most valuable feature of the platform is the Gap Analytics Engine. By combining target data with actual sales records, the system automatically calculates performance variance across every level of the organization. Target Quantity Target Value Actual Quantity Actual Revenue Sales Gap Achievement Percentage The dashboard transforms raw sales data into actionable business intelligence. 7. Reporting Compliance Tracker A dedicated submission tracker monitors reporting compliance across all active TSMs. Management can instantly identify which territories have submitted monthly targets and which teams require follow-up. Submission Monitoring Pending TSM Detection Compliance Tracking Real-Time Status Updates 8. Business Impact The implementation significantly improved operational efficiency and reporting visibility throughout the organization. Reduced manual reporting effort Improved reporting compliance Faster executive decision-making Real-time performance visibility Centralized business intelligence Scalable reporting architecture 9. Conclusion The PT CPI Sales Target & Gap Analytics Portal transformed a fragmented reporting process into a centralized analytics platform. By combining automation, business intelligence, and cloud-based technologies, the system now provides both operational teams and executives with the tools needed to plan, monitor, and optimize sales performance effectively. The real value of analytics is not measuring performance — it is enabling better business decisions."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://itsmebillah.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://itsmebillah.github.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PT CPI Sales Target & Gap Analytics Portal",
+          "item": "https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/"
+        }
+      ]
+    }
+  ]
+}</script>
+
+    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//i.postimg.cc">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.postimg.cc">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../../assets/css/main.css" rel="stylesheet">
+    <style>
+        .article-shell { min-height: 100vh; padding: 6rem 1.25rem 3rem; }
+        .article-container { width: min(100%, 980px); margin: 0 auto; }
+        .article-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; color: #9CA3AF; font-size: 0.82rem; }
+        .article-hero-image { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 70px rgba(0,0,0,0.34); }
+        .article-content { color: #D1D5DB; font-size: 1.03rem; line-height: 1.9; max-width: 780px; margin: 0 auto; }
+        .article-content p { margin: 0 0 1.25rem; }
+        .article-content h1, .article-content h2, .article-content h3, .article-content h4 { color: #FFFFFF; font-weight: 800; line-height: 1.24; margin: 2.2rem 0 0.85rem; }
+        .article-content h1 { font-size: 2rem; }
+        .article-content h2 { font-size: 1.55rem; }
+        .article-content h3 { font-size: 1.25rem; }
+        .article-content ul, .article-content ol { margin: 0 0 1.35rem 1.35rem; padding-left: 1rem; }
+        .article-content li { margin-bottom: 0.55rem; }
+        .article-content a { color: #FF8B35; text-decoration: underline; text-underline-offset: 3px; }
+        .article-content blockquote { margin: 1.6rem 0; padding: 1rem 1.25rem; border-left: 3px solid #FF6B35; background: rgba(255,255,255,0.045); border-radius: 0.75rem; color: #E5E7EB; }
+        .article-content img { display: block; width: 100%; max-width: 100%; height: auto; object-fit: cover; border-radius: 0.85rem; margin: 1.75rem 0; border: 1px solid rgba(255,255,255,0.08); }
+        .article-content pre { overflow-x: auto; margin: 1.4rem 0; padding: 1rem; border-radius: 0.85rem; background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.08); }
+        .article-content code { color: #FDBA74; }
+        .article-card-link { display: block; height: 100%; }
+        @media (max-width: 768px) {
+            .article-shell { padding-top: 5rem; }
+            .article-hero-image { aspect-ratio: 16 / 10; border-radius: 0.85rem; }
+            .article-content { font-size: 0.98rem; line-height: 1.85; }
+        }
+    </style>
+</head>
+<body>
+    <main class="article-shell" id="blog-page" data-blog-slug="pt-cpi-sales-target-gap-analytics-portal" data-blog-category="Automation &amp; Business Intelligence">
+        <article class="article-container">
+            <nav class="mb-8 text-xs text-gray-400" aria-label="Breadcrumb">
+                <a href="../../" class="hover:text-white transition">Home</a>
+                <span class="mx-2 text-gray-600">/</span>
+                <a href="../../#blogs" class="hover:text-white transition">Case Studies</a>
+                <span class="mx-2 text-gray-600">/</span>
+                <span class="text-orange-400">PT CPI Sales Target &amp; Gap Analytics Portal</span>
+            </nav>
+
+            <header class="mb-10">
+                <div class="mb-4">
+                    <span class="inline-flex items-center rounded-full bg-orange-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-orange-400">Automation &amp; Business Intelligence</span>
+                </div>
+                <h1 class="text-3xl md:text-5xl font-extrabold leading-tight text-white mb-5">PT CPI Sales Target &amp; Gap Analytics Portal</h1>
+                <p class="text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mb-6">A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission, sales performance tracking, gap analysis, KPI monitoring, and executive-level reporting across TSM, RSM, and Head Office teams.</p>
+                <div class="article-meta mb-8">
+                    <span>Md. Masum Billah</span>
+                    <span aria-hidden="true">&middot;</span>
+                    <time datetime="2026-06-05">June 6, 2026</time>
+                    <span aria-hidden="true">&middot;</span>
+                    <span>3 min read</span>
+                </div>
+                <figure>
+                    <img class="article-hero-image" src="https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png" alt="PT CPI Sales Target &amp; Gap Analytics Portal featured image" width="1200" height="675" loading="eager" decoding="async" fetchpriority="high">
+                </figure>
+            </header>
+
+            <section class="article-content">
+                <p style="font-size:1.2em; color:#CBD5E1; line-height:1.8; margin-bottom:36px">
+    Building a centralized sales target management and performance analytics
+    platform using Google Apps Script, Google Sheets, and a custom business
+    intelligence dashboard.
+  </p>
+
+  
+  <div style="background:#1c253b; padding:32px; border-left:5px solid #FF6B35; border-radius:14px; margin-bottom:55px">
+    <h3 style="color:#FF6B35; font-size:1.65em; font-weight:700; margin-bottom:14px">
+      Executive Summary
+    </h3>
+
+    <p style="color:#D1D5DB; line-height:1.8; font-size:1.05em">
+      PT Consumer Products Industries required a centralized system for
+      collecting monthly sales targets, monitoring field performance,
+      tracking reporting compliance, and analyzing sales gaps across
+      multiple regions.
+    </p>
+
+    <p style="color:#D1D5DB; line-height:1.8; font-size:1.05em">
+      To solve this challenge, I designed and developed a cloud-based
+      Sales Target & Gap Analytics Portal that enables Territory Sales
+      Managers (TSMs) to submit targets while providing executives with
+      real-time visibility into organizational performance.
+    </p>
+  </div>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:60px; margin-bottom:20px">
+    1. Business Challenge
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    Managing sales targets across multiple territories and field teams
+    was becoming increasingly difficult through spreadsheets and manual
+    reporting processes.
+  </p>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    Management lacked visibility into target achievement, sales
+    performance, and submission compliance at both regional and national
+    levels.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Manual target collection process</li>
+    <li>No centralized reporting system</li>
+    <li>Difficulty tracking TSM submissions</li>
+    <li>Limited performance visibility</li>
+    <li>No real-time target vs actual comparison</li>
+    <li>Time-consuming report consolidation</li>
+  </ul>
+
+  <p style="margin:32px 0; padding-left:20px; border-left:4px solid #FF6B9D; color:#FCA5A5; font-size:1.1em">
+    As the organization grew, spreadsheet-driven processes could no
+    longer support business decision-making effectively.
+  </p>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    2. Solution Architecture
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    I developed a centralized web application using Google Workspace
+    technologies and a custom analytics engine.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Google Apps Script Backend</li>
+    <li>Google Sheets Database Layer</li>
+    <li>HTML & JavaScript Frontend</li>
+    <li>Tailwind CSS User Interface</li>
+    <li>Role-Based Authentication System</li>
+    <li>Dynamic Analytics Engine</li>
+  </ul>
+
+  <p style="margin:34px 0; padding-left:20px; border-left:4px solid #4ade80; color:#BBF7D0; font-size:1.1em">
+    The platform serves as a single source of truth for sales targets,
+    reporting compliance, and performance analytics.
+  </p>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    3. Multi-Level User Management
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    The application was designed with hierarchical access control to
+    ensure each user only sees information relevant to their role.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Territory Sales Manager (TSM)</li>
+    <li>Regional Sales Manager (RSM)</li>
+    <li>Office Users</li>
+    <li>System Administrators</li>
+  </ul>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    User authentication dynamically determines which dashboard and
+    features are accessible after login.
+  </p>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    4. Dynamic Target Entry Portal
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    One of the core challenges was simplifying target submission for
+    field teams.
+  </p>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    Instead of entering data into multiple spreadsheets, TSMs interact
+    with a dynamic matrix interface that automatically generates target
+    entry grids based on assigned dealers, sales representatives,
+    territories, and products.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Auto-generated target matrix</li>
+    <li>Dealer-wise planning</li>
+    <li>Product-wise allocation</li>
+    <li>Territory-level targeting</li>
+    <li>Historical submission loading</li>
+  </ul>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    5. Executive Analytics Dashboard
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    For management, I developed an executive dashboard focused on
+    performance monitoring and decision support.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Target Volume KPI</li>
+    <li>Financial Target Value</li>
+    <li>Actual Sales Performance</li>
+    <li>Gap Analysis</li>
+    <li>Achievement Percentage</li>
+    <li>Submission Tracking</li>
+  </ul>
+
+  <p style="margin:34px 0; padding-left:20px; border-left:4px solid #4ade80; color:#BBF7D0; font-size:1.1em">
+    Executives can instantly identify underperforming territories and
+    take corrective action without waiting for manual reports.
+  </p>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    6. Gap Analysis Engine
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    The most valuable feature of the platform is the Gap Analytics
+    Engine.
+  </p>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    By combining target data with actual sales records, the system
+    automatically calculates performance variance across every level of
+    the organization.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Target Quantity</li>
+    <li>Target Value</li>
+    <li>Actual Quantity</li>
+    <li>Actual Revenue</li>
+    <li>Sales Gap</li>
+    <li>Achievement Percentage</li>
+  </ul>
+
+  <p style="margin:34px 0; padding-left:20px; border-left:4px solid #FF6B9D; color:#FCA5A5; font-size:1.1em">
+    The dashboard transforms raw sales data into actionable business
+    intelligence.
+  </p>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    7. Reporting Compliance Tracker
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    A dedicated submission tracker monitors reporting compliance across
+    all active TSMs.
+  </p>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    Management can instantly identify which territories have submitted
+    monthly targets and which teams require follow-up.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Submission Monitoring</li>
+    <li>Pending TSM Detection</li>
+    <li>Compliance Tracking</li>
+    <li>Real-Time Status Updates</li>
+  </ul>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    8. Business Impact
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    The implementation significantly improved operational efficiency and
+    reporting visibility throughout the organization.
+  </p>
+
+  <ul style="margin-left:30px; line-height:1.8; color:#CBD5E1; font-size:1.05em">
+    <li>Reduced manual reporting effort</li>
+    <li>Improved reporting compliance</li>
+    <li>Faster executive decision-making</li>
+    <li>Real-time performance visibility</li>
+    <li>Centralized business intelligence</li>
+    <li>Scalable reporting architecture</li>
+  </ul>
+
+  
+  <h2 style="color:#FFFFFF; font-size:2.05em; font-weight:700; margin-top:65px; margin-bottom:20px">
+    9. Conclusion
+  </h2>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    The PT CPI Sales Target & Gap Analytics Portal transformed a
+    fragmented reporting process into a centralized analytics platform.
+  </p>
+
+  <p style="line-height:1.8; font-size:1.05em">
+    By combining automation, business intelligence, and cloud-based
+    technologies, the system now provides both operational teams and
+    executives with the tools needed to plan, monitor, and optimize
+    sales performance effectively.
+  </p>
+
+  <p style="margin:34px 0; padding-left:20px; border-left:4px solid #4ade80; color:#BBF7D0; font-size:1.1em">
+    The real value of analytics is not measuring performance — it is
+    enabling better business decisions.
+  </p>
+
+</div>
+            </section>
+
+            <section class="mt-12 flex flex-wrap gap-3 items-center justify-between border-y border-white/10 py-5">
+                <div class="flex flex-wrap gap-3">
+                    <a class="magnetic-btn rounded-full bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/15" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fitsmebillah.github.io%2Fblog%2Fpt-cpi-sales-target-gap-analytics-portal%2F" target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
+                    <a class="magnetic-btn rounded-full bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/15" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fitsmebillah.github.io%2Fblog%2Fpt-cpi-sales-target-gap-analytics-portal%2F&amp;text=PT%20CPI%20Sales%20Target%20%26%20Gap%20Analytics%20Portal" target="_blank" rel="noopener noreferrer">Share on X</a>
+                    <button class="magnetic-btn rounded-full bg-orange-500/20 px-4 py-2 text-sm text-orange-300 hover:bg-orange-500 hover:text-white" type="button" data-copy-link="https://itsmebillah.github.io/blog/pt-cpi-sales-target-gap-analytics-portal/">Copy Link</button>
+                </div>
+                <a class="magnetic-btn rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2 text-sm font-semibold text-white" href="../../#blogs">Back to Blog</a>
+            </section>
+
+            <nav class="mt-10 grid gap-4 md:grid-cols-2" aria-label="Article navigation">
+                <a class="article-card-link glass rounded-2xl p-5 border border-white/5 hover:border-orange-500/30 transition" href="../data-analysis-career-business-guide/">
+        <span class="text-xs uppercase tracking-wider text-orange-400">Previous Article</span>
+        <h2 class="mt-2 text-base font-bold text-white leading-snug">Data Analysis &amp; Storytelling for Better Decisions</h2>
+        <p class="mt-2 text-xs text-gray-400 line-clamp-2">Exploring how modern organizations turn raw data into actionable insights, smarter decisions, and measurable business outcomes.</p>
+    </a>
+                <a class="article-card-link glass rounded-2xl p-5 border border-white/5 hover:border-orange-500/30 transition" href="../telecom-revenue-optimization-case-study/">
+        <span class="text-xs uppercase tracking-wider text-orange-400">Next Article</span>
+        <h2 class="mt-2 text-base font-bold text-white leading-snug">Revenue Optimization &amp; Customer Segmentation for a Telecom Giant</h2>
+        <p class="mt-2 text-xs text-gray-400 line-clamp-2">A comprehensive case study detailing how advanced data analytics, SQL, and Python were leveraged to optimize revenue streams and segment customer base for a leading telecom company, leading to a 20% increase in ARPU.</p>
+    </a>
+            </nav>
+
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold text-white mb-5">Related Articles</h2>
+                <div class="grid gap-4 md:grid-cols-3">
+                    <a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="../data-analysis-career-business-guide/">
+        <img src="https://i.postimg.cc/mkXdcZs3/Chat-GPT-Image-Jun-5-2026-11-47-09-PM.png" alt="Data Analysis &amp; Storytelling for Better Decisions thumbnail" loading="lazy" decoding="async" width="360" height="180" class="h-32 w-full object-cover">
+        <div class="p-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">Business Intelligence</span>
+            <h3 class="mt-1 text-sm font-bold text-white leading-snug">Data Analysis &amp; Storytelling for Better Decisions</h3>
+        </div>
+    </a>
+<a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="../telecom-revenue-optimization-case-study/">
+        <img src="https://www.subex.com/wp-content/uploads/2024/10/Customer-Segmentation-in-the-Telecom-Industry.jpg" alt="Revenue Optimization &amp; Customer Segmentation for a Telecom Giant thumbnail" loading="lazy" decoding="async" width="360" height="180" class="h-32 w-full object-cover">
+        <div class="p-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">Data Analytics</span>
+            <h3 class="mt-1 text-sm font-bold text-white leading-snug">Revenue Optimization &amp; Customer Segmentation for a Telecom Giant</h3>
+        </div>
+    </a>
+<a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="../retail-bi-case-study/">
+        <img src="https://i.postimg.cc/xqVrVFcX/Screenshot-2025-07-28-111331.png" alt="Strategic Business Intelligence: Transformational Data Analytics for Retail Giants thumbnail" loading="lazy" decoding="async" width="360" height="180" class="h-32 w-full object-cover">
+        <div class="p-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">Business Intelligence</span>
+            <h3 class="mt-1 text-sm font-bold text-white leading-snug">Strategic Business Intelligence: Transformational Data Analytics for Retail Giants</h3>
+        </div>
+    </a>
+                </div>
+            </section>
+        </article>
+    </main>
+    <script>
+        document.addEventListener('click', async event => {
+            const button = event.target.closest('[data-copy-link]');
+            if (!button) return;
+            const url = button.getAttribute('data-copy-link');
+            try {
+                await navigator.clipboard.writeText(url);
+                button.textContent = 'Copied';
+                setTimeout(() => { button.textContent = 'Copy Link'; }, 1600);
+            } catch (error) {
+                window.prompt('Copy this link', url);
+            }
+        });
+    </script>
+</body>
+</html>
