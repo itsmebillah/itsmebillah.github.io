@@ -1,11 +1,10 @@
         async function loadDataPipelineStream() {
             try {
-                console.log("Fetching live pipeline architecture...");
                 const response = await fetch(`${GAS_API_URL}?action=getAllData`);
+                if (!response.ok) throw new Error(`Portfolio API request failed with status ${response.status}`);
                 updatePortfolioLoader('apps');
                 const result = await response.json();
                 updatePortfolioLoader('sheets');
-                console.log("Pipeline payload extracted:", result);
                 
                 if (result) {
                     const payload = result.data || result;
@@ -29,4 +28,3 @@
                 console.error('Data pipeline stream sync failure:', error);
             }
         }
-

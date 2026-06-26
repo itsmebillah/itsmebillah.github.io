@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "hosting": "GitHub Pages",
+  "strategy": {
+    "html": {
+      "pattern": "**/*.html",
+      "cacheControl": "public, max-age=300, must-revalidate",
+      "reason": "HTML should update quickly after portfolio or generated page deployments."
+    },
+    "css": {
+      "pattern": "assets/css/**/*.css",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "reason": "CSS files are static assets and can be aggressively cached when filenames are versioned or deployments invalidate edge cache."
+    },
+    "javascript": {
+      "pattern": "assets/js/**/*.js, assets/modules/**/*.js",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "reason": "JavaScript files are static assets and should be cached aggressively behind versioned deploys."
+    },
+    "components": {
+      "pattern": "components/**/*.html",
+      "cacheControl": "public, max-age=3600, stale-while-revalidate=86400",
+      "reason": "HTML partials are reused across the homepage and benefit from short edge caching."
+    },
+    "feedsAndIndexes": {
+      "pattern": "sitemap.xml, rss.xml, search-index.json",
+      "cacheControl": "public, max-age=900, must-revalidate",
+      "reason": "Search and feed files should refresh soon after CMS-driven generation."
+    },
+    "images": {
+      "pattern": "assets/images/**/*",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "reason": "Static image assets should be immutable once published."
+    }
+  },
+  "notes": [
+    "GitHub Pages does not provide repository-level custom Cache-Control headers.",
+    "Use this policy for Cloudflare, a reverse proxy, or any future edge layer in front of GitHub Pages.",
+    "Do not apply immutable caching to unversioned HTML, sitemap, RSS, or search index files."
+  ]
+}
