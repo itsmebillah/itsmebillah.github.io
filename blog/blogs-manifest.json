@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-12T15:19:48.205Z",
+  "generatedAt": "2026-07-12T16:53:21.650Z",
   "source": {
     "cms": "Google Sheets",
     "api": "Apps Script",
@@ -63,6 +63,14 @@
       "url": "/blog/data-analysis-career-business-guide/",
       "output": "blog/data-analysis-career-business-guide/index.html",
       "category": "Business Intelligence",
+      "published": true
+    },
+    {
+      "title": "How I Built a Fully Automated Blog Publishing System with Google Sheets and GitHub",
+      "slug": "how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github",
+      "url": "/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/",
+      "output": "blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/index.html",
+      "category": "Automation",
       "published": true
     },
     {

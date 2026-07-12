@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How I Built a Fully Automated Blog Publishing System with...</title>
+<meta name="description" content="Learn how I built a fully automated blog publishing workflow using Google Sheets, Apps Script, GitHub Actions, and GitHub Pages with automatic SEO generation.">
+<meta name="keywords" content="Google Sheets, Apps Script, GitHub Actions, GitHub Pages, Automation, Blog Automation, SEO, Static Website">
+<meta name="author" content="Md. Masum Billah">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+<link rel="canonical" href="https://itsmebillah.github.io/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/">
+<link rel="alternate" type="application/rss+xml" title="Md Masum Billah Portfolio Blog RSS Feed" href="https://itsmebillah.github.io/rss.xml">
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="How I Built a Fully Automated Blog Publishing System with...">
+<meta property="og:description" content="Learn how I built a fully automated blog publishing workflow using Google Sheets, Apps Script, GitHub Actions, and GitHub Pages with automatic SEO generation.">
+<meta property="og:url" content="https://itsmebillah.github.io/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/">
+<meta property="og:site_name" content="Md Masum Billah Portfolio">
+<meta property="og:image" content="https://i.postimg.cc/26DtqzQr/1777886932477.jpg">
+<meta property="og:image:secure_url" content="https://i.postimg.cc/26DtqzQr/1777886932477.jpg">
+<meta property="og:image:alt" content="How I Built a Fully Automated Blog Publishing System with... featured image">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-07-12T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-12T00:00:00.000Z">
+<meta property="article:author" content="https://itsmebillah.github.io/#person">
+<meta property="article:section" content="Automation">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How I Built a Fully Automated Blog Publishing System with...">
+<meta name="twitter:description" content="Learn how I built a fully automated blog publishing workflow using Google Sheets, Apps Script, GitHub Actions, and GitHub Pages with automatic SEO generation.">
+<meta name="twitter:image" content="https://i.postimg.cc/26DtqzQr/1777886932477.jpg">
+<meta name="twitter:image:alt" content="How I Built a Fully Automated Blog Publishing System with... featured image">
+
+<script type="application/ld+json" id="blog-structured-data">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://itsmebillah.github.io/#organization",
+      "name": "Md Masum Billah Portfolio",
+      "url": "https://itsmebillah.github.io",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://i.postimg.cc/26DtqzQr/1777886932477.jpg"
+      },
+      "founder": {
+        "@id": "https://itsmebillah.github.io/#person"
+      }
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "How I Built a Fully Automated Blog Publishing System with...",
+      "description": "Learn how I built a fully automated blog publishing workflow using Google Sheets, Apps Script, GitHub Actions, and GitHub Pages with automatic SEO generation.",
+      "image": [
+        "https://i.postimg.cc/26DtqzQr/1777886932477.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Md. Masum Billah",
+        "url": "https://itsmebillah.github.io/#person"
+      },
+      "publisher": {
+        "@id": "https://itsmebillah.github.io/#organization"
+      },
+      "datePublished": "2026-07-12T00:00:00.000Z",
+      "dateModified": "2026-07-12T00:00:00.000Z",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://itsmebillah.github.io/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/"
+      },
+      "keywords": [
+        "Google Sheets",
+        "Apps Script",
+        "GitHub Actions",
+        "GitHub Pages",
+        "Automation",
+        "Blog Automation",
+        "SEO",
+        "Static Website"
+      ],
+      "articleSection": "Automation",
+      "url": "https://itsmebillah.github.io/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/",
+      "articleBody": "# How I Built a Fully Automated Blog Publishing System Managing a static website is simple until you start publishing content regularly. Updating pages manually, regenerating metadata, and deploying every article quickly becomes repetitive. To solve this problem, I built a fully automated publishing pipeline using Google Sheets as a lightweight CMS. ## The Workflow The entire publishing process now follows this flow: Google Sheets → Apps Script → GitHub Actions → Static Blog Generator → GitHub Pages Whenever I publish a new article in Google Sheets, the system automatically starts the deployment pipeline. ## Features - Automatic blog page generation - SEO-friendly URLs - Automatic sitemap updates - RSS feed generation - Search index generation - Open Graph metadata - Twitter Card metadata - Structured Data (JSON-LD) - Automatic GitHub deployment ## Technologies Used - Google Sheets - Google Apps Script - GitHub Actions - GitHub Pages - JavaScript - Static Site Generation ## Why This Approach? This workflow combines the simplicity of Google Sheets with the reliability of GitHub Pages. Instead of maintaining a complex CMS, content is managed inside a spreadsheet while the website remains a fast static site. ## Final Thoughts Automation removes repetitive work and allows creators to focus on writing instead of deployment. This project demonstrates how modern automation tools can transform a simple spreadsheet into a complete publishing platform."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://itsmebillah.github.io/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://itsmebillah.github.io/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "How I Built a Fully Automated Blog Publishing System with...",
+          "item": "https://itsmebillah.github.io/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/"
+        }
+      ]
+    }
+  ]
+}</script>
+
+    <link rel="dns-prefetch" href="//cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//i.postimg.cc">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.postimg.cc">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="../../assets/css/main.css" rel="stylesheet">
+    <style>
+        .article-shell { min-height: 100vh; padding: 6rem 1.25rem 3rem; }
+        .article-container { width: min(100%, 980px); margin: 0 auto; }
+        .article-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; color: #9CA3AF; font-size: 0.82rem; }
+        .article-hero-image { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 70px rgba(0,0,0,0.34); }
+        .article-content { color: #D1D5DB; font-size: 1.03rem; line-height: 1.9; max-width: 780px; margin: 0 auto; }
+        .article-content p { margin: 0 0 1.25rem; }
+        .article-content h1, .article-content h2, .article-content h3, .article-content h4 { color: #FFFFFF; font-weight: 800; line-height: 1.24; margin: 2.2rem 0 0.85rem; }
+        .article-content h1 { font-size: 2rem; }
+        .article-content h2 { font-size: 1.55rem; }
+        .article-content h3 { font-size: 1.25rem; }
+        .article-content ul, .article-content ol { margin: 0 0 1.35rem 1.35rem; padding-left: 1rem; }
+        .article-content li { margin-bottom: 0.55rem; }
+        .article-content a { color: #FF8B35; text-decoration: underline; text-underline-offset: 3px; }
+        .article-content blockquote { margin: 1.6rem 0; padding: 1rem 1.25rem; border-left: 3px solid #FF6B35; background: rgba(255,255,255,0.045); border-radius: 0.75rem; color: #E5E7EB; }
+        .article-content img { display: block; width: 100%; max-width: 100%; height: auto; object-fit: cover; border-radius: 0.85rem; margin: 1.75rem 0; border: 1px solid rgba(255,255,255,0.08); }
+        .article-content pre { overflow-x: auto; margin: 1.4rem 0; padding: 1rem; border-radius: 0.85rem; background: rgba(0,0,0,0.28); border: 1px solid rgba(255,255,255,0.08); }
+        .article-content code { color: #FDBA74; }
+        .article-card-link { display: block; height: 100%; }
+        @media (max-width: 768px) {
+            .article-shell { padding-top: 5rem; }
+            .article-hero-image { aspect-ratio: 16 / 10; border-radius: 0.85rem; }
+            .article-content { font-size: 0.98rem; line-height: 1.85; }
+        }
+    </style>
+</head>
+<body>
+    <main class="article-shell" id="blog-page" data-blog-slug="how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github" data-blog-category="Automation">
+        <article class="article-container">
+            <nav class="mb-8 text-xs text-gray-400" aria-label="Breadcrumb">
+                <a href="../../" class="hover:text-white transition">Home</a>
+                <span class="mx-2 text-gray-600">/</span>
+                <a href="../" class="hover:text-white transition">Case Studies</a>
+                <span class="mx-2 text-gray-600">/</span>
+                <span class="text-orange-400">How I Built a Fully Automated Blog Publishing System with Google Sheets and GitHub</span>
+            </nav>
+
+            <header class="mb-10">
+                <div class="mb-4">
+                    <span class="inline-flex items-center rounded-full bg-orange-500/15 px-3 py-1 text-xs font-bold uppercase tracking-wider text-orange-400">Automation</span>
+                </div>
+                <h1 class="text-3xl md:text-5xl font-extrabold leading-tight text-white mb-5">How I Built a Fully Automated Blog Publishing System with Google Sheets and GitHub</h1>
+                <p class="text-base md:text-lg text-gray-300 leading-relaxed max-w-3xl mb-6">Learn how I built a fully automated blog publishing workflow using Google Sheets, Apps Script, GitHub Actions, and GitHub Pages with automatic SEO generation.</p>
+                <div class="article-meta mb-8">
+                    <span>Md. Masum Billah</span>
+                    <span aria-hidden="true">&middot;</span>
+                    <time datetime="2026-07-12">July 12, 2026</time>
+                    <span aria-hidden="true">&middot;</span>
+                    <span>2 min read</span>
+                </div>
+                <figure>
+                    <img class="article-hero-image" src="https://i.postimg.cc/26DtqzQr/1777886932477.jpg" alt="How I Built a Fully Automated Blog Publishing System with Google Sheets and GitHub featured image" width="1200" height="675" loading="eager" decoding="async" fetchpriority="high">
+                </figure>
+            </header>
+
+            <section class="article-content">
+                <p># How I Built a Fully Automated Blog Publishing System</p>
+<p>Managing a static website is simple until you start publishing content regularly. Updating pages manually, regenerating metadata, and deploying every article quickly becomes repetitive.</p>
+<p>To solve this problem, I built a fully automated publishing pipeline using Google Sheets as a lightweight CMS.</p>
+<p>## The Workflow</p>
+<p>The entire publishing process now follows this flow:</p>
+<p>Google Sheets → Apps Script → GitHub Actions → Static Blog Generator → GitHub Pages</p>
+<p>Whenever I publish a new article in Google Sheets, the system automatically starts the deployment pipeline.</p>
+<p>## Features</p>
+<p>- Automatic blog page generation<br>- SEO-friendly URLs<br>- Automatic sitemap updates<br>- RSS feed generation<br>- Search index generation<br>- Open Graph metadata<br>- Twitter Card metadata<br>- Structured Data (JSON-LD)<br>- Automatic GitHub deployment</p>
+<p>## Technologies Used</p>
+<p>- Google Sheets<br>- Google Apps Script<br>- GitHub Actions<br>- GitHub Pages<br>- JavaScript<br>- Static Site Generation</p>
+<p>## Why This Approach?</p>
+<p>This workflow combines the simplicity of Google Sheets with the reliability of GitHub Pages.</p>
+<p>Instead of maintaining a complex CMS, content is managed inside a spreadsheet while the website remains a fast static site.</p>
+<p>## Final Thoughts</p>
+<p>Automation removes repetitive work and allows creators to focus on writing instead of deployment.</p>
+<p>This project demonstrates how modern automation tools can transform a simple spreadsheet into a complete publishing platform.</p>
+            </section>
+
+            <section class="mt-12 flex flex-wrap gap-3 items-center justify-between border-y border-white/10 py-5">
+                <div class="flex flex-wrap gap-3">
+                    <a class="magnetic-btn rounded-full bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/15" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fitsmebillah.github.io%2Fblog%2Fhow-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github%2F" target="_blank" rel="noopener noreferrer">Share on LinkedIn</a>
+                    <a class="magnetic-btn rounded-full bg-white/10 px-4 py-2 text-sm text-white hover:bg-white/15" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fitsmebillah.github.io%2Fblog%2Fhow-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github%2F&amp;text=How%20I%20Built%20a%20Fully%20Automated%20Blog%20Publishing%20System%20with%20Google%20Sheets%20and%20GitHub" target="_blank" rel="noopener noreferrer">Share on X</a>
+                    <button class="magnetic-btn rounded-full bg-orange-500/20 px-4 py-2 text-sm text-orange-300 hover:bg-orange-500 hover:text-white" type="button" data-copy-link="https://itsmebillah.github.io/blog/how-i-built-a-fully-automated-blog-publishing-system-with-google-sheets-and-github/" aria-label="Copy article link">Copy Link</button>
+                </div>
+                <a class="magnetic-btn rounded-full bg-gradient-to-r from-orange-500 to-pink-500 px-5 py-2 text-sm font-semibold text-white" href="../">Back to Blog</a>
+            </section>
+
+            <nav class="mt-10 grid gap-4 md:grid-cols-2" aria-label="Article navigation">
+                <a class="article-card-link glass rounded-2xl p-5 border border-white/5 hover:border-orange-500/30 transition" href="../data-analysis-career-business-guide/">
+        <span class="text-xs uppercase tracking-wider text-orange-400">Previous Article</span>
+        <h2 class="mt-2 text-base font-bold text-white leading-snug">Data Analysis &amp; Storytelling for Better Decisions</h2>
+        <p class="mt-2 text-xs text-gray-400 line-clamp-2">Exploring how modern organizations turn raw data into actionable insights, smarter decisions, and measurable business outcomes.</p>
+    </a>
+                <a class="article-card-link glass rounded-2xl p-5 border border-white/5 hover:border-orange-500/30 transition" href="../pt-cpi-sales-target-gap-analytics-portal/">
+        <span class="text-xs uppercase tracking-wider text-orange-400">Next Article</span>
+        <h2 class="mt-2 text-base font-bold text-white leading-snug">PT CPI Sales Target &amp; Gap Analytics Portal</h2>
+        <p class="mt-2 text-xs text-gray-400 line-clamp-2">A cloud-based sales target management and analytics platform built with Google Apps Script and Google Sheets. The system enables hierarchical target submission, sales performance tracking, gap analysis, KPI monitoring, and executive-level reporting across TSM, RSM, and Head Office teams.</p>
+    </a>
+            </nav>
+
+            <section class="mt-12">
+                <h2 class="text-2xl font-bold text-white mb-5">Related Articles</h2>
+                <div class="grid gap-4 md:grid-cols-3">
+                    <a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="../data-analysis-career-business-guide/">
+        <img src="https://i.postimg.cc/mkXdcZs3/Chat-GPT-Image-Jun-5-2026-11-47-09-PM.png" alt="Data Analysis &amp; Storytelling for Better Decisions thumbnail" loading="lazy" decoding="async" width="360" height="180" class="h-32 w-full object-cover">
+        <div class="p-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">Business Intelligence</span>
+            <h3 class="mt-1 text-sm font-bold text-white leading-snug">Data Analysis &amp; Storytelling for Better Decisions</h3>
+        </div>
+    </a>
+<a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="../pt-cpi-sales-target-gap-analytics-portal/">
+        <img src="https://i.postimg.cc/mDj67ysq/Screenshot-2026-06-05-231125.png" alt="PT CPI Sales Target &amp; Gap Analytics Portal thumbnail" loading="lazy" decoding="async" width="360" height="180" class="h-32 w-full object-cover">
+        <div class="p-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">Automation &amp; Business Intelligence</span>
+            <h3 class="mt-1 text-sm font-bold text-white leading-snug">PT CPI Sales Target &amp; Gap Analytics Portal</h3>
+        </div>
+    </a>
+<a class="article-card-link glass rounded-2xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition" href="../what-is-business-inteligence/">
+        <img src="https://i.postimg.cc/C1WHBcrz/Chat-GPT-Image-Jun-5-2026-11-54-08-PM.png" alt="What is Business Inteligence? thumbnail" loading="lazy" decoding="async" width="360" height="180" class="h-32 w-full object-cover">
+        <div class="p-4">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-orange-400">Business Intelligence</span>
+            <h3 class="mt-1 text-sm font-bold text-white leading-snug">What is Business Inteligence?</h3>
+        </div>
+    </a>
+                </div>
+            </section>
+        </article>
+    </main>
+    <script>
+        document.addEventListener('click', async event => {
+            const button = event.target.closest('[data-copy-link]');
+            if (!button) return;
+            const url = button.getAttribute('data-copy-link');
+            try {
+                await navigator.clipboard.writeText(url);
+                button.textContent = 'Copied';
+                setTimeout(() => { button.textContent = 'Copy Link'; }, 1600);
+            } catch (error) {
+                window.prompt('Copy this link', url);
+            }
+        });
+    </script>
+</body>
+</html>
