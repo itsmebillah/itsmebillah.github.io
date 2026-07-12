@@ -9,11 +9,22 @@
     <link>https://itsmebillah.github.io/</link>
     <atom:link href="https://itsmebillah.github.io/rss.xml" rel="self" type="application/rss+xml" />
     <language>en</language>
-    <lastBuildDate>Fri, 26 Jun 2026 04:33:34 GMT</lastBuildDate>
-    <pubDate>Wed, 11 Nov 2026 18:00:00 GMT</pubDate>
+    <lastBuildDate>Sun, 12 Jul 2026 15:19:50 GMT</lastBuildDate>
+    <pubDate>Tue, 22 Dec 2026 18:00:00 GMT</pubDate>
     <managingEditor>Md. Masum Billah</managingEditor>
     <webMaster>Md. Masum Billah</webMaster>
     <ttl>60</ttl>
+    <item>
+      <title>What is Business Inteligence?</title>
+      <description><![CDATA[Business Intelligence enables organizations to move from data overload to actionable insight, supporting smarter strategies and faster decisions.]]></description>
+      <link>https://itsmebillah.github.io/blog/what-is-business-inteligence/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/what-is-business-inteligence/</guid>
+      <pubDate>Tue, 22 Dec 2026 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Business Intelligence</category>
+      <content:encoded><![CDATA[Business Intelligence enables organizations to move from data overload to actionable insight, supporting smarter strategies and faster decisions.]]></content:encoded>
+      <media:content url="https://i.postimg.cc/C1WHBcrz/Chat-GPT-Image-Jun-5-2026-11-54-08-PM.png" medium="image" />
+    </item>
     <item>
       <title>Data Analysis &amp; Storytelling for Better Decisions</title>
       <description><![CDATA[Exploring how modern organizations turn raw data into actionable insights, smarter decisions, and measurable business outcomes.]]></description>
@@ -79,6 +90,39 @@
       <category>Data Analytics</category>
       <content:encoded><![CDATA[A detailed case study on how I analyzed 1 year of sales data to identify churn patterns and increase revenue by 15%]]></content:encoded>
       <media:content url="https://i.postimg.cc/Hnp5vTtn/Screenshot-2025-07-28-110516.png" medium="image" />
+    </item>
+    <item>
+      <title>Data Visualization Best Practices</title>
+      <description><![CDATA[Turning complex datasets into clear, compelling visual stories that improve understanding, reveal insights, and support better business decisions.]]></description>
+      <link>https://itsmebillah.github.io/blog/data-visualization-best-practices/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/data-visualization-best-practices/</guid>
+      <pubDate>Thu, 20 Nov 2025 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Tutorial</category>
+      <content:encoded><![CDATA[Turning complex datasets into clear, compelling visual stories that improve understanding, reveal insights, and support better business decisions.]]></content:encoded>
+      <media:content url="https://media.istockphoto.com/id/1488294044/photo/businessman-works-on-laptop-showing-business-analytics-dashboard-with-charts-metrics-and-kpi.jpg?s=1024x1024&amp;w=is&amp;k=20&amp;c=VpSNiVam6Fw3egrJYnP28mEEAXyCjFRjqV_k4PK5S04=" medium="image" />
+    </item>
+    <item>
+      <title>How I Automated Business Reporting and Saved Hours of Manual Work</title>
+      <description><![CDATA[Discover how workflow automation transformed a time-consuming reporting process into a streamlined system, reducing manual effort, improving accuracy, and saving valuable business hours.]]></description>
+      <link>https://itsmebillah.github.io/blog/how-i-automated-business-reporting-and-saved-hours-of-manual-work/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/how-i-automated-business-reporting-and-saved-hours-of-manual-work/</guid>
+      <pubDate>Tue, 30 Sep 2025 18:00:00 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>Case Study</category>
+      <content:encoded><![CDATA[Discover how workflow automation transformed a time-consuming reporting process into a streamlined system, reducing manual effort, improving accuracy, and saving valuable business hours.]]></content:encoded>
+      <media:content url="https://images.unsplash.com/photo-1551288049-bebda4e38f71" medium="image" />
+    </item>
+    <item>
+      <title>Wealth OS – A Modern Personal Wealth Intelligence Platform Built with Next.js, Supabase &amp; Vercel</title>
+      <description><![CDATA[Wealth OS is a modern Personal Wealth Intelligence Platform that helps individuals manage assets, investments, income, expenses, wallets, financial goals, and overall net worth from a single dashboard. Built with Next.js, Supabase, and Vercel.]]></description>
+      <link>https://itsmebillah.github.io/blog/wealth-os-personal-wealth-intelligence-platform/</link>
+      <guid isPermaLink="true">https://itsmebillah.github.io/blog/wealth-os-personal-wealth-intelligence-platform/</guid>
+      <pubDate>Sun, 12 Jul 2026 15:19:50 GMT</pubDate>
+      <author>Md. Masum Billah</author>
+      <category>FinTech</category>
+      <content:encoded><![CDATA[Wealth OS is a modern Personal Wealth Intelligence Platform that helps individuals manage assets, investments, income, expenses, wallets, financial goals, and overall net worth from a single dashboard. Built with Next.js, Supabase, and Vercel.]]></content:encoded>
+      <media:content url="wealth-os-dashboard.webp" medium="image" />
     </item>
   </channel>
 </rss>

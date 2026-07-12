@@ -1,6 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const { createTemplateEngine, escapeHtml } = require("./template-engine");
+const { generateSitemap } = require("./sitemap-generator");
+const { generateRssFeed } = require("./rss-generator");
+const { generateSearchIndex } = require("./search-index-generator");
 const {
     SITE_CONFIG,
     normalizeSlug,
@@ -127,7 +130,8 @@ function renderMixedContent(content, description) {
 async function fetchJson(url) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Request failed with status ${response.status}: ${url}`);
-    return response.json();
+    const result = await response.json();
+    return typeof result === "string" ? JSON.parse(result) : result;
 }
 
 async function fetchPortfolioData(apiUrl) {
@@ -328,8 +332,8 @@ function writeBlogIndex(articles) {
 }
 
 function normalizeBlog(blog, content, index) {
-    const slug = normalizeSlug(readField(blog, "Slug"));
     const title = String(readField(blog, "Title") || "Untitled Article").trim();
+    const slug = normalizeSlug(readField(blog, "Slug") || title);
     const description = String(readField(blog, "Description") || stripHtml(content).slice(0, 155) || "No description available.").trim();
     const category = String(readField(blog, "Category") || "Case Study").trim();
     const image = sanitizeUrl(readField(blog, "Thumbnail") || SITE_CONFIG.defaultImage, { image: true, allowImageData: true }) || SITE_CONFIG.defaultImage;
@@ -382,8 +386,8 @@ function buildTemplateData(article, articles, templateContent) {
         })
         .slice(0, 3);
     const renderedContent = renderMixedContent(article.content, article.description);
-    const seo = generatePageSeo(article.source, article.content, { content: article.content });
-    seo.jsonLd = escapeJsonForScript(generatePageSeo({ ...article.source, Slug: article.slug }, article.content).jsonLd);
+    const seo = generatePageSeo({ ...article.source, Slug: article.slug }, article.content, { content: article.content });
+    seo.jsonLd = escapeJsonForScript(seo.jsonLd);
 
     const metadataValidation = validateMetadata(seo);
     if (!metadataValidation.valid) throw new Error(`${article.slug}: ${metadataValidation.errors.join(" ")}`);
@@ -427,7 +431,7 @@ async function generateBlogPages() {
     const invalidSlugs = [];
 
     publishedBlogs.forEach(blog => {
-        const slug = normalizeSlug(readField(blog, "Slug"));
+        const slug = normalizeSlug(readField(blog, "Slug") || readField(blog, "Title"));
         if (!slug) {
             invalidSlugs.push(readField(blog, "Title") || "(untitled)");
             return;
@@ -439,7 +443,7 @@ async function generateBlogPages() {
         .filter(([, count]) => count > 1)
         .map(([slug]) => slug);
     const usableBlogs = publishedBlogs.filter(blog => {
-        const slug = normalizeSlug(readField(blog, "Slug"));
+        const slug = normalizeSlug(readField(blog, "Slug") || readField(blog, "Title"));
         return slug && !duplicateSlugs.includes(slug);
     });
 
@@ -469,13 +473,22 @@ async function generateBlogPages() {
     const generatedAt = new Date().toISOString();
     updateManifest(generatedPages, generatedAt);
 
+    const [sitemap, rss, searchIndex] = await Promise.all([
+        generateSitemap(),
+        generateRssFeed(),
+        generateSearchIndex()
+    ]);
+
     return {
         generatedAt,
         generatedCount: generatedPages.length,
         blogIndex: `${SITE_CONFIG.siteUrl.replace(/\/$/, "")}/blog/`,
         generatedUrls: generatedPages.map(article => absoluteBlogUrl(article.slug)),
         duplicateSlugs,
-        invalidSlugs
+        invalidSlugs,
+        sitemap,
+        rss,
+        searchIndex
     };
 }
 

@@ -105,7 +105,7 @@ function buildRssItems(blogs = [], report = {}) {
     const publishedBlogs = blogs.filter(isPublished);
 
     publishedBlogs.forEach(blog => {
-        const slug = normalizeSlug(blog.Slug || blog.slug);
+        const slug = normalizeSlug(blog.Slug || blog.slug || blog.Title || blog.title);
         if (!slug) {
             report.invalidSlugs.push(blog.Title || "(untitled)");
             return;
@@ -128,7 +128,7 @@ function buildRssItems(blogs = [], report = {}) {
 
     return publishedBlogs
         .map(blog => {
-            const slug = normalizeSlug(blog.Slug || blog.slug);
+            const slug = normalizeSlug(blog.Slug || blog.slug || blog.Title || blog.title);
             if (!slug || duplicateSlugs.includes(slug)) return null;
             return toRssItem(blog, slug);
         })
@@ -207,7 +207,8 @@ async function fetchBlogs() {
     const apiUrl = readApiUrl();
     const response = await fetch(`${apiUrl}?action=getAllData`);
     if (!response.ok) throw new Error(`Apps Script API request failed with status ${response.status}`);
-    const result = await response.json();
+    let result = await response.json();
+    if (typeof result === "string") result = JSON.parse(result);
     const payload = result.data || result;
     return Array.isArray(payload.blogs) ? payload.blogs : [];
 }

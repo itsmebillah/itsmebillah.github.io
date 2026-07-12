@@ -1,5 +1,5 @@
         function getBlogSlug(blog) {
-            return String(readObjProp(blog, 'Slug') || "")
+            return String(readObjProp(blog, 'Slug') || readObjProp(blog, 'Title') || "")
                 .trim()
                 .toLowerCase()
                 .replace(/[^a-z0-9-]/g, '-')

@@ -3,7 +3,8 @@
                 const response = await fetch(`${GAS_API_URL}?action=getAllData`);
                 if (!response.ok) throw new Error(`Portfolio API request failed with status ${response.status}`);
                 updatePortfolioLoader('apps');
-                const result = await response.json();
+                let result = await response.json();
+                if (typeof result === 'string') result = JSON.parse(result);
                 updatePortfolioLoader('sheets');
                 
                 if (result) {

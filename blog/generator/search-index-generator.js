@@ -53,7 +53,8 @@ function makeUrl(pathname) {
 async function fetchJson(url) {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`Request failed with status ${response.status}: ${url}`);
-    return response.json();
+    const result = await response.json();
+    return typeof result === "string" ? JSON.parse(result) : result;
 }
 
 async function fetchPortfolioData() {
@@ -98,7 +99,7 @@ async function buildBlogRecords(blogs = [], report) {
     const publishedBlogs = blogs.filter(isPublished);
 
     publishedBlogs.forEach(blog => {
-        const slug = normalizeSlug(blog.Slug || blog.slug);
+        const slug = normalizeSlug(blog.Slug || blog.slug || blog.Title || blog.title);
         if (!slug) {
             report.invalid.blogs.push(blog.Title || "(untitled)");
             return;
@@ -112,7 +113,7 @@ async function buildBlogRecords(blogs = [], report) {
     report.duplicateSlugs.push(...duplicateSlugs);
 
     for (const blog of publishedBlogs) {
-        const slug = normalizeSlug(blog.Slug || blog.slug);
+        const slug = normalizeSlug(blog.Slug || blog.slug || blog.Title || blog.title);
         if (!slug || duplicateSlugs.includes(slug)) continue;
 
         const content = normalizeText(blog.Content || blog.content || await fetchBlogContent(blog));

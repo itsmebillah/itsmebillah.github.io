@@ -1,0 +1,111 @@
+name: Publish generated blog content
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: [publish-blogs]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-blogs-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+
+      - name: Generate blog artifacts
+        id: generate
+        shell: bash
+        run: |
+          set -euo pipefail
+          report="$(node blog/generator/blog-page-generator.js)"
+          printf '%s\n' "$report"
+          {
+            echo 'report<<BLOG_REPORT_EOF'
+            printf '%s\n' "$report"
+            echo 'BLOG_REPORT_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validate generator report
+        shell: bash
+        env:
+          GENERATOR_REPORT: ${{ steps.generate.outputs.report }}
+        run: |
+          node - <<'NODE'
+          const report = JSON.parse(process.env.GENERATOR_REPORT || "");
+          const failures = [];
+
+          if (!report.generatedAt || !Number.isInteger(report.generatedCount)) {
+            failures.push("Generator did not return a completed generation report.");
+          }
+
+          const checks = [
+            ["pages", report.duplicateSlugs, report.invalidSlugs],
+            ["sitemap", report.sitemap?.duplicateSlugs, report.sitemap?.invalidSlugs],
+            ["RSS", report.rss?.duplicateSlugs, report.rss?.invalidSlugs],
+            ["search index", report.searchIndex?.duplicateSlugs, report.searchIndex?.invalid?.blogs]
+          ];
+
+          for (const [label, duplicates = [], invalid = []] of checks) {
+            if (duplicates.length) failures.push(`${label} has duplicate slugs: ${duplicates.join(", ")}`);
+            if (invalid.length) failures.push(`${label} has invalid slugs: ${invalid.join(", ")}`);
+          }
+
+          if (failures.length) {
+            console.error(failures.join("\n"));
+            process.exit(1);
+          }
+
+          console.log(`Validated ${report.generatedCount} generated blog pages.`);
+          NODE
+
+      - name: Stage generated artifacts only
+        shell: bash
+        run: |
+          git add -- \
+            blog/index.html \
+            blog/blogs-manifest.json \
+            'blog/*/index.html' \
+            sitemap.xml \
+            rss.xml \
+            search-index.json
+
+      - name: Detect generated changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Generated blog content is already current."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --cached --stat
+          fi
+
+      - name: Commit generated artifacts
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(blog): auto publish generated blog content"
+
+      - name: Push generated commit
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: git push origin "HEAD:${{ github.ref_name }}"

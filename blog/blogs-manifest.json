@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-26T04:33:18.414Z",
+  "generatedAt": "2026-07-12T15:19:48.205Z",
   "source": {
     "cms": "Google Sheets",
     "api": "Apps Script",
@@ -50,6 +50,14 @@
   ],
   "pages": [
     {
+      "title": "What is Business Inteligence?",
+      "slug": "what-is-business-inteligence",
+      "url": "/blog/what-is-business-inteligence/",
+      "output": "blog/what-is-business-inteligence/index.html",
+      "category": "Business Intelligence",
+      "published": true
+    },
+    {
       "title": "Data Analysis & Storytelling for Better Decisions",
       "slug": "data-analysis-career-business-guide",
       "url": "/blog/data-analysis-career-business-guide/",
@@ -95,6 +103,30 @@
       "url": "/blog/ecommerce-sales-analysis-case-study/",
       "output": "blog/ecommerce-sales-analysis-case-study/index.html",
       "category": "Data Analytics",
+      "published": true
+    },
+    {
+      "title": "Data Visualization Best Practices",
+      "slug": "data-visualization-best-practices",
+      "url": "/blog/data-visualization-best-practices/",
+      "output": "blog/data-visualization-best-practices/index.html",
+      "category": "Tutorial",
+      "published": true
+    },
+    {
+      "title": "How I Automated Business Reporting and Saved Hours of Manual Work",
+      "slug": "how-i-automated-business-reporting-and-saved-hours-of-manual-work",
+      "url": "/blog/how-i-automated-business-reporting-and-saved-hours-of-manual-work/",
+      "output": "blog/how-i-automated-business-reporting-and-saved-hours-of-manual-work/index.html",
+      "category": "Case Study",
+      "published": true
+    },
+    {
+      "title": "Wealth OS – A Modern Personal Wealth Intelligence Platform Built with Next.js, Supabase & Vercel",
+      "slug": "wealth-os-personal-wealth-intelligence-platform",
+      "url": "/blog/wealth-os-personal-wealth-intelligence-platform/",
+      "output": "blog/wealth-os-personal-wealth-intelligence-platform/index.html",
+      "category": "FinTech",
       "published": true
     }
   ]

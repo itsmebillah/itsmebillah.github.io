@@ -33,3 +33,16 @@ I enjoy working with **SQL**, **Python**, **Power BI**, and visualization tools 
 ### 📊 GitHub Stats
 
 ![Md. Masum Billah's GitHub Stats](https://github-readme-stats.vercel.app/api?username=itsmebillah&show_icons=true&theme=radical)
+
+---
+
+### Automated blog publishing
+
+The `Publish generated blog content` GitHub Actions workflow regenerates and commits the static blog artifacts. It runs through either:
+
+- `workflow_dispatch` for a manual run from **Actions → Publish generated blog content → Run workflow**.
+- `repository_dispatch` with the event type `publish-blogs` for external automation.
+
+The workflow runs `node blog/generator/blog-page-generator.js`, validates the generator report, and commits only generated blog artifacts when they changed.
+
+Apps Script will later trigger the same workflow by sending an authenticated GitHub `repository_dispatch` request with `event_type` set to `publish-blogs`. Apps Script integration is not implemented in this repository yet.
