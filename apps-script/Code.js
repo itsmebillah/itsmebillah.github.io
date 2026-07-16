@@ -4,7 +4,7 @@
 const MASTER_CONFIG = {
   sheetId: "1ZnoWdyyqzutrIs6SBnYfwN3a9aVsPNPJjzw9lWu76iE", // আপনার স্প্রেডশিট আইডি
   adminEmail: "itsmbillah@gmail.com",                     // নোটিফিকেশন ইমেইল
-  groqModel: "llama-3.1-70b-versatile",                  // ফাস্ট এবং রিলায়েবল এআই মডেল
+  groqModel: "openai/gpt-oss-120b",                     // ফাস্ট এবং রিলায়েবল এআই মডেল
   tabs: {
     profile: "Profile",
     config: "Config",
@@ -232,7 +232,7 @@ function executeGroqAiPipeline(userMessage) {
         { role: "user", content: userMessage }
       ],
       temperature: 0.15, // ফ্যান্টাসি কমাতে এবং টেকনিক্যাল অ্যাকুরেসি হাই রাখতে টেম্পারেচার লো
-      max_tokens: 500
+      max_completion_tokens: 500
     };
     
     const options = {
@@ -246,13 +246,29 @@ function executeGroqAiPipeline(userMessage) {
     };
     
     const response = UrlFetchApp.fetch(url, options);
+    const statusCode = response.getResponseCode();
     const resText = response.getContentText();
-    const resJson = JSON.parse(resText);
+    let resJson;
+
+    try {
+      resJson = JSON.parse(resText);
+    } catch (parseError) {
+      console.error("Groq API returned invalid JSON with status " + statusCode);
+      return { success: false, reply: "AI service returned an invalid response. Please try again later.", raw: resText };
+    }
+
+    if (statusCode < 200 || statusCode >= 300 || resJson.error) {
+      const errorMessage = resJson.error && resJson.error.message
+        ? resJson.error.message
+        : "Request failed with HTTP status " + statusCode + ".";
+      console.error("Groq API request failed with status " + statusCode + ": " + errorMessage);
+      return { success: false, reply: "AI service request failed: " + errorMessage, raw: resText };
+    }
     
-    if (resJson.choices && resJson.choices[0]) {
+    if (resJson.choices && resJson.choices[0] && resJson.choices[0].message && resJson.choices[0].message.content) {
       return { success: true, reply: resJson.choices[0].message.content };
     } else {
-      return { success: false, reply: "AI Stream Interrupted. Please route queries via contact info.", raw: resText };
+      return { success: false, reply: "AI service returned an empty response. Please try again later.", raw: resText };
     }
   } catch (err) {
     return { success: false, reply: "Data connection pipeline timed out: " + err.toString() };
