@@ -12,6 +12,15 @@
             return slug ? `/blog/${slug}/` : '';
         }
 
+        function resolveBlogThumbnail(value) {
+            const fallbackImage = sanitizeUrl(
+                typeof SEO_CONFIG !== 'undefined' ? SEO_CONFIG.image : '',
+                { image: true }
+            );
+            const thumbnail = sanitizeUrl(value == null ? '' : String(value).trim(), { image: true });
+            return thumbnail || fallbackImage;
+        }
+
         function renderBlogs(blogsData) {
             const container = document.getElementById('blogsContainer');
             if(!container || !blogsData || blogsData.length === 0) return;
@@ -19,7 +28,7 @@
 
             container.innerHTML = blogsData.map((b, idx) => {
                 const title = escapeHtml(readObjProp(b, 'Title'));
-                const thumb = sanitizeUrl(readObjProp(b, 'Thumbnail'), { image: true, allowImageData: true });
+                const thumb = resolveBlogThumbnail(readObjProp(b, 'Thumbnail'));
                 const cat = escapeHtml(readObjProp(b, 'Category'));
                 const desc = escapeHtml(readObjProp(b, 'Description'));
                 const date = escapeHtml(readObjProp(b, 'Date'));
@@ -57,7 +66,7 @@
             const cat = escapeHtml(readObjProp(blog, 'Category'));
             const title = escapeHtml(readObjProp(blog, 'Title'));
             const desc = escapeHtml(readObjProp(blog, 'Description'));
-            const thumb = sanitizeUrl(readObjProp(blog, 'Thumbnail'), { image: true, allowImageData: true });
+            const thumb = resolveBlogThumbnail(readObjProp(blog, 'Thumbnail'));
             const docId = readObjProp(blog, 'DocID') || readObjProp(blog, 'GoogleDocID');
             const slug = readObjProp(blog, 'Slug');
 
