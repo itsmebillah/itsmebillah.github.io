@@ -1,0 +1,15 @@
+{
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "git.autoRepositoryDetection": true,
+  "git.openRepositoryInParentFolders": "never",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.clasp.json": true
+  },
+  "files.exclude": {
+    "**/.clasp.json": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true
+  }
+}
