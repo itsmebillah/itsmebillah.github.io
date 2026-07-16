@@ -9,7 +9,7 @@
     <link>https://itsmebillah.github.io/</link>
     <atom:link href="https://itsmebillah.github.io/rss.xml" rel="self" type="application/rss+xml" />
     <language>en</language>
-    <lastBuildDate>Sun, 12 Jul 2026 16:53:24 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2026 17:45:06 GMT</lastBuildDate>
     <pubDate>Wed, 23 Dec 2026 00:00:00 GMT</pubDate>
     <managingEditor>Md. Masum Billah</managingEditor>
     <webMaster>Md. Masum Billah</webMaster>
@@ -1830,7 +1830,7 @@ This project demonstrates how modern automation tools can transform a simple spr
       <description><![CDATA[Wealth OS is a modern Personal Wealth Intelligence Platform that helps individuals manage assets, investments, income, expenses, wallets, financial goals, and overall net worth from a single dashboard. Built with Next.js, Supabase, and Vercel.]]></description>
       <link>https://itsmebillah.github.io/blog/wealth-os-personal-wealth-intelligence-platform/</link>
       <guid isPermaLink="true">https://itsmebillah.github.io/blog/wealth-os-personal-wealth-intelligence-platform/</guid>
-      <pubDate>Sun, 12 Jul 2026 16:53:24 GMT</pubDate>
+      <pubDate>Thu, 16 Jul 2026 17:45:06 GMT</pubDate>
       <author>Md. Masum Billah</author>
       <category>FinTech</category>
       <content:encoded><![CDATA[<article class="blog-article">
@@ -3226,7 +3226,7 @@ Thank you for taking the time to explore this project.
 </p>
 
 </section>]]></content:encoded>
-      <media:content url="wealth-os-dashboard.webp" medium="image" />
+      <media:content url="https://i.postimg.cc/FzBcjb3b/Screenshot-2026-07-16-234111.png" medium="image" />
     </item>
   </channel>
 </rss>

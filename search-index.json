@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-12T16:53:21.653Z",
+  "generatedAt": "2026-07-16T17:44:59.704Z",
   "source": "Google Sheets via Apps Script",
   "fields": {
     "blog": [
@@ -165,7 +165,7 @@
     {
       "type": "project",
       "id": "project:autopilot-business-system",
-      "url": "https://script.google.com/macros/s/AKfycbzJwA27QizVfbsVt3uJl1_mdJxAaU5dU0qFvUvESSNS1Fv277UCerV5-1qiP9dU0aY5/exec",
+      "url": "https://script.google.com/macros/s/AKfycbze2NXUH8ddcmy7l99wLCbPrsz0v95vu7xO_bR632byfPPi0Yn7uxoZJm_W1Me4k8IH/exec",
       "title": "Autopilot Business System",
       "description": "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script",
       "technologies": [
