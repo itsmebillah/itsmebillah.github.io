@@ -1,5 +1,6 @@
 // 🔴 আপনার আসল Google Apps Script Web App URL নিশ্চিত করুন
         const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbwmQcArmH_TZ9Y8mP_XiyWgSCzU1QpmK7Iw3y5exUOKenl6p4ZOhTd7dxh-E8fpeJj1Mg/exec';
+        const DASHBOARD_URL = 'https://itsmebillah.github.io/admin/';
         
         let allBlogs = [];
         const portfolioLoaderTasks = new Set();
