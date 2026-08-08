@@ -4,6 +4,7 @@ const GITHUB_SYNC_CONFIG = {
   apiVersion: "2026-03-10",
   snapshotProperty: "GITHUB_LAST_GOOD_SNAPSHOT_JSON",
   snapshotPartCountProperty: "GITHUB_LAST_GOOD_SNAPSHOT_PARTS",
+  snapshotGenerationProperty: "GITHUB_LAST_GOOD_SNAPSHOT_GENERATION",
   snapshotPartSize: 8000,
   etagProperty: "GITHUB_REPOSITORIES_ETAG",
   missingRetentionDays: 30,
@@ -49,19 +50,7 @@ function syncGitHubProjects() {
     const previous = loadLastGoodSnapshot_();
     const reconciled = reconcileRepositorySnapshot_(previous, response.repositories, attemptedAt);
     validateRepositorySnapshot_(reconciled);
-    saveLastGoodSnapshot_(reconciled);
-    replaceSnapshotSheet_(reconciled, response.etag);
-    ensureCurationRows_(reconciled);
-    PropertiesService.getScriptProperties().setProperty(GITHUB_SYNC_CONFIG.etagProperty, response.etag || "");
-    writeGitHubSyncStatus_({
-      lastAttemptAt: attemptedAt,
-      lastSuccessAt: attemptedAt,
-      status: "success",
-      httpStatus: response.status,
-      repositoryCount: response.repositories.length,
-      etag: response.etag,
-      failureCount: 0
-    });
+    commitGitHubSnapshot_(reconciled, response, attemptedAt);
     invalidatePublicPortfolioCache_();
     return { success: true, status: "success", repositoryCount: response.repositories.length };
   } catch (error) {
@@ -76,10 +65,11 @@ function syncGitHubProjects() {
         repositoryCount: loadLastGoodSnapshot_().filter(item => item.sync_state === "active").length,
         etag: PropertiesService.getScriptProperties().getProperty(GITHUB_SYNC_CONFIG.etagProperty) || "",
         failureCount: failureCount,
-        nextRetryAt: new Date(Date.now() + Math.min(Math.pow(2, failureCount) * 60000, 21600000)),
+        nextRetryAt: "",
         errorCode: error.publicCode || "GITHUB_SYNC_FAILED"
       });
     } catch (statusError) { logSafeError_("SYNC_STATUS_WRITE_FAILED", statusError); }
+    if (error.retryAvailableAt) console.warn("GITHUB_RETRY_AVAILABLE_AT=" + error.retryAvailableAt);
     logSafeError_("GITHUB_SYNC_FAILED", error);
     throw error;
   } finally {
@@ -114,6 +104,7 @@ function fetchGitHubRepositories_() {
     if (status !== 200) {
       const error = createPublicError_(status === 403 || status === 429 ? "GITHUB_RATE_LIMITED" : "GITHUB_UNAVAILABLE", "GitHub synchronization failed.");
       error.httpStatus = status;
+      error.retryAvailableAt = getGitHubRetryAvailableAt_(responseHeaders, new Date());
       throw error;
     }
     let payload;
@@ -161,14 +152,15 @@ function normalizeGitHubRepository_(repo, fetchedAt) {
 }
 
 function reconcileRepositorySnapshot_(previous, current, now) {
-  const nowIso = now instanceof Date ? now.toISOString() : new Date(now).toISOString();
+  const nowDate = now instanceof Date ? now : new Date(now);
+  const nowIso = nowDate.toISOString();
   const currentById = {};
   current.forEach(item => { currentById[item.github_repository_id] = item; });
   const result = current.slice();
   previous.forEach(oldItem => {
     if (currentById[oldItem.github_repository_id]) return;
     const missingSince = oldItem.missing_since || nowIso;
-    const age = Date.now() - new Date(missingSince).getTime();
+    const age = nowDate.getTime() - new Date(missingSince).getTime();
     if (!isFinite(age) || age <= GITHUB_SYNC_CONFIG.missingRetentionDays * 86400000) {
       const retained = Object.assign({}, oldItem, { sync_state: "unavailable", missing_since: missingSince, fetched_at: nowIso });
       result.push(retained);
@@ -291,8 +283,8 @@ function ensureSheetWithHeaders_(ss, name, headers) {
   return sheet;
 }
 
-function replaceSnapshotSheet_(repositories, etag) {
-  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+function replaceSnapshotSheet_(repositories, etag, spreadsheet) {
+  const ss = spreadsheet || SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
   const sheet = ensureSheetWithHeaders_(ss, MASTER_CONFIG.tabs.githubSnapshot, GITHUB_SYNC_CONFIG.snapshotHeaders);
   const previous = sheet.getDataRange().getValues();
   const rows = repositories.map(repo => GITHUB_SYNC_CONFIG.snapshotHeaders.map(header => {
@@ -309,17 +301,24 @@ function replaceSnapshotSheet_(repositories, etag) {
   }
 }
 
-function ensureCurationRows_(repositories) {
-  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+function ensureCurationRows_(repositories, spreadsheet) {
+  const ss = spreadsheet || SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
   const sheet = ensureSheetWithHeaders_(ss, MASTER_CONFIG.tabs.projectCuration, GITHUB_SYNC_CONFIG.curationHeaders);
   const existing = readSheetObjects_(ss, MASTER_CONFIG.tabs.projectCuration);
+  const plan = planCurationReconciliation_(repositories, existing);
+  plan.renames.forEach(rename => sheet.getRange(rename.row, 2).setValue(rename.repoKey));
+  if (plan.newRows.length) sheet.getRange(sheet.getLastRow() + 1, 1, plan.newRows.length, GITHUB_SYNC_CONFIG.curationHeaders.length).setValues(plan.newRows);
+}
+
+function planCurationReconciliation_(repositories, existing) {
   const ids = {};
+  const renames = [];
   existing.forEach((item, index) => {
     if (!item.github_repository_id) return;
     const id = String(item.github_repository_id);
     ids[id] = true;
     const current = repositories.find(repo => repo.github_repository_id === id);
-    if (current && String(item.repo_key || "") !== current.repo_key) sheet.getRange(index + 2, 2).setValue(current.repo_key);
+    if (current && String(item.repo_key || "") !== current.repo_key) renames.push({ row: index + 2, repoKey: current.repo_key });
   });
   const newRows = repositories.filter(repo => repo.sync_state === "active" && !ids[repo.github_repository_id]).map(repo =>
     GITHUB_SYNC_CONFIG.curationHeaders.map(header => {
@@ -329,11 +328,11 @@ function ensureCurationRows_(repositories) {
       return "";
     })
   );
-  if (newRows.length) sheet.getRange(sheet.getLastRow() + 1, 1, newRows.length, GITHUB_SYNC_CONFIG.curationHeaders.length).setValues(newRows);
+  return { renames: renames, newRows: newRows };
 }
 
-function writeGitHubSyncStatus_(status) {
-  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+function writeGitHubSyncStatus_(status, spreadsheet) {
+  const ss = spreadsheet || SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
   const sheet = ensureSheetWithHeaders_(ss, MASTER_CONFIG.tabs.syncStatus, GITHUB_SYNC_CONFIG.statusHeaders);
   const values = {
     last_attempt_at: normalizeDateForJson_(status.lastAttemptAt),
@@ -368,8 +367,169 @@ function saveLastGoodSnapshot_(repositories) {
   properties.setProperty(GITHUB_SYNC_CONFIG.snapshotPartCountProperty, String(parts.length));
 }
 
+function commitGitHubSnapshot_(repositories, response, attemptedAt) {
+  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+  const properties = PropertiesService.getScriptProperties();
+  const previousGeneration = properties.getProperty(GITHUB_SYNC_CONFIG.snapshotGenerationProperty) || "";
+  const previousEtag = properties.getProperty(GITHUB_SYNC_CONFIG.etagProperty);
+  const backups = captureGitHubSyncSheets_(ss);
+  const stagedGeneration = stageSnapshotGeneration_(repositories);
+
+  try {
+    replaceSnapshotSheet_(repositories, response.etag, ss);
+    ensureCurationRows_(repositories, ss);
+    verifySnapshotSheet_(ss, repositories, response.etag);
+    verifyCurationSheet_(ss, repositories);
+
+    properties.setProperty(GITHUB_SYNC_CONFIG.snapshotGenerationProperty, stagedGeneration);
+    properties.setProperty(GITHUB_SYNC_CONFIG.etagProperty, response.etag || "");
+    writeGitHubSyncStatus_({
+      lastAttemptAt: attemptedAt,
+      lastSuccessAt: attemptedAt,
+      status: "success",
+      httpStatus: response.status,
+      repositoryCount: response.repositories.length,
+      etag: response.etag,
+      failureCount: 0,
+      nextRetryAt: ""
+    }, ss);
+    verifyGitHubSyncStatus_(ss, "success", response.repositories.length);
+  } catch (error) {
+    try { restoreGitHubSyncSheets_(ss, backups); } catch (rollbackError) { logSafeError_("SYNC_SHEET_ROLLBACK_FAILED", rollbackError); }
+    try { restoreProperty_(properties, GITHUB_SYNC_CONFIG.snapshotGenerationProperty, previousGeneration); }
+    catch (rollbackError) { logSafeError_("SYNC_MARKER_ROLLBACK_FAILED", rollbackError); }
+    try { restoreProperty_(properties, GITHUB_SYNC_CONFIG.etagProperty, previousEtag); }
+    catch (rollbackError) { logSafeError_("SYNC_ETAG_ROLLBACK_FAILED", rollbackError); }
+    cleanupSnapshotGeneration_(stagedGeneration);
+    throw error;
+  }
+
+  if (previousGeneration && previousGeneration !== stagedGeneration) cleanupSnapshotGeneration_(previousGeneration);
+}
+
+function stageSnapshotGeneration_(repositories) {
+  const properties = PropertiesService.getScriptProperties();
+  const generation = Utilities.getUuid().replace(/[^A-Za-z0-9_-]/g, "");
+  const serialized = JSON.stringify(repositories);
+  const parts = [];
+  for (let offset = 0; offset < serialized.length; offset += GITHUB_SYNC_CONFIG.snapshotPartSize) {
+    parts.push(serialized.slice(offset, offset + GITHUB_SYNC_CONFIG.snapshotPartSize));
+  }
+  try {
+    parts.forEach((part, index) => properties.setProperty(snapshotGenerationPartKey_(generation, index), part));
+    properties.setProperty(snapshotGenerationCountKey_(generation), String(parts.length));
+  } catch (error) {
+    parts.forEach((part, index) => properties.deleteProperty(snapshotGenerationPartKey_(generation, index)));
+    properties.deleteProperty(snapshotGenerationCountKey_(generation));
+    throw error;
+  }
+  return generation;
+}
+
+function loadSnapshotGeneration_(properties, generation) {
+  if (!generation) return null;
+  const partCount = Number(properties.getProperty(snapshotGenerationCountKey_(generation)) || 0);
+  if (!isFinite(partCount) || partCount < 1) return null;
+  let raw = "";
+  for (let index = 0; index < partCount; index++) {
+    const part = properties.getProperty(snapshotGenerationPartKey_(generation, index));
+    if (part === null || part === undefined) return null;
+    raw += part;
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : null;
+  } catch (error) {
+    logSafeError_("SNAPSHOT_GENERATION_PARSE_FAILED", error);
+    return null;
+  }
+}
+
+function cleanupSnapshotGeneration_(generation) {
+  if (!generation) return;
+  const properties = PropertiesService.getScriptProperties();
+  const countKey = snapshotGenerationCountKey_(generation);
+  const partCount = Number(properties.getProperty(countKey) || 0);
+  for (let index = 0; index < partCount; index++) {
+    try { properties.deleteProperty(snapshotGenerationPartKey_(generation, index)); } catch (error) {}
+  }
+  try { properties.deleteProperty(countKey); } catch (error) {}
+}
+
+function snapshotGenerationCountKey_(generation) {
+  return GITHUB_SYNC_CONFIG.snapshotProperty + "_GEN_" + generation + "_PARTS";
+}
+
+function snapshotGenerationPartKey_(generation, index) {
+  return GITHUB_SYNC_CONFIG.snapshotProperty + "_GEN_" + generation + "_" + index;
+}
+
+function captureGitHubSyncSheets_(ss) {
+  const result = {};
+  [MASTER_CONFIG.tabs.githubSnapshot, MASTER_CONFIG.tabs.projectCuration, MASTER_CONFIG.tabs.syncStatus].forEach(name => {
+    const sheet = ss.getSheetByName(name);
+    result[name] = sheet ? sheet.getDataRange().getValues() : null;
+  });
+  return result;
+}
+
+function restoreGitHubSyncSheets_(ss, backups) {
+  Object.keys(backups).forEach(name => {
+    const values = backups[name];
+    const sheet = ss.getSheetByName(name);
+    if (!sheet || !values) return;
+    sheet.clearContents();
+    if (values.length && values[0].length) sheet.getRange(1, 1, values.length, values[0].length).setValues(values);
+  });
+}
+
+function restoreProperty_(properties, key, value) {
+  if (value === null || value === undefined || value === "") properties.deleteProperty(key);
+  else properties.setProperty(key, value);
+}
+
+function verifySnapshotSheet_(ss, repositories, etag) {
+  const rows = readSheetObjects_(ss, MASTER_CONFIG.tabs.githubSnapshot);
+  if (rows.length !== repositories.length) throw createPublicError_("SNAPSHOT_VERIFY_FAILED", "Repository snapshot verification failed.");
+  const expected = {};
+  repositories.forEach(repo => { expected[String(repo.github_repository_id)] = repo.repo_key; });
+  rows.forEach(row => {
+    const id = String(row.github_repository_id || "");
+    if (!expected[id] || expected[id] !== String(row.repo_key || "") || String(row.source_etag || "") !== String(etag || "")) {
+      throw createPublicError_("SNAPSHOT_VERIFY_FAILED", "Repository snapshot verification failed.");
+    }
+    delete expected[id];
+  });
+  if (Object.keys(expected).length) throw createPublicError_("SNAPSHOT_VERIFY_FAILED", "Repository snapshot verification failed.");
+}
+
+function verifyCurationSheet_(ss, repositories) {
+  const rows = readSheetObjects_(ss, MASTER_CONFIG.tabs.projectCuration);
+  const counts = {};
+  rows.forEach(row => {
+    const id = String(row.github_repository_id || "");
+    if (id) counts[id] = Number(counts[id] || 0) + 1;
+  });
+  Object.keys(counts).forEach(id => {
+    if (counts[id] > 1) throw createPublicError_("CURATION_VERIFY_FAILED", "Project curation verification failed.");
+  });
+  repositories.filter(repo => repo.sync_state === "active").forEach(repo => {
+    if (counts[repo.github_repository_id] !== 1) throw createPublicError_("CURATION_VERIFY_FAILED", "Project curation verification failed.");
+  });
+}
+
+function verifyGitHubSyncStatus_(ss, expectedStatus, expectedCount) {
+  const status = readGitHubSyncStatus_(ss);
+  if (String(status.status || "") !== expectedStatus || Number(status.repository_count) !== Number(expectedCount)) {
+    throw createPublicError_("STATUS_VERIFY_FAILED", "Synchronization status verification failed.");
+  }
+}
+
 function loadLastGoodSnapshot_() {
   const properties = PropertiesService.getScriptProperties();
+  const generation = properties.getProperty(GITHUB_SYNC_CONFIG.snapshotGenerationProperty) || "";
+  const committed = loadSnapshotGeneration_(properties, generation);
+  if (committed) return committed;
   const partCount = Number(properties.getProperty(GITHUB_SYNC_CONFIG.snapshotPartCountProperty) || 0);
   let raw = "";
   for (let index = 0; index < partCount; index++) raw += properties.getProperty(GITHUB_SYNC_CONFIG.snapshotProperty + "_" + index) || "";
@@ -421,6 +581,30 @@ function normalizeDateForJson_(value) {
   if (!value) return "";
   const date = value instanceof Date ? value : new Date(value);
   return isNaN(date.getTime()) ? "" : date.toISOString();
+}
+
+function getGitHubRetryAvailableAt_(headers, now) {
+  const source = headers || {};
+  const retryAfter = getResponseHeader_(source, "Retry-After");
+  const reset = getResponseHeader_(source, "X-RateLimit-Reset");
+  const base = now instanceof Date ? now.getTime() : new Date(now).getTime();
+  if (retryAfter) {
+    const seconds = Number(retryAfter);
+    if (isFinite(seconds) && seconds >= 0) return new Date(base + seconds * 1000).toISOString();
+    const retryDate = new Date(retryAfter);
+    if (!isNaN(retryDate.getTime())) return retryDate.toISOString();
+  }
+  const resetSeconds = Number(reset);
+  return isFinite(resetSeconds) && resetSeconds > 0 ? new Date(resetSeconds * 1000).toISOString() : "";
+}
+
+function getResponseHeader_(headers, target) {
+  const expected = String(target).toLowerCase();
+  const keys = Object.keys(headers || {});
+  for (let index = 0; index < keys.length; index++) {
+    if (keys[index].toLowerCase() === expected) return String(headers[keys[index]] || "");
+  }
+  return "";
 }
 
 function cleanPublicText_(value, maxLength) {

@@ -244,7 +244,7 @@ test('last-known-good repository snapshot is chunked and restored', () => {
 test('cached public response survives a spreadsheet outage', () => {
     const { context, cache } = createContext();
     const cached = { success: true, schemaVersion: 1, data: { profile: { Name: 'Cached' }, projects: [], skills: [] } };
-    cache.set('portfolio_public_dto_v1', JSON.stringify(cached));
+    cache.set('portfolio_public_dto_v1_contract10', JSON.stringify(cached));
     context.SpreadsheetApp = { openById: () => { throw new Error('Sheets unavailable'); } };
     const result = evaluate(context, 'compileAllPortfolioData()');
     assert.equal(result.data.profile.Name, 'Cached');
@@ -287,12 +287,15 @@ test('complete public API response uses strict entity DTOs', () => {
             ['Name', 'Title', 'Email', 'Phone', 'sex', 'Age ', 'Maritial status', 'InternalNote'],
             ['Masum', 'Data Analyst', 'public@example.com', 'public-phone', 'private', 'private', 'private', 'private']
         ],
+        Config: [['Key', 'Value'], ['name', 'Masum'], ['private_token', 'private-config']],
         Skills: [['Name', 'Level', 'Category', 'InternalNote'], ['SQL', 90, 'Analytics', 'private']],
         Projects: [['Name', 'Description', 'DemoEmail', 'DemoPassword', 'Published'], ['Legacy', 'Safe', 'private', 'private', true]],
         Experience: [['Title', 'Company', 'Period', 'Description'], ['Analyst', 'Company', '2026', 'Work']],
         Education: [['Degree', 'Institution', 'Period', 'Description'], ['BBA', 'College', '2022', 'Study']],
         Certificates: [['Name', 'Organization', 'Published', 'InternalNote'], ['SQL', 'Provider', true, 'private']],
         Blogs: [['Title', 'Slug', 'Content', 'Published', 'DocID'], ['Post', 'post', 'Public article', true, 'private-doc-id']],
+        FAQ: [['Question', 'Answer', 'Category', 'InternalNote'], ['Question', 'Answer', 'General', 'private-faq']],
+        AI_CONTEXT: [['Section', 'Content', 'PrivatePrompt'], ['Public', 'Reviewed context', 'private-prompt']],
         Portfolio_Project_Curation: [['github_repository_id', 'repo_key', 'show_on_portfolio']],
         GitHub_Sync_Status: [['status', 'last_success_at']]
     };
@@ -306,8 +309,168 @@ test('complete public API response uses strict entity DTOs', () => {
     const result = evaluate(context, 'compileAllPortfolioData()');
     const serialized = JSON.stringify(result);
     assert.equal(result.schemaVersion, 1);
-    assert.deepEqual(Object.keys(result.data).sort(), ['blogs', 'certificates', 'education', 'experience', 'profile', 'projects', 'skills']);
-    for (const forbidden of ['sex', 'Maritial status', 'InternalNote', 'DemoEmail', 'DemoPassword', 'private-doc-id']) {
+    assert.deepEqual(Object.keys(result.data).sort(), ['aiContext', 'blogs', 'certificates', 'config', 'education', 'experience', 'faq', 'profile', 'projects', 'skills']);
+    for (const forbidden of ['sex', 'Maritial status', 'InternalNote', 'DemoEmail', 'DemoPassword', 'private-doc-id', 'private-config', 'private-faq', 'private-prompt']) {
         assert.equal(serialized.includes(forbidden), false, `forbidden field leaked: ${forbidden}`);
     }
+    assert.equal(Object.hasOwn(result.data.profile, ''), false);
+    assert.deepEqual(JSON.parse(JSON.stringify(result.data.faq[0])), { Question: 'Question', Answer: 'Answer', Category: 'General' });
+    assert.deepEqual(JSON.parse(JSON.stringify(result.data.aiContext[0])), { Section: 'Public', Content: 'Reviewed context' });
+});
+
+test('public config is key-allowlisted and ignores unknown keys', () => {
+    const { context } = createContext();
+    const tables = {
+        Config: [['Key', 'Value'], ['name', 'Masum'], ['site_tagline', 'Analytics'], ['GROQ_API_KEY', 'must-not-survive']]
+    };
+    context.__ss = { getSheetByName: name => tables[name] ? { getDataRange: () => ({ getValues: () => tables[name] }) } : null };
+    const result = evaluate(context, 'buildPublicConfig_(__ss)');
+    assert.equal(result.name, 'Masum');
+    assert.equal(result.site_tagline, 'Analytics');
+    assert.equal(Object.hasOwn(result, 'GROQ_API_KEY'), false);
+    assert.equal(JSON.stringify(result).includes('must-not-survive'), false);
+});
+
+test('private AI prompt and knowledge are server-only bounded context', () => {
+    const { context } = createContext();
+    const tables = {
+        AI_Prompt: [['Key', 'Value'], ['system_prompt', 'Private owner prompt']],
+        AI_Knowledge: [['Type', 'Title', 'Content', 'InternalNote'], ['Profile', 'Masum', 'Reviewed knowledge', 'private-note']]
+    };
+    context.__ss = { getSheetByName: name => tables[name] ? { getDataRange: () => ({ getValues: () => tables[name] }) } : null };
+    const result = evaluate(context, 'buildPrivateAiContext_(__ss)');
+    assert.equal(result.systemPrompt, 'Private owner prompt');
+    assert.deepEqual(JSON.parse(JSON.stringify(result.knowledge)), [{ type: 'Profile', title: 'Masum', content: 'Reviewed knowledge' }]);
+    assert.equal(JSON.stringify(result).includes('private-note'), false);
+});
+
+test('existing repository technical metadata updates under the same immutable id', () => {
+    const { context } = createContext();
+    context.__previous = [repository({ description: 'Old', topics_json: '["old"]' })];
+    context.__current = [repository({ description: 'New', topics_json: '["new"]', updated_at: '2026-08-09T00:00:00.000Z' })];
+    const result = evaluate(context, `reconcileRepositorySnapshot_(__previous, __current, new Date('2026-08-09T00:00:00Z'))`);
+    assert.equal(result.length, 1);
+    assert.equal(result[0].github_repository_id, '101');
+    assert.equal(result[0].description, 'New');
+    assert.equal(result[0].topics_json, '["new"]');
+});
+
+test('duplicate repository ids reject the candidate snapshot', () => {
+    const { context } = createContext();
+    context.__repos = [repository(), repository({ repo_key: 'itsmebillah/duplicate' })];
+    assert.throws(() => evaluate(context, 'validateRepositorySnapshot_(__repos)'), error => error.publicCode === 'DUPLICATE_REPOSITORY');
+});
+
+test('deleted repository expires after the retention window using controlled time', () => {
+    const { context } = createContext();
+    context.__previous = [repository({ sync_state: 'unavailable', missing_since: '2026-06-01T00:00:00.000Z' })];
+    const result = evaluate(context, `reconcileRepositorySnapshot_(__previous, [], new Date('2026-08-08T00:00:00Z'))`);
+    assert.equal(result.length, 0);
+});
+
+test('GitHub discovery normalizes only public repositories owned by the configured user', () => {
+    const { context } = createContext();
+    const payload = [
+        { id: 101, node_id: 'R1', full_name: 'itsmebillah/example', name: 'example', owner: { login: 'itsmebillah' }, private: false, html_url: 'https://github.com/itsmebillah/example', topics: [] },
+        { id: 102, node_id: 'R2', full_name: 'someone/foreign', name: 'foreign', owner: { login: 'someone' }, private: false, html_url: 'https://github.com/someone/foreign', topics: [] },
+        { id: 103, node_id: 'R3', full_name: 'itsmebillah/private', name: 'private', owner: { login: 'itsmebillah' }, private: true, html_url: 'https://github.com/itsmebillah/private', topics: [] }
+    ];
+    context.UrlFetchApp = { fetch: () => ({ getResponseCode: () => 200, getAllHeaders: () => ({ ETag: 'etag-1' }), getContentText: () => JSON.stringify(payload) }) };
+    const result = evaluate(context, 'fetchGitHubRepositories_()');
+    assert.equal(result.repositories.length, 1);
+    assert.equal(result.repositories[0].github_repository_id, '101');
+    assert.equal(result.etag, 'etag-1');
+});
+
+test('GitHub API failure records real rate-limit availability without scheduling a retry', () => {
+    const { context } = createContext();
+    context.UrlFetchApp = { fetch: () => ({
+        getResponseCode: () => 429,
+        getAllHeaders: () => ({ 'Retry-After': '120', 'X-RateLimit-Reset': '1786200000' }),
+        getContentText: () => '{}'
+    }) };
+    assert.throws(
+        () => evaluate(context, 'fetchGitHubRepositories_()'),
+        error => error.publicCode === 'GITHUB_RATE_LIMITED' && error.httpStatus === 429 && /T/.test(error.retryAvailableAt)
+    );
+    assert.equal(evaluate(context, `getGitHubRetryAvailableAt_({'Retry-After':'60'}, new Date('2026-08-08T00:00:00Z'))`), '2026-08-08T00:01:00.000Z');
+});
+
+test('staged snapshot remains invisible until its generation marker is committed', () => {
+    const { context, properties } = createContext();
+    context.__repos = [repository()];
+    const generation = evaluate(context, 'stageSnapshotGeneration_(__repos)');
+    assert.equal(properties.has('GITHUB_LAST_GOOD_SNAPSHOT_GENERATION'), false);
+    assert.equal(evaluate(context, 'loadSnapshotGeneration_(PropertiesService.getScriptProperties(), ' + JSON.stringify(generation) + ').length'), 1);
+});
+
+test('sheet write failure preserves the committed snapshot marker and etag', () => {
+    const { context, properties } = createContext();
+    properties.set('GITHUB_LAST_GOOD_SNAPSHOT_GENERATION', 'previous-generation');
+    properties.set('GITHUB_REPOSITORIES_ETAG', 'old-etag');
+    context.SpreadsheetApp = { openById: () => ({}) };
+    context.captureGitHubSyncSheets_ = () => ({});
+    context.replaceSnapshotSheet_ = () => { throw new Error('sheet write failed'); };
+    context.restoreGitHubSyncSheets_ = () => {};
+    context.__repos = [repository()];
+    context.__response = { etag: 'new-etag', status: 200, repositories: context.__repos };
+    assert.throws(() => evaluate(context, `commitGitHubSnapshot_(__repos, __response, new Date('2026-08-08T00:00:00Z'))`));
+    assert.equal(properties.get('GITHUB_LAST_GOOD_SNAPSHOT_GENERATION'), 'previous-generation');
+    assert.equal(properties.get('GITHUB_REPOSITORIES_ETAG'), 'old-etag');
+});
+
+test('successful staged commit promotes one validated snapshot generation', () => {
+    const { context, properties } = createContext();
+    context.SpreadsheetApp = { openById: () => ({}) };
+    context.captureGitHubSyncSheets_ = () => ({});
+    context.replaceSnapshotSheet_ = () => {};
+    context.ensureCurationRows_ = () => {};
+    context.verifySnapshotSheet_ = () => {};
+    context.verifyCurationSheet_ = () => {};
+    context.writeGitHubSyncStatus_ = () => {};
+    context.verifyGitHubSyncStatus_ = () => {};
+    context.__repos = [repository()];
+    context.__response = { etag: 'new-etag', status: 200, repositories: context.__repos };
+    evaluate(context, `commitGitHubSnapshot_(__repos, __response, new Date('2026-08-08T00:00:00Z'))`);
+    assert.equal(properties.get('GITHUB_LAST_GOOD_SNAPSHOT_GENERATION'), 'test-uuid');
+    assert.equal(properties.get('GITHUB_REPOSITORIES_ETAG'), 'new-etag');
+    assert.equal(evaluate(context, 'loadLastGoodSnapshot_().length'), 1);
+});
+
+test('duplicate sync planning is idempotent and preserves manual curation', () => {
+    const { context } = createContext();
+    context.__repos = [repository()];
+    context.__existing = [{
+        github_repository_id: '101', repo_key: 'itsmebillah/example',
+        show_on_portfolio: true, featured: true, custom_title: 'Manual title'
+    }];
+    const first = evaluate(context, 'planCurationReconciliation_(__repos, __existing)');
+    const second = evaluate(context, 'planCurationReconciliation_(__repos, __existing)');
+    assert.equal(first.newRows.length, 0);
+    assert.equal(first.renames.length, 0);
+    assert.deepEqual(JSON.parse(JSON.stringify(first)), JSON.parse(JSON.stringify(second)));
+    assert.equal(context.__existing[0].custom_title, 'Manual title');
+    assert.equal(context.__existing[0].show_on_portfolio, true);
+});
+
+test('late status verification failure rolls back the promoted marker and sheets', () => {
+    const { context, properties } = createContext();
+    properties.set('GITHUB_LAST_GOOD_SNAPSHOT_GENERATION', 'previous-generation');
+    properties.set('GITHUB_REPOSITORIES_ETAG', 'old-etag');
+    context.SpreadsheetApp = { openById: () => ({}) };
+    context.captureGitHubSyncSheets_ = () => ({ snapshot: [['old']] });
+    context.replaceSnapshotSheet_ = () => {};
+    context.ensureCurationRows_ = () => {};
+    context.verifySnapshotSheet_ = () => {};
+    context.verifyCurationSheet_ = () => {};
+    context.writeGitHubSyncStatus_ = () => {};
+    context.verifyGitHubSyncStatus_ = () => { throw new Error('status verification failed'); };
+    context.__restored = false;
+    context.restoreGitHubSyncSheets_ = () => { context.__restored = true; };
+    context.__repos = [repository()];
+    context.__response = { etag: 'new-etag', status: 200, repositories: context.__repos };
+    assert.throws(() => evaluate(context, `commitGitHubSnapshot_(__repos, __response, new Date('2026-08-08T00:00:00Z'))`));
+    assert.equal(context.__restored, true);
+    assert.equal(properties.get('GITHUB_LAST_GOOD_SNAPSHOT_GENERATION'), 'previous-generation');
+    assert.equal(properties.get('GITHUB_REPOSITORIES_ETAG'), 'old-etag');
 });

@@ -15,6 +15,7 @@ const MASTER_CONFIG = {
     certificates: "Certificates",
     blogs: "Blogs",
     faq: "FAQ",
+    aiContextLegacy: "AI_CONTEXT",
     aiPrompt: "AI_Prompt",
     aiKnowledge: "AI_Knowledge",
     submissions: "Submissions",
@@ -23,7 +24,7 @@ const MASTER_CONFIG = {
     projectCuration: "Portfolio_Project_Curation",
     syncStatus: "GitHub_Sync_Status"
   },
-  publicCacheKey: "portfolio_public_dto_v1",
+  publicCacheKey: "portfolio_public_dto_v1_contract10",
   publicCacheSeconds: 600,
   limits: {
     chatMessage: 500,
@@ -31,6 +32,9 @@ const MASTER_CONFIG = {
     contactEmail: 254,
     contactSubject: 200,
     contactMessage: 5000,
+    aiPrompt: 12000,
+    aiKnowledgeRows: 100,
+    aiKnowledgeField: 2000,
     chatPerMinute: 40,
     contactPerHour: 20
   }
@@ -149,12 +153,15 @@ function compileAllPortfolioData() {
     sourceStatus: getPublicSourceStatus_(ss),
     data: {
       profile: buildPublicProfile_(ss),
+      config: buildPublicConfig_(ss),
       skills: mapPublicTable_(ss, MASTER_CONFIG.tabs.skills, ["Name", "Level", "Category", "Description", "Order"]),
       projects: buildPublicProjects_(ss),
       experience: mapPublicTable_(ss, MASTER_CONFIG.tabs.experience, ["Title", "Company", "Period", "Description", "SkillsUsed", "Achievements", "Icon"]),
       education: mapPublicTable_(ss, MASTER_CONFIG.tabs.education, ["Degree", "Institution", "Period", "Description", "Result", "Icon"]),
       certificates: mapPublicTable_(ss, MASTER_CONFIG.tabs.certificates, ["Name", "Organization", "Date", "Description", "CredentialID", "ImageURL", "VerifyURL", "Skills", "Published"], { publishedOnly: true }),
-      blogs: extractDynamicBlogsWithDocs(ss)
+      blogs: extractDynamicBlogsWithDocs(ss),
+      faq: mapPublicTable_(ss, MASTER_CONFIG.tabs.faq, ["Question", "Answer", "Category"]),
+      aiContext: mapPublicTable_(ss, MASTER_CONFIG.tabs.aiContextLegacy, ["Section", "Content"])
     }
   };
 
@@ -212,6 +219,34 @@ function parseKeyValueSheet(ss, sheetName) {
     if (values[i][0]) data[values[i][0].toString().trim()] = values[i][1];
   }
   return data;
+}
+
+function buildPublicConfig_(ss) {
+  const source = parseKeyValueSheet(ss, MASTER_CONFIG.tabs.config);
+  return pickPublicFields_(source, [
+    "name", "site_tagline", "chatbot_name", "chatbot_welcome", "footer_text",
+    "about_section_title", "projects_section_title", "skills_section_title",
+    "experience_section_title", "contact_section_title"
+  ]);
+}
+
+function buildPrivateAiContext_(ss) {
+  const promptValues = parseKeyValueSheet(ss, MASTER_CONFIG.tabs.aiPrompt);
+  const systemPrompt = String(promptValues.system_prompt || "").trim().slice(0, MASTER_CONFIG.limits.aiPrompt);
+  const knowledge = readSheetObjects_(ss, MASTER_CONFIG.tabs.aiKnowledge)
+    .slice(0, MASTER_CONFIG.limits.aiKnowledgeRows)
+    .map(item => ({
+      type: cleanAiContextField_(item.Type),
+      title: cleanAiContextField_(item.Title),
+      content: cleanAiContextField_(item.Content)
+    }))
+    .filter(item => item.type || item.title || item.content);
+  return { systemPrompt: systemPrompt, knowledge: knowledge };
+}
+
+function cleanAiContextField_(value) {
+  return String(value || "").replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, " ")
+    .trim().slice(0, MASTER_CONFIG.limits.aiKnowledgeField);
 }
 
 function mapPublicTable_(ss, sheetName, fields, options) {
@@ -294,11 +329,14 @@ function executeGroqAiPipeline(userMessage) {
   if (!userMessage) return publicError_("EMPTY_MESSAGE", "Please enter a message.");
 
   try {
+    const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
     const dataset = compileAllPortfolioData().data;
     const prof = dataset.profile;
+    const privateAiContext = buildPrivateAiContext_(ss);
     
     // ১. আপনার দেওয়া প্রম্পট স্ট্রাকচার অনুযায়ী Live Unified Context স্ট্রিং বিল্ড
-    let dynamicSystemContext = `You are the exclusive AI Knowledge Agent for ${prof.Name || "Md. Masum Billah"}. You must answer questions accurately, professionally, and strictly based ONLY on the context provided below. If the answer cannot be confidently deduced from the data, state that you do not possess that data and politely ask them to drop a message or contact directly via ${prof.Email || "itsmbillah@gmail.com"}.\n\n`;
+    let dynamicSystemContext = privateAiContext.systemPrompt || `You are the exclusive AI Knowledge Agent for ${prof.Name || "Md. Masum Billah"}. Answer accurately and professionally using only the supplied portfolio context. If the answer is not supported, say so and offer the public contact path.`;
+    dynamicSystemContext += "\n\n";
     
     dynamicSystemContext += `[CORE IDENTITIES]\nName: ${prof.Name}\nTitle: ${prof.Title}\nBio: ${prof.Bio}\nLocation: ${prof.Location}\nEmail: ${prof.Email}\nPhone: ${prof.Phone}\nLinkedIn: ${prof.LinkedIn}\nGitHub: ${prof.GitHub}\n\n`;
     
@@ -311,6 +349,10 @@ function executeGroqAiPipeline(userMessage) {
     dynamicSystemContext += `[ACADEMIC CREDENTIALS]\n` + dataset.education.map(ed => `- Qualification: ${ed.Degree} from ${ed.Institution} (${ed.Period})\n  Focus: ${ed.Description}`).join("\n") + "\n\n";
     
     dynamicSystemContext += `[VERIFIED CERTIFICATIONS]\n` + dataset.certificates.map(c => `- Certificate: ${c.Name} issued by ${c.Organization} on ${c.Date}`).join("\n") + "\n\n";
+
+    dynamicSystemContext += `[FREQUENTLY ASKED QUESTIONS]\n` + dataset.faq.map(item => `- Question: ${item.Question}\n  Answer: ${item.Answer}\n  Category: ${item.Category}`).join("\n") + "\n\n";
+
+    dynamicSystemContext += `[REVIEWED PORTFOLIO KNOWLEDGE]\n` + privateAiContext.knowledge.map(item => `- Type: ${item.type}\n  Title: ${item.title}\n  Content: ${item.content}`).join("\n") + "\n\n";
     
     // ২. Groq API-র কাছে পে-লোড ট্রান্সমিশন
     const url = "https://api.groq.com/openai/v1/chat/completions";
@@ -373,7 +415,7 @@ function processFormSubmission(formData) {
   let sheet = ss.getSheetByName(MASTER_CONFIG.tabs.submissions);
   if (!sheet) {
     sheet = ss.insertSheet(MASTER_CONFIG.tabs.submissions);
-    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Subject', 'Message', 'Submission ID']);
+    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Subject', 'Message', 'Status', 'SubmissionID']);
   }
   
   const submissionId = Utilities.getUuid();
@@ -413,7 +455,7 @@ function logVisitorStream(e, action) {
   let sheet = ss.getSheetByName(MASTER_CONFIG.tabs.visitorLog);
   if (!sheet) {
     sheet = ss.insertSheet(MASTER_CONFIG.tabs.visitorLog);
-    sheet.appendRow(['Timestamp', 'ViewParameter', 'ParametersJson']);
+    sheet.appendRow(['Timestamp', 'VisitorID', 'Page', 'Referrer', 'ScreenSize', 'UserAgent', 'TimeSpent']);
   }
   const params = e.parameter || {};
   const visitorId = params.clientId ? hashIdentifier_(params.clientId) : "anonymous";

@@ -39,7 +39,7 @@ Published blog content is returned through the strict Blogs DTO. The browser no 
 
 ## Google Sheets CMS
 
-`MASTER_CONFIG.tabs` maps the existing personal, career, blog, intake, and analytics tabs plus `GitHub_Project_Snapshot`, `Portfolio_Project_Curation`, and `GitHub_Sync_Status`. Public responses are built through explicit per-entity field allowlists; raw rows are never serialized. Certificates and blogs retain `Published` filtering. Legacy published Projects remain supported while GitHub-backed projects are migrated to the snapshot/curation merge.
+`MASTER_CONFIG.tabs` maps the existing personal, career, blog, AI, intake, and analytics tabs plus `GitHub_Project_Snapshot`, `Portfolio_Project_Curation`, and `GitHub_Sync_Status`. Public responses retain the version 16 section contract through explicit per-entity field allowlists; raw rows are never serialized. The AI prompt and reviewed knowledge remain server-only chat context. Certificates and blogs retain `Published` filtering. Legacy published Projects remain supported while GitHub-backed projects are migrated to the snapshot/curation merge.
 
 GitHub owns repository identity and technical facts. Sheets owns inclusion, featured state, order, narrative overrides, and approved portfolio assets. Apps Script joins by immutable repository ID, filters private/unavailable/disabled repositories, and defaults newly discovered repositories to unpublished. See [GitHub Project Synchronization](GITHUB_SYNC.md).
 

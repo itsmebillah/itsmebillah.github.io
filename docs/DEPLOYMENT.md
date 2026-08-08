@@ -56,7 +56,7 @@ After deploying the synchronization source:
 1. Run `syncGitHubProjects()` once as the deployment owner.
 2. Verify 15 current public repositories appear in `GitHub_Project_Snapshot` and new curation rows are unchecked.
 3. Run `installGitHubSyncTrigger()` once and verify exactly one six-hour trigger exists.
-4. Review `GitHub_Sync_Status` for `success`, HTTP 200, repository count, and last-success timestamp.
+4. Review `GitHub_Sync_Status` for `success`, HTTP 200, repository count, and last-success timestamp. A failed attempt does not schedule an extra retry; the next six-hour run retries naturally.
 5. Enable projects only through `Portfolio_Project_Curation.show_on_portfolio`.
 
 The initial implementation needs no GitHub credential. Configure `GITHUB_METADATA_TOKEN` only if public shared-IP rate limits are operationally unreliable. See [GitHub Project Synchronization](GITHUB_SYNC.md).

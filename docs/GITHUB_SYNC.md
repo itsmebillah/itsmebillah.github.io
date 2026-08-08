@@ -60,7 +60,9 @@ Do not manually duplicate repository URL, GitHub description, topics, homepage, 
 
 `installGitHubSyncTrigger()` replaces any existing `syncGitHubProjects` trigger and installs a six-hour time-driven trigger. Run it once as the deployment owner after deployment.
 
-The synchronizer uses conditional GitHub requests with ETag, bounded pagination, and a public-repository-only query. Valid snapshots are stored in the Sheet and in chunked Script Properties as recovery data. The final public response is cached for ten minutes when it fits within the Apps Script cache-item limit. The frontend also stores the last valid public DTO locally for temporary API outages.
+The synchronizer uses conditional GitHub requests with ETag, bounded pagination, and a public-repository-only query. Candidate snapshots are staged in chunked Script Properties, required Sheet writes are verified, and a single generation marker promotes the candidate only after verification. The final public response is cached for ten minutes when it fits within the Apps Script cache-item limit. The frontend also stores the last valid public DTO locally for temporary API outages.
+
+GitHub 403/429 responses are rejected without advancing the snapshot. `Retry-After` and `X-RateLimit-Reset` are parsed into safe execution diagnostics when present. The synchronizer does not create an automatic retry job, so `next_retry_at` remains blank and the next installed six-hour trigger run performs the next attempt.
 
 ## Optional authentication
 
@@ -80,7 +82,7 @@ After curation changes, allow the ten-minute cache to expire. A deployment owner
 
 - GitHub/API failure: retain and serve the last-known-good snapshot.
 - Partial or malformed response: reject the refresh; do not treat missing rows as deletions.
-- Sheet snapshot write failure: restore the previous Sheet values and retain the chunked property copy.
+- Required Sheet write or verification failure: restore the previous Sheet values, committed generation marker, and ETag; discard the uncommitted staged generation.
 - Public DTO cache miss: rebuild from validated Sheet/snapshot data.
 - Apps Script outage: returning visitors receive the last browser-cached DTO; new visitors see a restrained unavailable state.
 - Faulty deployment: point the existing `/exec` deployment back to the prior Apps Script version.
