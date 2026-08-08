@@ -180,7 +180,7 @@ One anonymous `getAllData` request after Version 20 activation returned:
 - no private AI prompt;
 - no legacy demo credentials.
 
-The verification created one VisitorLog row at `2026-08-08 23:21:43` containing only a hashed client identifier and the `getAllData` action. It did not modify other production data.
+The direct API verification created one VisitorLog row at `2026-08-08 23:21:43`. Live Edge/Playwright rendering checks created seven additional rows between `23:25:22` and `23:31:01`. These eight rows contain only a hashed client identifier and the `getAllData` action. No other production data was modified by verification.
 
 ### Link And Image Checks
 
@@ -190,6 +190,13 @@ The following returned HTTP 200:
 - automatic GitHub Open Graph fallback (`image/png`);
 - Wealth OS demo (`text/html`);
 - Wealth OS GitHub repository (`text/html`).
+
+### Live Portfolio Rendering
+
+- GitHub Pages deployment run `31269317731`: passed.
+- Desktop viewport `1440x900`: one featured Wealth OS card, working image, correct alt text, no unresolved legacy cards, no page error, and no horizontal overflow.
+- Mobile viewport `390x844`: one featured Wealth OS card, working 320-pixel source image, correct alt text, no unresolved legacy cards, no page error, and no horizontal overflow.
+- Existing project layout and responsive stacking remain intact.
 
 ## Rollback
 
