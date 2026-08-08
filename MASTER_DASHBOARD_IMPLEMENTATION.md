@@ -21,6 +21,10 @@ No password, token, verifier, or private AI configuration is included in public/
 
 The dashboard provides Overview, Projects, Profile, Skills, Experience, Education, Certificates, Blog, FAQ, Configuration, Media, SEO, AI / Chat, GitHub Sync, Activity Log, and Account / Security.
 
+### Theme
+
+The dashboard has a centralized semantic color-token system with complete light and dark palettes. **System** is the default and follows `prefers-color-scheme`; the visible selector also offers **Light** and **Dark**. Manual choices are stored under the dedicated `portfolio-dashboard-theme` browser key and apply immediately without reload. Authentication, navigation, cards, record lists, forms, dialogs, controls, badges, alerts, media, projects, and activity views use the same tokens. The public portfolio theme is unchanged.
+
 GitHub project technical fields remain read-only. Dashboard changes are limited to `Portfolio_Project_Curation`. Manual projects remain independent of GitHub and support the existing Autopilot, Car Sales, and HR Analytics case studies.
 
 ## Media And SEO
@@ -44,4 +48,3 @@ Repoint the existing Apps Script deployment to Version 22 and revert the dashboa
 3. Complete the required password change.
 4. Use the module navigation to manage content. Archive records instead of deleting them when possible.
 5. Review Sync Center status before using **Sync now**.
-
