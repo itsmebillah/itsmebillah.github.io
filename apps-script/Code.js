@@ -22,9 +22,10 @@ const MASTER_CONFIG = {
     visitorLog: "VisitorLog",
     githubSnapshot: "GitHub_Project_Snapshot",
     projectCuration: "Portfolio_Project_Curation",
+    manualProjects: "Manual_Portfolio_Projects",
     syncStatus: "GitHub_Sync_Status"
   },
-  publicCacheKey: "portfolio_public_dto_v1_contract11",
+  publicCacheKey: "portfolio_public_dto_v1_contract12",
   publicCacheSeconds: 600,
   limits: {
     chatMessage: 500,

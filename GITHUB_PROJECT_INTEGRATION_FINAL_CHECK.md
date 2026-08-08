@@ -1,109 +1,100 @@
 # GitHub Project Integration Final Check
 
-**Check date:** 2026-08-08  
-**Mode:** Read-only production verification  
-**Production Apps Script version:** 20  
+**Check date:** 2026-08-08
+**Mode:** Focused read-only production verification
+**Production Apps Script version:** 21
 **Deployment ID:** `AKfycbwmQcArmH_TZ9Y8mP_XiyWgSCzU1QpmK7Iw3y5exUOKenl6p4ZOhTd7dxh-E8fpeJj1Mg`
 
-## Executive Result
+## Approved Publication Baseline
 
-The GitHub-backed integration itself remains operational, but the final verification failed the approved publication-state requirement.
-
-The live API and portfolio now expose three GitHub-backed projects:
+The account owner confirmed that the following GitHub-backed projects were intentionally published for testing:
 
 1. Wealth OS
 2. Sales-Dashboard
 3. SubPro
 
-The required state was one published project, Wealth OS, with 14 repositories unpublished. Read-only Sheet inspection shows that `show_on_portfolio` is currently true for Sales-Dashboard and SubPro. Both repositories are active and public in the GitHub snapshot, so the Version 20 builder correctly includes them. No correction was made because this check explicitly prohibited curation changes.
+The correct expected state is therefore:
 
-## Verification Matrix
+- 3 published GitHub-backed projects;
+- 12 unpublished GitHub-backed repositories;
+- 3 published manual portfolio projects.
+
+No curation value was changed during this verification.
+
+## Verification Results
 
 | Requirement | Result | Evidence |
 |---|---|---|
-| Projects come exclusively from GitHub-backed source | Pass | All public entries have numeric GitHub IDs and `itsmebillah/*` repository keys; no `legacy:*` ID appears |
-| Wealth OS visible and correctly mapped | Pass | ID `1268515486`, `itsmebillah/Wealth-OS`, featured, order 4 |
-| Fourteen unpublished repositories are not visible | **Fail** | Sales-Dashboard and SubPro are also visible; only 12 of the other 14 remain hidden |
-| GitHub OG thumbnails resolve | Pass | Wealth OS and SubPro/Sales-Dashboard OG endpoints returned HTTP 200 `image/png` where checked |
-| Broken thumbnail does not break card | Pass with residual browser timing note | Deployed error handler preserves the fixed-size unavailable-preview block; no card or page runtime error occurred. Some lazy images were incomplete during the bounded desktop capture |
-| GitHub repository links work | Pass | Wealth OS repository returned HTTP 200; DTO repository URLs are HTTPS GitHub URLs |
-| Demo/homepage links work | Pass | Wealth OS Vercel homepage returned HTTP 200 |
-| Ordering and featured behavior | Pass | Wealth OS is the sole featured card at order 4; Sales-Dashboard and SubPro render in the non-featured section |
-| Legacy Projects tab is not consumed | Pass | API has no legacy IDs or unresolved legacy titles; Version 20 production builder uses snapshot plus curation only |
-| Desktop/mobile consistency | Pass | Both viewports rendered the same three projects as one featured and two standard cards |
-| No overflow or runtime errors | Pass | Desktop 1440x900 and mobile 390x844 reported no horizontal overflow and no page errors |
-| Public API contract valid | Pass | HTTP 200, JSON, schema 1, all ten required data sections |
-| No private repository public | Pass | All returned projects correspond to active public snapshot records |
-| Unresolved legacy projects preserved and absent | Pass | All three legacy rows remain intact; none appears in the API or live cards |
+| Published GitHub projects | Pass | Wealth OS, Sales-Dashboard, and SubPro are present with immutable GitHub IDs |
+| Unpublished GitHub projects | Pass | The other 12 snapshot repositories do not appear |
+| Manual publishing behavior | Pass | GitHub projects appear only when `show_on_portfolio` is true; the intentional 3/12 split is reflected exactly |
+| GitHub-backed source | Pass | All three GitHub entries contain numeric repository IDs and valid `itsmebillah/*` repository keys |
+| Wealth OS mapping | Pass | ID `1268515486`, `itsmebillah/Wealth-OS`, featured, display order 4 |
+| Manual project integration | Pass | Autopilot Business System, Car Sales Analysis, and HR Analytics Dashboard use stable `manual:*` IDs with no fake repository data |
+| API contract | Pass | HTTP 200, JSON, schema 1, and all ten required data sections |
+| Security filtering | Pass | No private repository, private AI prompt, legacy credential, or internal Sheet field appears |
+| Thumbnails | Pass | Manual images and GitHub Open Graph images resolve; all six images decoded with descriptive alt text |
+| Broken-image fallback | Pass | Forced failures produced six fixed-size fallback blocks while preserving all cards |
+| Desktop rendering | Pass | One featured card plus five standard cards, no overflow, no runtime error |
+| Mobile rendering | Pass | Same six projects and ordering, responsive stacking, no overflow, no runtime error |
+| Legacy safety | Pass | Legacy `Projects` rows remain intact and are not consumed as the production DTO source |
+| Duplicate prevention | Pass | Six projects returned with six unique stable IDs |
 
-## Live API Result
+## Production API Result
 
-The refreshed production response returned:
+The live Version 21 response contains:
 
-| ID | Repository | Title | Featured | Display order |
-|---:|---|---|---:|---:|
-| `1268515486` | `itsmebillah/Wealth-OS` | Wealth OS | true | 4 |
-| `1314985175` | `itsmebillah/Sales-Dashboard` | Sales-Dashboard | false | default |
-| `1136408699` | `itsmebillah/SubPro` | SubPro | false | default |
+| ID | Source | Title | Featured | Order |
+|---|---|---|---:|---:|
+| `manual:autopilot-business-system` | MANUAL | Autopilot Business System | false | 1 |
+| `manual:car-sales-analysis` | MANUAL | Car Sales Analysis | false | 2 |
+| `manual:hr-analytics-dashboard` | MANUAL | HR Analytics Dashboard | false | 3 |
+| `1268515486` | GITHUB | Wealth OS | true | 4 |
+| `1314985175` | GITHUB | Sales-Dashboard | false | default |
+| `1136408699` | GITHUB | SubPro | false | default |
 
-The response retained:
+Summary:
 
-- HTTP 200;
-- `application/json; charset=utf-8`;
-- `success: true`;
-- schema version 1;
-- profile, config, skills, projects, experience, education, certificates, blogs, faq, and aiContext;
-- no private AI prompt;
-- no demo credentials;
-- no legacy project IDs.
+- project count: 6;
+- GitHub-backed count: 3;
+- manual count: 3;
+- duplicate ID count: 0;
+- fake manual repository count: 0;
+- legacy ID count: 0;
+- private repository count: 0.
 
-## Curation Evidence
+## Thumbnail And Link Results
 
-Read-only inspection found:
+- All three manual image URLs returned HTTP 200.
+- GitHub Open Graph thumbnails returned HTTP 200 `image/png`.
+- Both Power BI demo URLs returned HTTP 200.
+- The Autopilot Apps Script demo returned HTTP 200 for the browser-compatible GET method.
+- All six project images decoded successfully in the final mobile verification.
+- Forced image failures displayed the existing fallback without layout damage.
 
-- `Portfolio_Project_Curation!C22`: Sales-Dashboard is true.
-- `Portfolio_Project_Curation!C23`: SubPro is true.
-- `Portfolio_Project_Curation!C24`: Wealth OS is true.
+## Desktop And Mobile Results
 
-Sales-Dashboard and SubPro are active, public, and enabled in `GitHub_Project_Snapshot`. Their appearance is therefore consistent with Version 20 logic, but inconsistent with the requested final state of 14 unpublished repositories.
+Both `1440x900` desktop and `390x844` mobile checks rendered:
 
-## Legacy Safety
+1. Wealth OS as the sole featured project.
+2. Autopilot Business System.
+3. Car Sales Analysis.
+4. HR Analytics Dashboard.
+5. Sales-Dashboard.
+6. SubPro.
 
-The following legacy rows remain preserved in `Projects!A2:N5`:
-
-- Autopilot Business System
-- Car Sales Analysis
-- HR Analytics Dashboard
-- Wealth OS
-
-The three unresolved legacy projects do not appear in the public API or live portfolio.
-
-## Visual Check
-
-Desktop and mobile both rendered:
-
-- one featured Wealth OS card;
-- one Sales-Dashboard standard card;
-- one SubPro standard card;
-- responsive stacking;
-- no horizontal overflow;
-- no JavaScript page errors.
-
-Automatic GitHub Open Graph URLs returned HTTP 200 `image/png`. Lazy image completion varied during the bounded headless capture, but completed images retained correct descriptive alt text and no card layout failed.
+There was no horizontal overflow and no JavaScript page error. The existing project UI remained source-agnostic and visually unchanged.
 
 ## Actions Not Performed
 
 - No GitHub synchronization was run.
-- No curation value was changed.
-- No legacy project row was modified.
+- No project curation value was changed.
+- No production Sheet data was modified during this focused verification.
+- No legacy row was modified or deleted.
 - No trigger was installed or changed.
-- No application code was changed.
-- No UI or Dashboard work was performed.
-
-## Required Resolution
-
-An authorized follow-up must decide whether Sales-Dashboard and SubPro were intentionally published. If the confirmed target remains Wealth OS only, their `show_on_portfolio` values must be returned to false and the public cache allowed to refresh or be deliberately invalidated under a controlled change.
+- No UI redesign was performed.
+- No Dashboard work was started.
 
 ## Final Status
 
-**GITHUB_PROJECT_INTEGRATION_FINAL_FAILED**
+**GITHUB_PROJECT_INTEGRATION_FINAL_VERIFIED**

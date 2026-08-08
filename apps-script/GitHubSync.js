@@ -186,13 +186,15 @@ function buildPublicProjects_(ss) {
   const curations = readSheetObjects_(ss, MASTER_CONFIG.tabs.projectCuration);
   const curationById = {};
   curations.forEach(item => { if (item.github_repository_id) curationById[String(item.github_repository_id)] = item; });
-  return snapshot.filter(repo => repo.sync_state === "active" && repo.visibility === "public" && !repo.disabled)
+  const githubProjects = snapshot.filter(repo => repo.sync_state === "active" && repo.visibility === "public" && !repo.disabled)
     .filter(repo => {
       const curation = curationById[repo.github_repository_id];
       if (!curation || !normalizeBoolean_(curation.show_on_portfolio)) return false;
       if (!repo.archived) return true;
       return ["completed", "historical"].indexOf(String(curation.portfolio_status || "").trim().toLowerCase()) !== -1;
-    }).map(repo => mapMergedProjectDto_(repo, curationById[repo.github_repository_id]))
+    }).map(repo => mapMergedProjectDto_(repo, curationById[repo.github_repository_id]));
+  const manualProjects = buildPublicManualProjects_(ss);
+  return githubProjects.concat(manualProjects)
     .sort((a, b) => Number(a.displayOrder || 999) - Number(b.displayOrder || 999) || a.title.localeCompare(b.title));
 }
 
@@ -201,6 +203,7 @@ function mapMergedProjectDto_(repo, curation) {
   const stackOverride = splitList_(curation.tech_stack_override);
   return {
     id: repo.github_repository_id,
+    source: "GITHUB",
     repoKey: repo.repo_key,
     name: repo.name,
     title: cleanPublicText_(curation.custom_title || repo.name, 150),
@@ -228,6 +231,47 @@ function resolveProjectThumbnail_(repo, curation) {
   if (curatedImage) return curatedImage;
   if (!/^[^/]+\/[^/]+$/.test(String(repo.repo_key || ""))) return "";
   return "https://opengraph.githubassets.com/portfolio/" + repo.repo_key;
+}
+
+function buildPublicManualProjects_(ss) {
+  const seen = {};
+  return readSheetObjects_(ss, MASTER_CONFIG.tabs.manualProjects)
+    .filter(item => normalizeBoolean_(item.show_on_portfolio))
+    .filter(item => {
+      const id = String(item.manual_project_id || "").trim();
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) || seen[id]) return false;
+      seen[id] = true;
+      return true;
+    })
+    .map(mapManualProjectDto_);
+}
+
+function mapManualProjectDto_(item) {
+  const id = String(item.manual_project_id || "").trim();
+  const title = cleanPublicText_(item.title, 150);
+  return {
+    id: "manual:" + id,
+    source: "MANUAL",
+    repoKey: "",
+    name: title,
+    title: title,
+    description: cleanPublicText_(item.description, 1000),
+    url: "",
+    demoUrl: safeHttpsUrl_(item.demo_url),
+    documentationUrl: "",
+    topics: splitList_(item.tech_stack),
+    techStack: splitList_(item.tech_stack),
+    primaryLanguage: "",
+    category: cleanPublicText_(item.category, 100),
+    section: "projects",
+    featured: normalizeBoolean_(item.featured),
+    displayOrder: normalizeDisplayOrder_(item.display_order),
+    image: safeHttpsUrl_(item.image),
+    imageAlt: cleanPublicText_(item.image_alt || title + " project preview", 180),
+    kpiHighlight: cleanPublicText_(item.kpi_highlight, 300),
+    status: cleanPublicText_(item.portfolio_status || "active", 50),
+    lastUpdated: normalizeDateForJson_(item.last_reviewed_at)
+  };
 }
 
 function mapLegacyProjectDto_(item, index) {

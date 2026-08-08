@@ -182,6 +182,7 @@ test('curated repository merges technical facts with editorial overrides', () =>
     assert.equal(result.length, 1);
     assert.equal(result[0].title, 'Example Platform');
     assert.equal(result[0].url, 'https://github.com/itsmebillah/example');
+    assert.equal(result[0].source, 'GITHUB');
     assert.equal(result[0].featured, true);
     assert.equal(result[0].image, 'https://example.com/preview.png');
     assert.equal(result[0].imageAlt, 'Example Platform project preview');
@@ -222,6 +223,48 @@ test('legacy Projects sheet is not read by the production project builder', () =
     assert.equal(evaluate(context, 'buildPublicProjects_(__ss)').length, 1);
 });
 
+test('published manual projects merge without fake GitHub identity', () => {
+    const { context } = createContext();
+    context.loadLastGoodSnapshot_ = () => [];
+    context.readSheetObjects_ = (ss, name) => name === 'Manual_Portfolio_Projects' ? [{
+        manual_project_id: 'car-sales-analysis',
+        title: 'Car Sales Analysis',
+        description: 'Power BI portfolio project',
+        display_order: 2,
+        featured: false,
+        show_on_portfolio: true,
+        image: 'https://example.com/car-sales.png',
+        image_alt: 'Car Sales Analysis dashboard',
+        demo_url: 'https://example.com/demo',
+        tech_stack: 'Power BI, SQL',
+        private_note: 'must-not-survive'
+    }] : [];
+    context.__ss = {};
+    const result = evaluate(context, 'buildPublicProjects_(__ss)');
+    assert.equal(result.length, 1);
+    assert.equal(result[0].id, 'manual:car-sales-analysis');
+    assert.equal(result[0].source, 'MANUAL');
+    assert.equal(result[0].repoKey, '');
+    assert.equal(result[0].url, '');
+    assert.deepEqual(JSON.parse(JSON.stringify(result[0].techStack)), ['Power BI', 'SQL']);
+    assert.equal(Object.hasOwn(result[0], 'private_note'), false);
+});
+
+test('manual projects require publication and a unique stable id', () => {
+    const { context } = createContext();
+    context.loadLastGoodSnapshot_ = () => [];
+    context.readSheetObjects_ = (ss, name) => name === 'Manual_Portfolio_Projects' ? [
+        { manual_project_id: 'valid-project', title: 'Visible', show_on_portfolio: true },
+        { manual_project_id: 'valid-project', title: 'Duplicate', show_on_portfolio: true },
+        { manual_project_id: 'Invalid ID', title: 'Invalid', show_on_portfolio: true },
+        { manual_project_id: 'hidden-project', title: 'Hidden', show_on_portfolio: false }
+    ] : [];
+    context.__ss = {};
+    const result = evaluate(context, 'buildPublicProjects_(__ss)');
+    assert.equal(result.length, 1);
+    assert.equal(result[0].title, 'Visible');
+});
+
 test('legacy project mapper excludes demo credentials', () => {
     const { context } = createContext();
     context.__legacy = {
@@ -259,7 +302,7 @@ test('last-known-good repository snapshot is chunked and restored', () => {
 test('cached public response survives a spreadsheet outage', () => {
     const { context, cache } = createContext();
     const cached = { success: true, schemaVersion: 1, data: { profile: { Name: 'Cached' }, projects: [], skills: [] } };
-    cache.set('portfolio_public_dto_v1_contract11', JSON.stringify(cached));
+    cache.set('portfolio_public_dto_v1_contract12', JSON.stringify(cached));
     context.SpreadsheetApp = { openById: () => { throw new Error('Sheets unavailable'); } };
     const result = evaluate(context, 'compileAllPortfolioData()');
     assert.equal(result.data.profile.Name, 'Cached');
