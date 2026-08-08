@@ -9,13 +9,13 @@ Production portfolio for a data analyst and automation developer building dashbo
 [![Frontend](https://img.shields.io/badge/frontend-HTML%20%7C%20CSS%20%7C%20JavaScript-0f766e?style=flat-square)](#technology-stack)
 [![Automation](https://img.shields.io/badge/automation-Apps%20Script%20%7C%20Actions-b45309?style=flat-square)](docs/ARCHITECTURE.md)
 
-[Live Portfolio](https://itsmebillah.github.io/) | [Blog](https://itsmebillah.github.io/blog/) | [Architecture](docs/ARCHITECTURE.md) | [Deployment](docs/DEPLOYMENT.md) | [Roadmap](docs/ROADMAP.md)
+[Live Portfolio](https://itsmebillah.github.io/) | [Blog](https://itsmebillah.github.io/blog/) | [Architecture](docs/ARCHITECTURE.md) | [GitHub Sync](docs/GITHUB_SYNC.md) | [Deployment](docs/DEPLOYMENT.md) | [Roadmap](docs/ROADMAP.md)
 
 ## Overview
 
 This repository powers the public portfolio of **Md. Masum Billah**, a **Data Analyst, Automation Developer, and Business Intelligence Specialist**. The site presents verified projects, skills, experience, certificates, case studies, technical writing, and contact paths in one recruiter-facing experience.
 
-Portfolio content is managed through Google Sheets and served by Google Apps Script. Blog articles are generated as static HTML, validated, committed by GitHub Actions, and published through GitHub Pages. The portfolio assistant routes questions through Apps Script to Groq without exposing the AI credential to the browser.
+Personal and career content is managed through Google Sheets. Public repository facts are synchronized from GitHub, combined with manual portfolio curation, and served through strict Google Apps Script DTOs. Blog articles are generated as static HTML, validated, committed by GitHub Actions, and published through GitHub Pages. The portfolio assistant routes questions through Apps Script to Groq without exposing the AI credential to the browser.
 
 ## Features
 
@@ -23,6 +23,8 @@ Portfolio content is managed through Google Sheets and served by Google Apps Scr
 - Data and automation project case studies with direct repository and demo links
 - Static technical blog with category filtering, search indexing, RSS, and sitemap generation
 - Google Sheets-backed content management through Google Apps Script
+- Scheduled GitHub repository snapshots with unpublished-by-default portfolio curation
+- Explicit public DTO allowlists with last-known-good backend and browser caching
 - Automated blog publishing through `repository_dispatch` and GitHub Actions
 - Portfolio assistant grounded in structured portfolio context
 - Search, SEO metadata, structured data, robots rules, and a custom 404 page

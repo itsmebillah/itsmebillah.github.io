@@ -8,6 +8,22 @@
             return "";
         }
 
+        function getPortfolioClientId() {
+            const storageKey = 'portfolio_client_id_v1';
+            try {
+                let value = localStorage.getItem(storageKey);
+                if (!value) {
+                    value = (window.crypto && typeof window.crypto.randomUUID === 'function')
+                        ? window.crypto.randomUUID()
+                        : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 14)}`;
+                    localStorage.setItem(storageKey, value);
+                }
+                return value;
+            } catch (error) {
+                return 'anonymous-browser';
+            }
+        }
+
         function escapeHtml(value) {
             return String(value || "").replace(/[&<>"']/g, char => ({
                 '&': '&amp;',

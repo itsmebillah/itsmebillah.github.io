@@ -1,4 +1,10 @@
 function importCSVData() {
+  const confirmationKey = "ALLOW_DESTRUCTIVE_PORTFOLIO_SHEET_REBUILD";
+  const properties = PropertiesService.getScriptProperties();
+  if (properties.getProperty(confirmationKey) !== "I_HAVE_A_VERIFIED_BACKUP") {
+    throw new Error("Destructive rebuild blocked. Create and verify a workbook backup, then set the one-time confirmation property explicitly.");
+  }
+  properties.deleteProperty(confirmationKey);
   const ss = SpreadsheetApp.openById("1ZnoWdyyqzutrIs6SBnYfwN3a9aVsPNPJjzw9lWu76iE");
   
   // Clear existing sheets
@@ -20,11 +26,11 @@ function importCSVData() {
     },
     {
       name: "Projects",
-      headers: ["Name", "Description", "Image", "Tags", "LiveURL", "GitHubURL", "Featured", "DemoEmail", "DemoPassword", "Published"],
+      headers: ["Name", "Description", "Image", "Tags", "LiveURL", "GitHubURL", "Featured", "Published"],
       rows: [
-        ["Autopilot Business System", "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script", "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400", "Google Apps Script,Automation,Google Sheets API", "https://script.google.com/macros/s/AKfycbzJwA27QizVfbsVt3uJl1_mdJxAaU5dU0qFvUvESSNS1Fv277UCerV5-1qiP9dU0aY5/exec", "#", "TRUE", "itsmbillah@gmail.com", "123456", "TRUE"],
-        ["Car Sales Analysis", "Vehicle sales trends and profitability analysis with Power BI dashboard", "https://i.postimg.cc/Hnp5vTtn/Screenshot-2025-07-28-110516.png", "Power BI,SQL,Data Analysis,Dashboard", "https://app.powerbi.com/view?r=eyJrIjoiNzVlYzIyNzEtYjc2Ni00MjY4LWJlYTAtOWUzYTBlZTdhMjVkIiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D", "#", "TRUE", "", "", "TRUE"],
-        ["HR Analytics Dashboard", "Employee performance and retention analysis with advanced SQL queries", "https://i.postimg.cc/bNZdyGd8/Screenshot-2025-07-28-110453.png", "Power BI,SQL,HR Analytics,Dashboard", "https://app.powerbi.com/view?r=eyJrIjoiMjBhNzM1MDEtNTZiYy00MGM1LWJhM2MtY2NlZmYyZTA0ZjQ4IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D", "#", "TRUE", "", "", "TRUE"]
+        ["Autopilot Business System", "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script", "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&w=400", "Google Apps Script,Automation,Google Sheets API", "", "#", "TRUE", "TRUE"],
+        ["Car Sales Analysis", "Vehicle sales trends and profitability analysis with Power BI dashboard", "https://i.postimg.cc/Hnp5vTtn/Screenshot-2025-07-28-110516.png", "Power BI,SQL,Data Analysis,Dashboard", "https://app.powerbi.com/view?r=eyJrIjoiNzVlYzIyNzEtYjc2Ni00MjY4LWJlYTAtOWUzYTBlZTdhMjVkIiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D", "#", "TRUE", "TRUE"],
+        ["HR Analytics Dashboard", "Employee performance and retention analysis with advanced SQL queries", "https://i.postimg.cc/bNZdyGd8/Screenshot-2025-07-28-110453.png", "Power BI,SQL,HR Analytics,Dashboard", "https://app.powerbi.com/view?r=eyJrIjoiMjBhNzM1MDEtNTZiYy00MGM1LWJhM2MtY2NlZmYyZTA0ZjQ4IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D", "#", "TRUE", "TRUE"]
       ]
     },
     {

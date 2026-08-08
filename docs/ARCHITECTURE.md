@@ -29,17 +29,19 @@ flowchart TD
 
 | Request | Backend flow | Response |
 |---|---|---|
-| `GET ?action=getAllData` | `doGet` → `compileAllPortfolioData` → sheet parsers and Google Docs enrichment | JSON portfolio dataset |
-| `GET ?action=chat&message=...` | `doGet` → `executeGroqAiPipeline` → Sheets context → Groq | `{success, reply}` plus `raw` on provider failures |
-| `GET` with contact fields and no action | `doGet` → contact pipeline → sheet row and emails | JSON response, although browser uses `no-cors` |
-| `POST` chat JSON/form payload | `doPost` → AI pipeline | Same chat contract |
-| Other `POST` | `doPost` → contact submission | Submission identifier or error |
+| `GET ?action=getAllData` | `doGet` → cache/strict DTO builders → Sheets, GitHub snapshot, and optional Docs enrichment | Versioned JSON portfolio DTO |
+| `GET ?action=chat&message=...` | rate limit → validated message → public portfolio context → Groq | `{success, reply}` without provider bodies |
+| `POST action=contact` | rate limit → validation → safe Sheet append and emails | success/submission ID or typed public error |
+| `POST action=chat` | rate limit → validation → AI pipeline | Same safe chat contract |
+| Unknown action | router | typed `UNKNOWN_ACTION` response |
 
-There is no implemented `getBlog` case in `doGet`. Consumers attempt it, but fall back to `Content` already returned by `getAllData`.
+Published blog content is returned through the strict Blogs DTO. The browser no longer sends a redundant `getBlog` request.
 
 ## Google Sheets CMS
 
-`MASTER_CONFIG.tabs` maps the tabs: Profile, Config, Skills, Projects, Experience, Education, Certificates, Blogs, FAQ, AI_CONTEXT, Submissions, and VisitorLog. Profile is parsed as one data row, Config as key/value pairs, and other sheets as header-driven tables. Projects and certificates are filtered on `Published`; blogs are filtered and optionally enriched from `DocID` or `GoogleDocID`.
+`MASTER_CONFIG.tabs` maps the existing personal, career, blog, intake, and analytics tabs plus `GitHub_Project_Snapshot`, `Portfolio_Project_Curation`, and `GitHub_Sync_Status`. Public responses are built through explicit per-entity field allowlists; raw rows are never serialized. Certificates and blogs retain `Published` filtering. Legacy published Projects remain supported while GitHub-backed projects are migrated to the snapshot/curation merge.
+
+GitHub owns repository identity and technical facts. Sheets owns inclusion, featured state, order, narrative overrides, and approved portfolio assets. Apps Script joins by immutable repository ID, filters private/unavailable/disabled repositories, and defaults newly discovered repositories to unpublished. See [GitHub Project Synchronization](GITHUB_SYNC.md).
 
 The blog automation digest is header-driven and hashes only Title, Slug, Description, Content, Thumbnail, Category, Date, Published, Author, Keywords, UpdatedAt, DocID, and GoogleDocID. Blank rows, formatting, helpers, and unrelated columns are ignored.
 
@@ -98,7 +100,7 @@ sequenceDiagram
 
 ## Authentication and external APIs
 
-The Apps Script web app is anonymously accessible and executes as the deploying user. Groq and GitHub credentials are server-side Script Properties. GitHub Actions uses its repository-scoped workflow token through `contents: write`; no repository secret is referenced by the workflow. Public CMS reads and contact/chat calls have no application-level authentication or rate limiting.
+The Apps Script web app is anonymously accessible and executes as the deploying user. Groq and GitHub credentials are server-side Script Properties. GitHub Actions uses its repository-scoped workflow token through `contents: write`; no repository secret is referenced by the workflow. Public DTOs use field allowlists. Contact uses validated POST data, chat/contact have bounded cache-based abuse controls, visitor logging stores only coarse action data and a hashed client identifier, and public errors exclude provider bodies and stack details.
 
 ## Future architecture notes
 

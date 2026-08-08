@@ -30,7 +30,12 @@
                     const chatEndpoint = (typeof API_URL !== 'undefined' && API_URL) ? API_URL : GAS_API_URL;
                     if (!chatEndpoint) throw new Error('Chat API endpoint is unavailable.');
 
-                    const response = await fetch(`${chatEndpoint}?action=chat&message=${encodeURIComponent(message)}`);
+                    const chatParams = new URLSearchParams({
+                        action: 'chat',
+                        message,
+                        clientId: getPortfolioClientId()
+                    });
+                    const response = await fetch(`${chatEndpoint}?${chatParams.toString()}`);
                     if (!response.ok) throw new Error(`Chat API request failed with status ${response.status}`);
 
                     const result = await response.json();

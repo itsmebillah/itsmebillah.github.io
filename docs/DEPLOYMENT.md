@@ -49,6 +49,18 @@ clasp deployments
 
 Apps Script requires Script Properties documented in [Security](SECURITY.md), then one manual execution of `installBlogPublishingTriggers()` under the deployment owner's account. GitHub must allow Actions to write repository contents, and the workflow must exist on the default branch.
 
+## GitHub project synchronization setup
+
+After deploying the synchronization source:
+
+1. Run `syncGitHubProjects()` once as the deployment owner.
+2. Verify 15 current public repositories appear in `GitHub_Project_Snapshot` and new curation rows are unchecked.
+3. Run `installGitHubSyncTrigger()` once and verify exactly one six-hour trigger exists.
+4. Review `GitHub_Sync_Status` for `success`, HTTP 200, repository count, and last-success timestamp.
+5. Enable projects only through `Portfolio_Project_Curation.show_on_portfolio`.
+
+The initial implementation needs no GitHub credential. Configure `GITHUB_METADATA_TOKEN` only if public shared-IP rate limits are operationally unreliable. See [GitHub Project Synchronization](GITHUB_SYNC.md).
+
 ## Deployment checklist
 
 - Working tree contains only intended changes.
@@ -56,6 +68,8 @@ Apps Script requires Script Properties documented in [Security](SECURITY.md), th
 - Generated artifact counts agree with the manifest.
 - No secret patterns appear in source or reachable commits.
 - Apps Script Script Properties exist; secrets are not logged.
+- Public API has `schemaVersion: 1`, strict DTO fields, and no demo credentials/private Sheet columns.
+- GitHub snapshot, curation, sync status, ETag, last-known-good recovery, and six-hour trigger are verified.
 - Existing web-app deployment is updated, not replaced with a new public URL.
 - GitHub Actions has `contents: write` and branch rules allow the bot push.
 - Homepage, `/blog/`, newest article, sitemap, RSS, search index, chat, and contact path are verified.

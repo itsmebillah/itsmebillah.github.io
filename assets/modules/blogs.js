@@ -83,14 +83,6 @@
             
             try {
                 let contentSource = readObjProp(blog, 'Content');
-                const blogParams = new URLSearchParams({ action: 'getBlog' });
-                if (docId) blogParams.set('docId', docId);
-                if (slug) blogParams.set('slug', slug);
-                blogParams.set('title', readObjProp(blog, 'Title'));
-                const response = await fetch(`${GAS_API_URL}?${blogParams.toString()}`);
-                if (!response.ok) throw new Error(`Blog API request failed with status ${response.status}`);
-                const result = await response.json();
-                if (!String(contentSource || "").trim() && result && result.success && result.content) contentSource = result.content;
                 const hasArticleContent = String(contentSource || "").trim();
                 const descriptionLead = hasArticleContent && desc ? `<p class="text-gray-400 text-xs leading-relaxed mb-4">${desc}</p>` : '';
                 const content = renderMixedBlogContent(contentSource || readObjProp(blog, 'Description') || 'No content available.');

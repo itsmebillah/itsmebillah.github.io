@@ -23,7 +23,7 @@
 
 - `assets/js/search-engine.js` implements client search, but no production page loads it or presents a search UI.
 - Blog modal content loading remains in code as a fallback, while primary card navigation uses static pages.
-- Google Docs content retrieval works through `getAllData`; the attempted `getBlog` endpoint is not implemented by `doGet`.
+- Google Docs content retrieval works through the published Blogs portion of the versioned `getAllData` DTO.
 - Cache rules are documented in `cache-policy.json`, but GitHub Pages cannot apply these custom headers directly.
 - Analytics and Microsoft Clarity blocks are inert placeholders (`type="text/plain"`).
 

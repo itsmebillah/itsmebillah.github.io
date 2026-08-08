@@ -11,6 +11,7 @@
 | `GITHUB_EVENT_TYPE` | Apps Script Script Properties | Workflow event; defaults to `publish-blogs` | Optional |
 | `SPREADSHEET_ID` | Apps Script Script Properties or `MASTER_CONFIG` fallback | Deferred worker spreadsheet | Recommended |
 | `BLOG_SHEET_NAME` | Apps Script Script Properties or config fallback | Blog tab name | Optional |
+| `GITHUB_METADATA_TOKEN` | Apps Script Script Properties | Optional read-only fallback for public metadata synchronization | No; public API is the default |
 
 Spreadsheet, script, deployment, and public web-app IDs are identifiers, not credentials. They still should not be mistaken for authorization controls.
 
@@ -19,6 +20,8 @@ Spreadsheet, script, deployment, and public web-app IDs are identifiers, not cre
 - Never hardcode API keys, PATs, OAuth tokens, or bearer credentials.
 - Never log secrets or request headers containing secrets.
 - Never expose Script Properties through `doGet`, `doPost`, generated files, or browser code.
+- Never serialize complete Sheet rows or raw GitHub API objects to public responses.
+- Keep the blog-dispatch token and optional metadata token separate and least-privileged.
 - Use a least-privilege GitHub token scoped to the single repository and repository dispatch requirement.
 - Revoke/rotate immediately after suspected exposure; cleanup does not make an exposed key trustworthy again.
 - Search both the working tree and all reachable commits before pushing a remediation.
@@ -49,13 +52,13 @@ The Apps Script manifest allows anonymous access and executes as the deployer. T
 
 ## Known risks
 
-- Anonymous chat/contact requests have no explicit rate limiting or caller authentication.
-- Every chat request compiles live CMS data and consumes Apps Script/Groq quota.
-- Contact uses GET query parameters, which can appear in request logs, and the browser cannot verify a `no-cors` response.
-- Visitor logging writes a row for web-app requests and may increase quota/storage use.
+- Anonymous chat/contact requests use bounded cache-based controls, but these are abuse reduction rather than strong identity authentication.
+- Every uncached chat context build and Groq request consumes Apps Script/provider quota.
+- Contact uses validated form-encoded POST and neutralizes spreadsheet formulas and HTML mail content.
+- Visitor logging stores a coarse action/page and hashed client identifier, never chat/contact payload bodies.
 - Third-party CDN scripts are not pinned with subresource integrity.
-- `Table_creation.js` contains sample demo access values and destructive spreadsheet operations.
-- Provider error text is returned in the chat error payload and should never include credentials.
+- `Table_creation.js` is destructive and requires a one-time explicit backup confirmation property before it can run.
+- Provider error bodies and internal exception text are not returned to anonymous callers.
 - Google Docs content and CMS HTML remain trust boundaries even with sanitization.
 
 Report security issues privately to the repository owner; do not open an issue containing a credential or exploit payload.

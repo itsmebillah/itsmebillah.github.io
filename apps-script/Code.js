@@ -15,9 +15,24 @@ const MASTER_CONFIG = {
     certificates: "Certificates",
     blogs: "Blogs",
     faq: "FAQ",
-    aiContext: "AI_CONTEXT",
+    aiPrompt: "AI_Prompt",
+    aiKnowledge: "AI_Knowledge",
     submissions: "Submissions",
-    visitorLog: "VisitorLog"
+    visitorLog: "VisitorLog",
+    githubSnapshot: "GitHub_Project_Snapshot",
+    projectCuration: "Portfolio_Project_Curation",
+    syncStatus: "GitHub_Sync_Status"
+  },
+  publicCacheKey: "portfolio_public_dto_v1",
+  publicCacheSeconds: 600,
+  limits: {
+    chatMessage: 500,
+    contactName: 100,
+    contactEmail: 254,
+    contactSubject: 200,
+    contactMessage: 5000,
+    chatPerMinute: 40,
+    contactPerHour: 20
   }
 };
 
@@ -31,55 +46,58 @@ function getSecret_(key) {
 // CORE APP ROUTER (doGet & doPost)
 // ==========================================
 function doGet(e) {
-  try { logVisitorStream(e); } catch(err) { console.error("Visitor logging bypassed", err); }
-  
-  const action = e && e.parameter ? e.parameter.action : null;
-  
-  // ফর্ম সাবমিশন যদি GET কুয়েরি দিয়ে পাঠানো হয় (CORS সেফটি বাইপাস)
-  if (e && e.parameter && (e.parameter.name || e.parameter.email) && !action) {
-    return handleContactFormPipeline(e.parameter);
-  }
-  
-  switch (action) {
-    case "getAllData":
-      return buildSecureJsonResponse(compileAllPortfolioData());
-    case "chat":
-      const message = e.parameter.message || "";
-      return buildSecureJsonResponse(executeGroqAiPipeline(message));
-    default:
-      return buildSecureJsonResponse({
-        success: true,
-        message: "Portfolio Data Engine Core is Live.",
-        endpoints: ["?action=getAllData", "?action=chat&message=hello"]
-      });
+  const params = e && e.parameter ? e.parameter : {};
+  const action = String(params.action || "health").trim();
+
+  try {
+    try { logVisitorStream(e, action); } catch (logError) { logSafeError_("VISITOR_LOG_FAILED", logError); }
+
+    switch (action) {
+      case "getAllData":
+        return buildSecureJsonResponse(compileAllPortfolioData());
+      case "chat":
+        enforceRateLimit_("chat", params.clientId, MASTER_CONFIG.limits.chatPerMinute, 60);
+        return buildSecureJsonResponse(executeGroqAiPipeline(validateChatMessage_(params.message)));
+      case "health":
+        return buildSecureJsonResponse({ success: true, service: "portfolio-data", schemaVersion: 1 });
+      default:
+        return buildSecureJsonResponse(publicError_("UNKNOWN_ACTION", "The requested action is not available."));
+    }
+  } catch (error) {
+    logSafeError_("GET_FAILED", error);
+    return buildSecureJsonResponse(publicError_(publicErrorCode_(error), publicErrorMessage_(error)));
   }
 }
 
 function doPost(e) {
   try {
-    let payload;
+    let payload = {};
     if (e.postData && e.postData.type === "application/json") {
       payload = JSON.parse(e.postData.contents);
     } else {
       payload = e.parameter;
     }
-    
+
     if (payload.action === "chat" && payload.message) {
-      return buildSecureJsonResponse(executeGroqAiPipeline(payload.message));
+      enforceRateLimit_("chat", payload.clientId, MASTER_CONFIG.limits.chatPerMinute, 60);
+      return buildSecureJsonResponse(executeGroqAiPipeline(validateChatMessage_(payload.message)));
     }
-    
-    return buildSecureJsonResponse(processFormSubmission(payload));
+
+    enforceRateLimit_("contact", payload.clientId || payload.email, MASTER_CONFIG.limits.contactPerHour, 3600);
+    return buildSecureJsonResponse(processFormSubmission(validateContactPayload_(payload)));
   } catch (error) {
-    return buildSecureJsonResponse({ success: false, message: "POST Error: " + error.toString() });
+    logSafeError_("POST_FAILED", error);
+    return buildSecureJsonResponse(publicError_(publicErrorCode_(error), publicErrorMessage_(error)));
   }
 }
 
 function handleContactFormPipeline(params) {
   try {
-    const result = processFormSubmission(params);
-    return buildSecureJsonResponse({ success: true, message: "Message transmitted successfully!", submissionId: result.submissionId });
+    enforceRateLimit_("contact", params.clientId || params.email, MASTER_CONFIG.limits.contactPerHour, 3600);
+    return buildSecureJsonResponse(processFormSubmission(validateContactPayload_(params)));
   } catch (error) {
-    return buildSecureJsonResponse({ success: false, message: error.toString() });
+    logSafeError_("CONTACT_FAILED", error);
+    return buildSecureJsonResponse(publicError_(publicErrorCode_(error), publicErrorMessage_(error)));
   }
 }
 
@@ -88,45 +106,100 @@ function buildSecureJsonResponse(data) {
                        .setMimeType(ContentService.MimeType.JSON);
 }
 
+function publicError_(code, message) {
+  return { success: false, error: { code: code, message: message } };
+}
+
+function publicErrorCode_(error) {
+  return error && error.publicCode ? error.publicCode : "REQUEST_FAILED";
+}
+
+function publicErrorMessage_(error) {
+  return error && error.publicMessage
+    ? error.publicMessage
+    : "The request could not be completed. Please try again later.";
+}
+
+function createPublicError_(code, message) {
+  const error = new Error(code);
+  error.publicCode = code;
+  error.publicMessage = message;
+  return error;
+}
+
+function logSafeError_(code, error) {
+  console.error(code + ": " + (error && error.name ? error.name : "Error"));
+}
+
 // ==========================================
 // DATA EXTRACTOR & SCHEMA PARSER ENGINE
 // ==========================================
 function compileAllPortfolioData() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get(MASTER_CONFIG.publicCacheKey);
+  if (cached) {
+    try { return JSON.parse(cached); } catch (error) { logSafeError_("CACHE_PARSE_FAILED", error); }
+  }
+
   const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
-  
-  return {
+  const result = {
     success: true,
+    schemaVersion: 1,
     timestamp: new Date().toISOString(),
+    sourceStatus: getPublicSourceStatus_(ss),
     data: {
-      profile: parseProfileSheet(ss),
-      config: parseKeyValueSheet(ss, MASTER_CONFIG.tabs.config),
-      skills: parseTableSheet(ss, MASTER_CONFIG.tabs.skills),
-      projects: parseTableSheet(ss, MASTER_CONFIG.tabs.projects, true), // Published Filtering Active
-      experience: parseTableSheet(ss, MASTER_CONFIG.tabs.experience),
-      education: parseTableSheet(ss, MASTER_CONFIG.tabs.education),
-      certificates: parseTableSheet(ss, MASTER_CONFIG.tabs.certificates, true),
-      blogs: extractDynamicBlogsWithDocs(ss),
-      faq: parseTableSheet(ss, MASTER_CONFIG.tabs.faq),
-      aiContext: parseTableSheet(ss, MASTER_CONFIG.tabs.aiContext)
+      profile: buildPublicProfile_(ss),
+      skills: mapPublicTable_(ss, MASTER_CONFIG.tabs.skills, ["Name", "Level", "Category", "Description", "Order"]),
+      projects: buildPublicProjects_(ss),
+      experience: mapPublicTable_(ss, MASTER_CONFIG.tabs.experience, ["Title", "Company", "Period", "Description", "SkillsUsed", "Achievements", "Icon"]),
+      education: mapPublicTable_(ss, MASTER_CONFIG.tabs.education, ["Degree", "Institution", "Period", "Description", "Result", "Icon"]),
+      certificates: mapPublicTable_(ss, MASTER_CONFIG.tabs.certificates, ["Name", "Organization", "Date", "Description", "CredentialID", "ImageURL", "VerifyURL", "Skills", "Published"], { publishedOnly: true }),
+      blogs: extractDynamicBlogsWithDocs(ss)
     }
   };
+
+  const serialized = JSON.stringify(result);
+  if (serialized.length <= 90000) {
+    try { cache.put(MASTER_CONFIG.publicCacheKey, serialized, MASTER_CONFIG.publicCacheSeconds); }
+    catch (error) { logSafeError_("CACHE_WRITE_FAILED", error); }
+  }
+  return result;
 }
 
 // ১. Profile শিট পার্সার (Horizontal Single-Row Data)
-function parseProfileSheet(ss) {
+function readSheetObjects_(ss, sheetName) {
+  const sheet = ss.getSheetByName(sheetName);
+  if (!sheet) return [];
+  const values = sheet.getDataRange().getValues();
+  if (values.length <= 1) return [];
+  const headers = values[0].map(header => String(header || "").trim());
+  return values.slice(1).filter(row => row.some(value => value !== "" && value !== null)).map(row => {
+    const item = {};
+    headers.forEach((header, index) => { if (header) item[header] = row[index]; });
+    return item;
+  });
+}
+
+function pickPublicFields_(source, fields) {
+  const result = {};
+  fields.forEach(field => { result[field] = source && Object.prototype.hasOwnProperty.call(source, field) ? source[field] : ""; });
+  return result;
+}
+
+function buildPublicProfile_(ss) {
   const sheet = ss.getSheetByName(MASTER_CONFIG.tabs.profile);
   if (!sheet) return {};
   const values = sheet.getDataRange().getValues();
   if (values.length <= 1) return {};
-  
   const headers = values[0].map(h => h.toString().trim());
   const rowData = values[1];
-  const profileObj = {};
-  
-  headers.forEach((header, idx) => {
-    profileObj[header] = rowData[idx];
-  });
-  return profileObj;
+  const source = {};
+  headers.forEach((header, idx) => { if (header) source[header] = rowData[idx]; });
+  return pickPublicFields_(source, [
+    "Name", "Title", "HeroQuote", "Email", "Phone", "Location", "Bio", "AboutMe",
+    "YearsExperience", "CurrentRole", "CurrentCompany", "Facebook", "LinkedIn", "WhatsApp",
+    "GitHub", "ResumeURL", "ProfilePic", "HeroBG"
+  ]);
 }
 
 // ২. Config বা Key-Value শিট পার্সার
@@ -139,6 +212,14 @@ function parseKeyValueSheet(ss, sheetName) {
     if (values[i][0]) data[values[i][0].toString().trim()] = values[i][1];
   }
   return data;
+}
+
+function mapPublicTable_(ss, sheetName, fields, options) {
+  const config = options || {};
+  return readSheetObjects_(ss, sheetName).filter(item => {
+    if (!config.publishedOnly) return true;
+    return normalizeBoolean_(item.Published);
+  }).map(item => pickPublicFields_(item, fields));
 }
 
 // ৩. জেনারেল টেবিল শিট পার্সার (Skills, Projects, etc.)
@@ -173,7 +254,7 @@ function parseTableSheet(ss, sheetName, checkPublished = false) {
 
 // ৪. গুগল ডক্স ইন্টিগ্রেশনসহ অ্যাডভান্সড ব্লগ এক্সট্র্যাক্টর
 function extractDynamicBlogsWithDocs(ss) {
-  const rawBlogs = parseTableSheet(ss, MASTER_CONFIG.tabs.blogs, true);
+  const rawBlogs = readSheetObjects_(ss, MASTER_CONFIG.tabs.blogs).filter(blog => normalizeBoolean_(blog.Published));
   return rawBlogs.map(blog => {
     let content = blog.Content || "";
     const docId = blog.DocID || blog.GoogleDocID || "";
@@ -188,18 +269,30 @@ function extractDynamicBlogsWithDocs(ss) {
         console.error("Doc conversion stream error on ID: " + docId, err);
       }
     }
-    blog.Content = content;
-    blog.ReadTime = Math.ceil((content.length || 1) / 1000) + 1;
-    return blog;
+    const mapped = pickPublicFields_(blog, [
+      "Title", "Slug", "Description", "Content", "Keywords", "ReadTime", "Thumbnail",
+      "Category", "Date", "Published", "Author"
+    ]);
+    mapped.Content = content;
+    mapped.ReadTime = Math.ceil((content.length || 1) / 1000) + 1;
+    return mapped;
   });
+}
+
+function normalizeBoolean_(value) {
+  return value === true || value === 1 || String(value || "").trim().toUpperCase() === "TRUE";
+}
+
+function invalidatePublicPortfolioCache_() {
+  CacheService.getScriptCache().remove(MASTER_CONFIG.publicCacheKey);
 }
 
 // ==========================================
 // INTELLIGENT AI CORE - GROQ API PIPELINE
 // ==========================================
 function executeGroqAiPipeline(userMessage) {
-  if (!userMessage) return { success: false, reply: "Message token stream remains empty." };
-  
+  if (!userMessage) return publicError_("EMPTY_MESSAGE", "Please enter a message.");
+
   try {
     const dataset = compileAllPortfolioData().data;
     const prof = dataset.profile;
@@ -211,7 +304,7 @@ function executeGroqAiPipeline(userMessage) {
     
     dynamicSystemContext += `[TECHNICAL CAPABILITIES]\n` + dataset.skills.map(s => `- ${s.Name}: ${s.Level}% expertise in ${s.Category} (Order: ${s.Order})`).join("\n") + "\n\n";
     
-    dynamicSystemContext += `[ENGINEERING PROJECTS]\n` + dataset.projects.map(p => `- Project Name: ${p.Name}\n  Description: ${p.Description}\n  Technologies: ${p.Tags}\n  Live Deployment: ${p.LiveURL}`).join("\n") + "\n\n";
+    dynamicSystemContext += `[ENGINEERING PROJECTS]\n` + dataset.projects.map(p => `- Project Name: ${p.title || p.name}\n  Description: ${p.description}\n  Technologies: ${(p.techStack || []).join(", ")}\n  Live Deployment: ${p.demoUrl || "Not published"}`).join("\n") + "\n\n";
     
     dynamicSystemContext += `[PROFESSIONAL EXPERIENCES]\n` + dataset.experience.map(e => `- Role: ${e.Title} at ${e.Company} (${e.Period})\n  Deliverables: ${e.Description}`).join("\n") + "\n\n";
     
@@ -219,10 +312,6 @@ function executeGroqAiPipeline(userMessage) {
     
     dynamicSystemContext += `[VERIFIED CERTIFICATIONS]\n` + dataset.certificates.map(c => `- Certificate: ${c.Name} issued by ${c.Organization} on ${c.Date}`).join("\n") + "\n\n";
     
-    dynamicSystemContext += `[KNOWLEDGE FAQS]\n` + dataset.faq.map(f => `Question: ${f.Question}\nAnswer: ${f.Answer}`).join("\n") + "\n\n";
-    
-    dynamicSystemContext += `[STRATEGIC DIRECTIONS & VISION]\n` + dataset.aiContext.map(ai => `### Section: ${ai.Section}\nContent: ${ai.Content}`).join("\n") + "\n\n";
-
     // ২. Groq API-র কাছে পে-লোড ট্রান্সমিশন
     const url = "https://api.groq.com/openai/v1/chat/completions";
     const payload = {
@@ -254,7 +343,7 @@ function executeGroqAiPipeline(userMessage) {
       resJson = JSON.parse(resText);
     } catch (parseError) {
       console.error("Groq API returned invalid JSON with status " + statusCode);
-      return { success: false, reply: "AI service returned an invalid response. Please try again later.", raw: resText };
+      return { success: false, reply: "AI service returned an invalid response. Please try again later." };
     }
 
     if (statusCode < 200 || statusCode >= 300 || resJson.error) {
@@ -262,16 +351,17 @@ function executeGroqAiPipeline(userMessage) {
         ? resJson.error.message
         : "Request failed with HTTP status " + statusCode + ".";
       console.error("Groq API request failed with status " + statusCode + ": " + errorMessage);
-      return { success: false, reply: "AI service request failed: " + errorMessage, raw: resText };
+      return { success: false, reply: "AI service is temporarily unavailable. Please try again later." };
     }
     
     if (resJson.choices && resJson.choices[0] && resJson.choices[0].message && resJson.choices[0].message.content) {
       return { success: true, reply: resJson.choices[0].message.content };
     } else {
-      return { success: false, reply: "AI service returned an empty response. Please try again later.", raw: resText };
+      return { success: false, reply: "AI service returned an empty response. Please try again later." };
     }
   } catch (err) {
-    return { success: false, reply: "Data connection pipeline timed out: " + err.toString() };
+    logSafeError_("CHAT_PIPELINE_FAILED", err);
+    return { success: false, reply: "Chat is temporarily unavailable. Please try again later." };
   }
 }
 
@@ -279,10 +369,6 @@ function executeGroqAiPipeline(userMessage) {
 // DATA LOGGER & FORM SUBMISSION INTAKE
 // ==========================================
 function processFormSubmission(formData) {
-  if (!formData.name || !formData.email || !formData.message) {
-    throw new Error("Missing structural payload tokens (Name, Email, Message).");
-  }
-  
   const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
   let sheet = ss.getSheetByName(MASTER_CONFIG.tabs.submissions);
   if (!sheet) {
@@ -293,31 +379,109 @@ function processFormSubmission(formData) {
   const submissionId = Utilities.getUuid();
   const timestamp = new Date();
   
-  sheet.appendRow([timestamp, formData.name, formData.email, formData.subject || "General Inquiry", formData.message, submissionId]);
+  sheet.appendRow([
+    timestamp,
+    safeSheetText_(formData.name),
+    safeSheetText_(formData.email),
+    safeSheetText_(formData.subject || "General Inquiry"),
+    safeSheetText_(formData.message),
+    "NEW",
+    submissionId
+  ]);
   
   try { triggerAdminMailAlert(formData, timestamp, submissionId); } catch(e) {}
   try { triggerAutoConfirmationResponse(formData); } catch(e) {}
   
-  return { submissionId: submissionId };
+  return { success: true, message: "Your message was received.", submissionId: submissionId };
 }
 
 function triggerAdminMailAlert(f, t, id) {
-  const body = `<h3>New Contact Pipeline Entry</h3><b>Name:</b> ${f.name}<br><b>Email:</b> ${f.email}<br><b>Subject:</b> ${f.subject}<br><b>Message:</b><br>${f.message}<br><br><small>Token ID: ${id}</small>`;
+  const body = `<h3>New Contact Pipeline Entry</h3><b>Name:</b> ${escapeHtmlServer_(f.name)}<br><b>Email:</b> ${escapeHtmlServer_(f.email)}<br><b>Subject:</b> ${escapeHtmlServer_(f.subject)}<br><b>Message:</b><br>${escapeHtmlServer_(f.message).replace(/\n/g, "<br>")}<br><br><small>Token ID: ${escapeHtmlServer_(id)}</small>`;
   MailApp.sendEmail({ to: MASTER_CONFIG.adminEmail, subject: `Portfolio Core Pipeline: ${f.subject || 'General'}`, htmlBody: body });
 }
 
 function triggerAutoConfirmationResponse(f) {
-  const body = `<p>Hello ${f.name},</p><p>Thank you for reaching out. I have received your message regarding "${f.subject || 'General Inquiry'}". My automated data orchestrator has queued your request, and I will get back to you within 24 hours.</p><br><p>Best Regards,<br>Md. Masum Billah</p>`;
+  const body = `<p>Hello ${escapeHtmlServer_(f.name)},</p><p>Thank you for reaching out. I have received your message regarding "${escapeHtmlServer_(f.subject || 'General Inquiry')}". I will get back to you as soon as possible.</p><br><p>Best Regards,<br>Md. Masum Billah</p>`;
   MailApp.sendEmail({ to: f.email, subject: "Secure Notification Confirmation - Md. Masum Billah", htmlBody: body });
 }
 
-function logVisitorStream(e) {
+function logVisitorStream(e, action) {
   if (!e) return;
+  const normalizedAction = String(action || "health").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 40) || "health";
+  if (normalizedAction === "health") return;
   const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
   let sheet = ss.getSheetByName(MASTER_CONFIG.tabs.visitorLog);
   if (!sheet) {
     sheet = ss.insertSheet(MASTER_CONFIG.tabs.visitorLog);
     sheet.appendRow(['Timestamp', 'ViewParameter', 'ParametersJson']);
   }
-  sheet.appendRow([new Date(), e.parameter.view || "Home", JSON.stringify(e.parameter)]);
+  const params = e.parameter || {};
+  const visitorId = params.clientId ? hashIdentifier_(params.clientId) : "anonymous";
+  const page = String(params.view || normalizedAction).slice(0, 100);
+  sheet.appendRow([new Date(), visitorId, page, "", "", "", ""]);
+}
+
+function validateChatMessage_(value) {
+  const message = String(value || "").trim();
+  if (!message) throw createPublicError_("EMPTY_MESSAGE", "Please enter a message.");
+  if (message.length > MASTER_CONFIG.limits.chatMessage) {
+    throw createPublicError_("MESSAGE_TOO_LONG", "The message is too long.");
+  }
+  return message;
+}
+
+function validateContactPayload_(payload) {
+  const input = payload || {};
+  const result = {
+    name: String(input.name || "").trim(),
+    email: String(input.email || "").trim().toLowerCase(),
+    subject: String(input.subject || "General Inquiry").trim(),
+    message: String(input.message || "").trim()
+  };
+  if (!result.name || !result.email || !result.message) {
+    throw createPublicError_("INVALID_CONTACT", "Name, email, and message are required.");
+  }
+  if (result.name.length > MASTER_CONFIG.limits.contactName ||
+      result.email.length > MASTER_CONFIG.limits.contactEmail ||
+      result.subject.length > MASTER_CONFIG.limits.contactSubject ||
+      result.message.length > MASTER_CONFIG.limits.contactMessage) {
+    throw createPublicError_("CONTACT_TOO_LONG", "One or more contact fields are too long.");
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(result.email)) {
+    throw createPublicError_("INVALID_EMAIL", "Enter a valid email address.");
+  }
+  if (/\r|\n/.test(result.email) || /\r|\n/.test(result.subject)) {
+    throw createPublicError_("INVALID_CONTACT", "The contact request contains invalid characters.");
+  }
+  return result;
+}
+
+function enforceRateLimit_(scope, identifier, limit, windowSeconds) {
+  const cache = CacheService.getScriptCache();
+  const lock = LockService.getScriptLock();
+  const key = "rate:" + scope + ":" + hashIdentifier_(identifier || "global");
+  lock.waitLock(3000);
+  try {
+    const count = Number(cache.get(key) || 0);
+    if (count >= limit) throw createPublicError_("RATE_LIMITED", "Too many requests. Please try again later.");
+    cache.put(key, String(count + 1), windowSeconds);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function hashIdentifier_(value) {
+  const bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, String(value || "anonymous"), Utilities.Charset.UTF_8);
+  return bytes.slice(0, 8).map(byte => ("0" + ((byte < 0 ? byte + 256 : byte).toString(16))).slice(-2)).join("");
+}
+
+function safeSheetText_(value) {
+  const text = String(value || "");
+  return /^[=+\-@]/.test(text) ? "'" + text : text;
+}
+
+function escapeHtmlServer_(value) {
+  return String(value || "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[character]);
 }
