@@ -129,8 +129,8 @@
 
             upsertMeta('meta[property="og:type"]', { property: 'og:type' }, config.og && config.og.type);
             upsertMeta('meta[property="og:locale"]', { property: 'og:locale' }, config.og && config.og.locale);
-            upsertMeta('meta[property="og:title"]', { property: 'og:title' }, config.title);
-            upsertMeta('meta[property="og:description"]', { property: 'og:description' }, config.description);
+            upsertMeta('meta[property="og:title"]', { property: 'og:title' }, config.socialTitle || config.title);
+            upsertMeta('meta[property="og:description"]', { property: 'og:description' }, config.socialDescription || config.description);
             upsertMeta('meta[property="og:url"]', { property: 'og:url' }, config.canonical);
             upsertMeta('meta[property="og:site_name"]', { property: 'og:site_name' }, config.og && config.og.siteName);
             upsertMeta('meta[property="og:image"]', { property: 'og:image' }, config.image);
@@ -141,8 +141,8 @@
             upsertMeta('meta[property="og:image:height"]', { property: 'og:image:height' }, config.imageHeight);
 
             upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card' }, config.twitter && config.twitter.card);
-            upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title' }, config.title);
-            upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description' }, config.description);
+            upsertMeta('meta[name="twitter:title"]', { name: 'twitter:title' }, config.twitterTitle || config.socialTitle || config.title);
+            upsertMeta('meta[name="twitter:description"]', { name: 'twitter:description' }, config.twitterDescription || config.socialDescription || config.description);
             upsertMeta('meta[name="twitter:image"]', { name: 'twitter:image' }, config.image);
             upsertMeta('meta[name="twitter:image:alt"]', { name: 'twitter:image:alt' }, config.imageAlt);
 
@@ -152,5 +152,71 @@
             }
         }
 
+        function buildPortfolioSEO(profile, config, skills) {
+            const value = (source, key) => String(readObjProp(source || {}, key) || '').trim();
+            const name = value(profile, 'Name');
+            const title = value(profile, 'Title');
+            const bio = value(profile, 'Bio');
+            const canonical = sanitizeUrl(value(config, 'canonical_url')) || SEO_CONFIG.canonical;
+            const image = sanitizeUrl(value(config, 'og_image') || value(profile, 'ProfilePic'), { image: true }) || SEO_CONFIG.image;
+            const siteName = value(config, 'site_name') || value(config, 'name') || (name ? `${name} Portfolio` : SEO_CONFIG.og.siteName);
+            const pageTitle = value(config, 'site_title') || [name, title].filter(Boolean).join(' | ') || SEO_CONFIG.title;
+            const description = value(config, 'meta_description') || bio || SEO_CONFIG.description;
+            const socialLinks = ['GitHub', 'LinkedIn', 'Facebook', 'WhatsApp']
+                .map(key => sanitizeUrl(value(profile, key)))
+                .filter(Boolean);
+            const skillNames = (Array.isArray(skills) ? skills : [])
+                .map(skill => value(skill, 'Name'))
+                .filter(Boolean)
+                .slice(0, 30);
+            const personId = `${canonical.replace(/#.*$/, '').replace(/\/$/, '')}/#person`;
+            const organizationId = `${canonical.replace(/#.*$/, '').replace(/\/$/, '')}/#organization`;
+            const websiteId = `${canonical.replace(/#.*$/, '').replace(/\/$/, '')}/#website`;
+            return {
+                language: value(config, 'language') || SEO_CONFIG.language,
+                title: pageTitle,
+                description,
+                keywords: value(config, 'meta_keywords') || skillNames.join(', '),
+                canonical,
+                robots: SEO_CONFIG.robots,
+                crawlerRobots: SEO_CONFIG.crawlerRobots,
+                author: name,
+                image,
+                imageAlt: name ? `Portrait of ${name}` : 'Portfolio image',
+                imageType: SEO_CONFIG.imageType,
+                imageWidth: SEO_CONFIG.imageWidth,
+                imageHeight: SEO_CONFIG.imageHeight,
+                og: { type: 'profile', locale: SEO_CONFIG.og.locale, siteName },
+                twitter: { card: SEO_CONFIG.twitter.card },
+                socialTitle: value(config, 'og_title') || pageTitle,
+                socialDescription: value(config, 'og_description') || description,
+                twitterTitle: value(config, 'twitter_title') || value(config, 'og_title') || pageTitle,
+                twitterDescription: value(config, 'twitter_description') || value(config, 'og_description') || description,
+                structuredData: {
+                    '@context': 'https://schema.org',
+                    '@graph': [
+                        {
+                            '@type': 'Person', '@id': personId, name, url: canonical, image,
+                            jobTitle: title, description: bio,
+                            email: value(profile, 'Email') ? `mailto:${value(profile, 'Email')}` : undefined,
+                            telephone: value(profile, 'Phone') || undefined,
+                            address: value(profile, 'Location') ? { '@type': 'PostalAddress', addressLocality: value(profile, 'Location') } : undefined,
+                            sameAs: socialLinks, knowsAbout: skillNames
+                        },
+                        {
+                            '@type': 'Organization', '@id': organizationId, name: siteName,
+                            url: canonical, logo: image, founder: { '@id': personId }, sameAs: socialLinks
+                        },
+                        {
+                            '@type': 'WebSite', '@id': websiteId, url: canonical, name: siteName,
+                            description, inLanguage: value(config, 'language') || SEO_CONFIG.language,
+                            publisher: { '@id': organizationId }, author: { '@id': personId }
+                        }
+                    ]
+                }
+            };
+        }
+
         window.SEO_CONFIG = SEO_CONFIG;
         window.applySEOConfig = applySEOConfig;
+        window.buildPortfolioSEO = buildPortfolioSEO;

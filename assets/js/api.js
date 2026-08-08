@@ -4,7 +4,9 @@
                 if (!payload || (!payload.profile && !payload.skills && !payload.projects)) {
                     throw new Error('Portfolio API returned an incompatible payload.');
                 }
+                window.portfolioData = payload;
                 renderProfile(payload.profile);
+                applyPortfolioContent(payload);
                 updatePortfolioLoader('profile');
                 renderSkills(payload.skills);
                 updatePortfolioLoader('skills');
@@ -16,6 +18,7 @@
                 updatePortfolioLoader('blogs');
                 renderTimeline(payload.experience, payload.education);
                 updatePortfolioLoader('timeline');
+                renderFAQ(payload.faq);
             };
             const readLastKnownGood = () => {
                 try {

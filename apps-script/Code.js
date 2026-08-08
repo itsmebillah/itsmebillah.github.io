@@ -235,7 +235,10 @@ function buildPublicConfig_(ss) {
   return pickPublicFields_(source, [
     "name", "site_tagline", "chatbot_name", "chatbot_welcome", "footer_text",
     "about_section_title", "projects_section_title", "skills_section_title",
-    "experience_section_title", "contact_section_title"
+    "experience_section_title", "certificates_section_title", "blogs_section_title",
+    "faq_section_title", "contact_section_title", "site_title", "meta_description",
+    "meta_keywords", "canonical_url", "og_title", "og_description", "og_image",
+    "twitter_title", "twitter_description", "site_name", "language"
   ]);
 }
 

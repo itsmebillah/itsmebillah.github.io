@@ -190,7 +190,7 @@ function updateAdminProfile_(payload, session) {
   invalidatePublicPortfolioCache_(); auditAdmin_(session.email, "update", "profile", "profile", true, "", changed); return readAdminProfile_();
 }
 
-const SAFE_CONFIG_KEYS = ["name", "site_tagline", "chatbot_name", "chatbot_welcome", "footer_text", "about_section_title", "projects_section_title", "skills_section_title", "experience_section_title", "contact_section_title", "dashboard_url"];
+const SAFE_CONFIG_KEYS = ["name", "site_tagline", "chatbot_name", "chatbot_welcome", "footer_text", "about_section_title", "projects_section_title", "skills_section_title", "experience_section_title", "certificates_section_title", "blogs_section_title", "faq_section_title", "contact_section_title", "site_title", "meta_description", "meta_keywords", "canonical_url", "og_title", "og_description", "og_image", "twitter_title", "twitter_description", "site_name", "language", "dashboard_url"];
 function readAdminConfig_() { return pickPublicFields_(parseKeyValueSheet(SpreadsheetApp.openById(MASTER_CONFIG.sheetId), MASTER_CONFIG.tabs.config), SAFE_CONFIG_KEYS); }
 function updateAdminConfig_(payload, session) { const changed = updateKeyValueRecord_(MASTER_CONFIG.tabs.config, payload, SAFE_CONFIG_KEYS); invalidatePublicPortfolioCache_(); auditAdmin_(session.email, "update", "config", "config", true, "", changed); return readAdminConfig_(); }
 
