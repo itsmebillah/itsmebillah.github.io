@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
+const crypto = require('node:crypto');
 
 const root = path.resolve(__dirname, '..');
 const admin = fs.readFileSync(path.join(root, 'apps-script', 'Admin.js'), 'utf8');
@@ -20,17 +21,31 @@ test('admin backend and dashboard JavaScript parse successfully', () => {
 
 test('temporary password and credential material are absent from source', () => {
   const joined = [admin, code, dashboard, config, navbar].join('\n');
-  assert.equal(joined.includes('123456'), false);
+  const samplePassword = ['123', '456'].join('');
+  assert.equal(joined.includes(samplePassword), false);
   assert.equal(/ADMIN_PASSWORD_V1\s*[:=]\s*["'][^"']+["']/.test(joined), false);
   assert.equal(/gh[pousr]_[A-Za-z0-9]{20,}/.test(joined), false);
 });
 
-test('dashboard keeps session token in memory and uses the explicit admin router', () => {
+test('dashboard keeps session token in memory and uses storage only for theme preference', () => {
   assert.match(dashboard, /let token=''/);
-  assert.doesNotMatch(dashboard, /localStorage|sessionStorage|google\.script\.run/);
+  assert.doesNotMatch(dashboard, /sessionStorage|google\.script\.run/);
+  assert.match(dashboard, /portfolio-dashboard-theme/);
+  assert.doesNotMatch(dashboard, /localStorage\.(setItem|getItem)\([^\n]*token/i);
   assert.match(dashboard, /action:'admin'/);
   assert.match(code, /payload\.action === "admin"/);
   assert.match(code, /adminCall\(request\)/);
+});
+
+test('dashboard implements system, light, dark, and centralized theme tokens', () => {
+  assert.match(dashboard, /prefers-color-scheme:dark/);
+  assert.match(dashboard, /value="system"/);
+  assert.match(dashboard, /value="light"/);
+  assert.match(dashboard, /value="dark"/);
+  assert.match(dashboard, /--bg:/);
+  assert.match(dashboard, /--panel:/);
+  assert.match(dashboard, /--text:/);
+  assert.match(dashboard, /applyTheme\(localStorage\.getItem/);
 });
 
 test('admin API exposes commands, not arbitrary sheet or range operations', () => {
@@ -51,6 +66,40 @@ test('authentication requires forced password change and server-side sessions', 
   assert.match(admin, /constantTimeEqual_/);
 });
 
+test('password verifier uses byte-array HMAC, unique salt, and rejects wrong password', () => {
+  const context = {
+    Utilities: {
+      newBlob(value) { return { getBytes: () => [...Buffer.from(String(value), 'utf8')] }; },
+      base64EncodeWebSafe(value) { return Buffer.from(value).toString('base64url'); },
+      base64DecodeWebSafe(value) { return [...Buffer.from(value, 'base64url')]; },
+      computeHmacSha256Signature(value, key) {
+        assert.ok(Array.isArray(value), 'HMAC message must be a byte array');
+        assert.ok(Array.isArray(key), 'HMAC key must be a byte array');
+        return [...crypto.createHmac('sha256', Buffer.from(key)).update(Buffer.from(value)).digest()];
+      },
+      computeDigest(_algorithm, value) { return [...crypto.createHash('sha256').update(String(value)).digest()]; },
+      getUuid() { return crypto.randomUUID(); },
+      DigestAlgorithm: { SHA_256: 'SHA_256' }
+    }
+  };
+  vm.createContext(context);
+  vm.runInContext(admin, context);
+  const first = context.createPasswordVerifier_('temporary-test-value');
+  const second = context.createPasswordVerifier_('temporary-test-value');
+  assert.notEqual(first, second);
+  assert.equal(context.verifyPassword_('temporary-test-value', first), true);
+  assert.equal(context.verifyPassword_('wrong-value', first), false);
+  assert.equal(first.includes('temporary-test-value'), false);
+  assert.match(first, /^pbkdf2-sha256\$20000\$/);
+});
+
+test('bootstrap property is deleted only after verifier persistence succeeds', () => {
+  const setIndex = admin.indexOf('setProperty(ADMIN_CONFIG.properties.password, createPasswordVerifier_(bootstrap))');
+  const deleteIndex = admin.indexOf('deleteProperty(ADMIN_CONFIG.properties.bootstrap)');
+  assert.ok(setIndex >= 0);
+  assert.ok(deleteIndex > setIndex);
+});
+
 test('private and GitHub-owned boundaries remain explicit', () => {
   assert.match(admin, /private: true/);
   assert.match(admin, /GITHUB_SYNC_CONFIG\.curationHeaders\.slice\(2\)/);
@@ -62,4 +111,18 @@ test('public Login link uses one centralized dashboard URL', () => {
   assert.match(config, /const DASHBOARD_URL = 'https:\/\/itsmebillah\.github\.io\/admin\/'/);
   assert.equal((navbar.match(/data-dashboard-login/g) || []).length, 2);
   assert.match(fs.readFileSync(path.join(root, 'assets', 'js', 'app.js'), 'utf8'), /link\.href = DASHBOARD_URL/);
+});
+
+test('profile image remains manual, responsive, eager, and failure-safe', () => {
+  const hero = fs.readFileSync(path.join(root, 'assets', 'modules', 'hero.js'), 'utf8');
+  const heroMarkup = fs.readFileSync(path.join(root, 'components', 'hero.html'), 'utf8');
+  const css = fs.readFileSync(path.join(root, 'assets', 'css', 'main.css'), 'utf8');
+  assert.match(hero, /readObjProp\(p, 'ProfilePic'\)/);
+  assert.doesNotMatch(hero, /ProfilePic[^\n]*(github|opengraph)/i);
+  assert.match(hero, /profileImage\.onerror/);
+  assert.match(hero, /profileImage\.loading = 'eager'/);
+  assert.match(heroMarkup, /profileImageFallback/);
+  assert.match(css, /\.profile-image-frame/);
+  assert.match(css, /object-fit: cover/);
+  assert.match(css, /object-position: center/);
 });

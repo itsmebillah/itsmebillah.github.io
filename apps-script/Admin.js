@@ -125,10 +125,12 @@ function verifyPassword_(password, stored) {
 }
 
 function pbkdf2_(password, salt, iterations) {
-  let block = Utilities.computeHmacSha256Signature(salt + "\u0000\u0000\u0000\u0001", password);
+  const keyBytes = Utilities.newBlob(String(password)).getBytes();
+  const saltBytes = Utilities.base64DecodeWebSafe(String(salt));
+  let block = Utilities.computeHmacSha256Signature(saltBytes.concat([0, 0, 0, 1]), keyBytes);
   const result = block.slice();
   for (let i = 1; i < iterations; i++) {
-    block = Utilities.computeHmacSha256Signature(block, password);
+    block = Utilities.computeHmacSha256Signature(block, keyBytes);
     for (let j = 0; j < result.length; j++) result[j] = result[j] ^ block[j];
   }
   return Utilities.base64EncodeWebSafe(result).replace(/=+$/, "");
