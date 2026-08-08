@@ -24,7 +24,7 @@ const MASTER_CONFIG = {
     projectCuration: "Portfolio_Project_Curation",
     syncStatus: "GitHub_Sync_Status"
   },
-  publicCacheKey: "portfolio_public_dto_v1_contract10",
+  publicCacheKey: "portfolio_public_dto_v1_contract11",
   publicCacheSeconds: 600,
   limits: {
     chatMessage: 500,

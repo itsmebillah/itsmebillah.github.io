@@ -186,21 +186,14 @@ function buildPublicProjects_(ss) {
   const curations = readSheetObjects_(ss, MASTER_CONFIG.tabs.projectCuration);
   const curationById = {};
   curations.forEach(item => { if (item.github_repository_id) curationById[String(item.github_repository_id)] = item; });
-  const merged = snapshot.filter(repo => repo.sync_state === "active" && repo.visibility === "public" && !repo.disabled)
+  return snapshot.filter(repo => repo.sync_state === "active" && repo.visibility === "public" && !repo.disabled)
     .filter(repo => {
       const curation = curationById[repo.github_repository_id];
       if (!curation || !normalizeBoolean_(curation.show_on_portfolio)) return false;
       if (!repo.archived) return true;
       return ["completed", "historical"].indexOf(String(curation.portfolio_status || "").trim().toLowerCase()) !== -1;
-    }).map(repo => mapMergedProjectDto_(repo, curationById[repo.github_repository_id]));
-
-  const mergedNames = {};
-  merged.forEach(project => { mergedNames[String(project.name || "").trim().toLowerCase()] = true; });
-  const legacy = readSheetObjects_(ss, MASTER_CONFIG.tabs.projects)
-    .filter(item => normalizeBoolean_(item.Published))
-    .filter(item => !mergedNames[String(item.Name || "").trim().toLowerCase()])
-    .map(mapLegacyProjectDto_);
-  return merged.concat(legacy).sort((a, b) => Number(a.displayOrder || 999) - Number(b.displayOrder || 999) || a.title.localeCompare(b.title));
+    }).map(repo => mapMergedProjectDto_(repo, curationById[repo.github_repository_id]))
+    .sort((a, b) => Number(a.displayOrder || 999) - Number(b.displayOrder || 999) || a.title.localeCompare(b.title));
 }
 
 function mapMergedProjectDto_(repo, curation) {
@@ -222,11 +215,19 @@ function mapMergedProjectDto_(repo, curation) {
     section: cleanPublicText_(curation.section || "projects", 100),
     featured: normalizeBoolean_(curation.featured),
     displayOrder: normalizeDisplayOrder_(curation.display_order),
-    image: safeHttpsUrl_(curation.portfolio_image),
+    image: resolveProjectThumbnail_(repo, curation),
+    imageAlt: cleanPublicText_((curation.custom_title || repo.name) + " project preview", 180),
     kpiHighlight: cleanPublicText_(curation.kpi_highlight, 300),
     status: cleanPublicText_(curation.portfolio_status || (repo.archived ? "archived" : "active"), 50),
     lastUpdated: repo.updated_at
   };
+}
+
+function resolveProjectThumbnail_(repo, curation) {
+  const curatedImage = safeHttpsUrl_(curation.portfolio_image);
+  if (curatedImage) return curatedImage;
+  if (!/^[^/]+\/[^/]+$/.test(String(repo.repo_key || ""))) return "";
+  return "https://opengraph.githubassets.com/portfolio/" + repo.repo_key;
 }
 
 function mapLegacyProjectDto_(item, index) {

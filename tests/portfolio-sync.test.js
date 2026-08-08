@@ -183,6 +183,8 @@ test('curated repository merges technical facts with editorial overrides', () =>
     assert.equal(result[0].title, 'Example Platform');
     assert.equal(result[0].url, 'https://github.com/itsmebillah/example');
     assert.equal(result[0].featured, true);
+    assert.equal(result[0].image, 'https://example.com/preview.png');
+    assert.equal(result[0].imageAlt, 'Example Platform project preview');
     assert.equal(Object.hasOwn(result[0], 'visibility_note'), false);
 });
 
@@ -197,14 +199,27 @@ test('archived repository is hidden unless curated as completed', () => {
     assert.equal(evaluate(context, 'buildPublicProjects_(__ss)').length, 1);
 });
 
-test('missing demo, description, and image degrade to empty optional fields', () => {
+test('missing demo and description use a GitHub-hosted project thumbnail', () => {
     const { context } = createContext();
     context.__repo = repository({ description: '', homepage_url: '' });
     context.__curation = { show_on_portfolio: true };
     const result = evaluate(context, 'mapMergedProjectDto_(__repo, __curation)');
     assert.equal(result.description, '');
     assert.equal(result.demoUrl, '');
-    assert.equal(result.image, '');
+    assert.equal(result.image, 'https://opengraph.githubassets.com/portfolio/itsmebillah/example');
+    assert.equal(result.imageAlt, 'example project preview');
+});
+
+test('legacy Projects sheet is not read by the production project builder', () => {
+    const { context } = createContext();
+    context.loadLastGoodSnapshot_ = () => [repository()];
+    context.readSheetObjects_ = (ss, name) => {
+        if (name === 'Portfolio_Project_Curation') return [{ github_repository_id: '101', show_on_portfolio: true }];
+        if (name === 'Projects') throw new Error('legacy source must not be read');
+        return [];
+    };
+    context.__ss = {};
+    assert.equal(evaluate(context, 'buildPublicProjects_(__ss)').length, 1);
 });
 
 test('legacy project mapper excludes demo credentials', () => {
@@ -244,7 +259,7 @@ test('last-known-good repository snapshot is chunked and restored', () => {
 test('cached public response survives a spreadsheet outage', () => {
     const { context, cache } = createContext();
     const cached = { success: true, schemaVersion: 1, data: { profile: { Name: 'Cached' }, projects: [], skills: [] } };
-    cache.set('portfolio_public_dto_v1_contract10', JSON.stringify(cached));
+    cache.set('portfolio_public_dto_v1_contract11', JSON.stringify(cached));
     context.SpreadsheetApp = { openById: () => { throw new Error('Sheets unavailable'); } };
     const result = evaluate(context, 'compileAllPortfolioData()');
     assert.equal(result.data.profile.Name, 'Cached');

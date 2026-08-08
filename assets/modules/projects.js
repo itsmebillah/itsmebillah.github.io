@@ -19,12 +19,18 @@
             );
             const featured = ordered.filter(isFeatured);
             const others = ordered.filter(project => !isFeatured(project));
+            const projectImage = (project, classes, width, height) => {
+                const name = escapeHtml(projectValue(project, 'title', 'Name'));
+                const image = sanitizeUrl(projectValue(project, 'image', 'Image'), { image: true, allowImageData: true });
+                const alt = escapeHtml(projectValue(project, 'imageAlt') || `${projectValue(project, 'title', 'Name')} project preview`);
+                if (!image) return `<div class="${classes} project-image-fallback border border-white/10 bg-white/5 flex items-center justify-center text-gray-500 text-xs">Project preview unavailable</div>`;
+                return `<div class="relative"><img src="${escapeHtml(image)}" loading="lazy" decoding="async" width="${width}" height="${height}" class="${classes}" alt="${alt}" data-project-image><div class="${classes} project-image-fallback hidden border border-white/10 bg-white/5 items-center justify-center text-gray-500 text-xs" aria-hidden="true">Project preview unavailable</div></div>`;
+            };
 
             if(featContainer) {
                 featContainer.innerHTML = featured.map(p => {
                     const name = escapeHtml(projectValue(p, 'title', 'Name'));
                     const desc = escapeHtml(projectValue(p, 'description', 'Description'));
-                    const img = sanitizeUrl(projectValue(p, 'image', 'Image'), { image: true, allowImageData: true });
                     const tags = projectValue(p, 'techStack', 'Tags');
                     const tagList = Array.isArray(tags) ? tags : String(tags || '').split(',').filter(Boolean);
                     const live = sanitizeUrl(projectValue(p, 'demoUrl', 'LiveURL'));
@@ -44,7 +50,7 @@
                                         ${git && git !== '#' ? `<a href="${escapeHtml(git)}" target="_blank" rel="noopener noreferrer" class="px-5 py-2.5 glass rounded-full text-white text-xs font-semibold tracking-wide border border-white/20"><i class="fab fa-github mr-2"></i>Repository</a>`:''}
                                     </div>
                                 </div>
-                                <div class="text-center">${img ? `<img src="${escapeHtml(img)}" loading="lazy" decoding="async" width="800" height="448" class="w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10" alt="${name} project preview">` : `<div class="w-full h-56 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center text-gray-500 text-xs">Project preview unavailable</div>`}</div>
+                                <div class="text-center">${projectImage(p, 'w-full h-56 object-cover rounded-2xl shadow-2xl border border-white/10', 800, 448)}</div>
                             </div>
                         </div>`;
                 }).join('');
@@ -54,7 +60,6 @@
                 otherContainer.innerHTML = others.map(p => {
                     const name = escapeHtml(projectValue(p, 'title', 'Name'));
                     const desc = escapeHtml(projectValue(p, 'description', 'Description'));
-                    const img = sanitizeUrl(projectValue(p, 'image', 'Image'), { image: true, allowImageData: true });
                     const tags = projectValue(p, 'techStack', 'Tags');
                     const tagList = Array.isArray(tags) ? tags : String(tags || '').split(',').filter(Boolean);
                     const live = sanitizeUrl(projectValue(p, 'demoUrl', 'LiveURL'));
@@ -63,7 +68,7 @@
                     return `
                         <div class="glass rounded-2xl p-5 flex flex-col justify-between border border-white/5 hover:border-orange-500/30 transition duration-300">
                             <div>
-                                ${img ? `<img src="${escapeHtml(img)}" loading="lazy" decoding="async" width="400" height="160" class="w-full h-40 object-cover rounded-xl mb-4 border border-white/5" alt="${name} project preview">` : `<div class="w-full h-40 rounded-xl mb-4 border border-white/5 bg-white/5 flex items-center justify-center text-gray-500 text-xs">Project preview unavailable</div>`}
+                                ${projectImage(p, 'w-full h-40 object-cover rounded-xl mb-4 border border-white/5', 400, 160)}
                                 <h4 class="text-lg font-bold mb-2 text-white">${name}</h4>
                                 <p class="text-gray-400 text-xs mb-4 line-clamp-3 leading-relaxed">${desc}</p>
                                 <div class="flex flex-wrap gap-1 mb-2">
@@ -76,4 +81,16 @@
                         </div>`;
                 }).join('');
             }
+
+            document.querySelectorAll('[data-project-image]').forEach(image => {
+                image.addEventListener('error', () => {
+                    const fallback = image.nextElementSibling;
+                    image.classList.add('hidden');
+                    if (fallback) {
+                        fallback.classList.remove('hidden');
+                        fallback.classList.add('flex');
+                        fallback.setAttribute('aria-hidden', 'false');
+                    }
+                }, { once: true });
+            });
         }
