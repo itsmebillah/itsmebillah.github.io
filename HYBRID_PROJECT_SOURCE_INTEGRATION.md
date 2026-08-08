@@ -62,8 +62,39 @@ The source rows in the legacy `Projects` sheet remain unchanged and available fo
 - `source`: `GITHUB`.
 - Technical metadata: GitHub snapshot.
 - Publication and presentation: GitHub curation.
-- Thumbnail: curated image, then GitHub Open Graph image.
+- Thumbnail: curated image, automatically discovered repository screenshot, then GitHub Open Graph image.
 - Newly synchronized repositories remain unpublished by default.
+
+### GitHub Screenshot Discovery
+
+Each successful metadata refresh inspects public repository content and stores only the selected screenshot metadata in the snapshot:
+
+- `screenshot_url`;
+- `screenshot_path`;
+- `screenshot_alt`;
+- `screenshot_source`;
+- `screenshot_discovery_status`.
+
+Selection order is:
+
+1. Manual `portfolio_image` curation override.
+2. Representative screenshot referenced by the repository README.
+3. Representative screenshot from repository image, screenshot, documentation, media, or public folders.
+4. GitHub Open Graph image.
+5. Existing in-card unavailable-preview fallback when the selected image cannot load.
+
+The selector rejects social-preview cards, Open Graph assets, badges, shields, avatars, logos, wordmarks, favicons, icons, banners, and technology graphics. It prefers dashboard, analytics, reporting, workspace, storefront, homepage, upload, pricing, subscription, desktop, and production-state images. A temporary GitHub content-discovery failure preserves the last known good screenshot rather than replacing it with a weaker image.
+
+Stable raw GitHub URLs are generated from the repository key, default branch, and selected path. Private repositories never enter discovery or the public snapshot.
+
+Focused selector tests cover:
+
+- Sales-Dashboard dashboard overview;
+- Wealth OS manual override priority;
+- SubPro subscription interface;
+- Reyon-Online storefront interface;
+- InsightFlow AI upload interface;
+- a repository without a suitable screenshot using the OG fallback.
 
 ### Manual Projects
 

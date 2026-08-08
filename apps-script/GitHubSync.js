@@ -12,7 +12,8 @@ const GITHUB_SYNC_CONFIG = {
     "github_repository_id", "github_node_id", "repo_key", "name", "description",
     "repository_url", "homepage_url", "topics_json", "primary_language", "visibility",
     "archived", "disabled", "license_spdx", "stars", "forks", "default_branch",
-    "created_at", "updated_at", "pushed_at", "readme_url", "fetched_at", "source_etag",
+    "created_at", "updated_at", "pushed_at", "readme_url", "screenshot_url",
+    "screenshot_path", "screenshot_alt", "screenshot_source", "screenshot_discovery_status", "fetched_at", "source_etag",
     "sync_state", "last_seen_at", "missing_since"
   ],
   curationHeaders: [
@@ -80,13 +81,14 @@ function syncGitHubProjects() {
 function fetchGitHubRepositories_() {
   const properties = PropertiesService.getScriptProperties();
   const etag = properties.getProperty(GITHUB_SYNC_CONFIG.etagProperty) || "";
+  const needsScreenshotRefresh = loadLastGoodSnapshot_().some(repo => repo.sync_state === "active" && !Object.prototype.hasOwnProperty.call(repo, "screenshot_discovery_status"));
   const token = properties.getProperty("GITHUB_METADATA_TOKEN") || "";
   const headers = {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": GITHUB_SYNC_CONFIG.apiVersion,
     "User-Agent": "itsmebillah-portfolio-sync"
   };
-  if (etag) headers["If-None-Match"] = etag;
+  if (etag && !needsScreenshotRefresh) headers["If-None-Match"] = etag;
   if (token) headers.Authorization = "Bearer " + token;
 
   const allRepositories = [];
@@ -118,7 +120,16 @@ function fetchGitHubRepositories_() {
   }
   const fetchedAt = new Date().toISOString();
   const repositories = allRepositories.filter(repo => repo && repo.owner && String(repo.owner.login).toLowerCase() === GITHUB_SYNC_CONFIG.owner.toLowerCase() && repo.private !== true)
-    .map(repo => normalizeGitHubRepository_(repo, fetchedAt));
+    .map(repo => {
+      const normalized = normalizeGitHubRepository_(repo, fetchedAt);
+      const screenshot = discoverRepositoryScreenshot_(repo, headers);
+      normalized.screenshot_url = screenshot.url;
+      normalized.screenshot_path = screenshot.path;
+      normalized.screenshot_alt = screenshot.alt;
+      normalized.screenshot_source = screenshot.source;
+      normalized.screenshot_discovery_status = screenshot.status;
+      return normalized;
+    });
   return { notModified: false, status: status, etag: responseEtag, repositories: repositories };
 }
 
@@ -144,6 +155,11 @@ function normalizeGitHubRepository_(repo, fetchedAt) {
     updated_at: normalizeIsoDate_(repo.updated_at),
     pushed_at: normalizeIsoDate_(repo.pushed_at),
     readme_url: safeHttpsUrl_(String(repo.html_url || "") + "#readme"),
+    screenshot_url: "",
+    screenshot_path: "",
+    screenshot_alt: "",
+    screenshot_source: "",
+    screenshot_discovery_status: "none",
     fetched_at: fetchedAt,
     sync_state: "active",
     last_seen_at: fetchedAt,
@@ -156,7 +172,19 @@ function reconcileRepositorySnapshot_(previous, current, now) {
   const nowIso = nowDate.toISOString();
   const currentById = {};
   current.forEach(item => { currentById[item.github_repository_id] = item; });
-  const result = current.slice();
+  const previousById = {};
+  previous.forEach(item => { previousById[item.github_repository_id] = item; });
+  const result = current.map(item => {
+    const oldItem = previousById[item.github_repository_id];
+    if (!oldItem || item.screenshot_discovery_status !== "error" || !oldItem.screenshot_url) return item;
+    return Object.assign({}, item, {
+      screenshot_url: oldItem.screenshot_url,
+      screenshot_path: oldItem.screenshot_path,
+      screenshot_alt: oldItem.screenshot_alt,
+      screenshot_source: oldItem.screenshot_source,
+      screenshot_discovery_status: "preserved"
+    });
+  });
   previous.forEach(oldItem => {
     if (currentById[oldItem.github_repository_id]) return;
     const missingSince = oldItem.missing_since || nowIso;
@@ -167,6 +195,128 @@ function reconcileRepositorySnapshot_(previous, current, now) {
     }
   });
   return result.sort((a, b) => a.repo_key.localeCompare(b.repo_key));
+}
+
+function discoverRepositoryScreenshot_(repo, headers) {
+  const repoKey = String(repo.full_name || "");
+  const branch = String(repo.default_branch || "");
+  if (!/^[^/]+\/[^/]+$/.test(repoKey) || !branch) return emptyScreenshotDiscovery_("none");
+  try {
+    const readmeUrl = "https://raw.githubusercontent.com/" + encodePathForUrl_(repoKey) + "/" + encodePathForUrl_(branch) + "/README.md";
+    const readme = fetchOptionalText_(readmeUrl, headers);
+    const readmeCandidates = readme ? extractReadmeImageCandidates_(readme, repo) : [];
+    const selectedReadme = selectScreenshotCandidate_(readmeCandidates);
+    if (selectedReadme) return buildScreenshotDiscovery_(repo, selectedReadme, "readme");
+
+    const treeUrl = GITHUB_SYNC_CONFIG.apiBase + "/repos/" + encodePathForUrl_(repoKey) + "/git/trees/" + encodePathForUrl_(branch) + "?recursive=1";
+    const treePayload = fetchOptionalJson_(treeUrl, headers);
+    const treeCandidates = treePayload && Array.isArray(treePayload.tree) ? treePayload.tree
+      .filter(item => item && item.type === "blob" && isScreenshotImagePath_(item.path) && Number(item.size || 0) <= 10000000)
+      .map(item => ({ path: item.path, alt: "", readme: false, size: Number(item.size || 0) })) : [];
+    const selectedTree = selectScreenshotCandidate_(treeCandidates);
+    return selectedTree ? buildScreenshotDiscovery_(repo, selectedTree, "repository") : emptyScreenshotDiscovery_("none");
+  } catch (error) {
+    logSafeError_("SCREENSHOT_DISCOVERY_FAILED", error);
+    return emptyScreenshotDiscovery_("error");
+  }
+}
+
+function fetchOptionalText_(url, headers) {
+  const response = UrlFetchApp.fetch(url, { method: "get", headers: headers || {}, muteHttpExceptions: true });
+  const status = response.getResponseCode();
+  if (status === 404) return "";
+  if (status !== 200) throw createPublicError_("SCREENSHOT_DISCOVERY_UNAVAILABLE", "Repository screenshot discovery failed.");
+  return response.getContentText();
+}
+
+function fetchOptionalJson_(url, headers) {
+  const text = fetchOptionalText_(url, headers);
+  if (!text) return null;
+  try { return JSON.parse(text); } catch (error) { throw createPublicError_("INVALID_SCREENSHOT_DISCOVERY_RESPONSE", "Repository screenshot discovery failed."); }
+}
+
+function extractReadmeImageCandidates_(readme, repo) {
+  const candidates = [];
+  const markdownPattern = /!\[([^\]]*)\]\(([^)\s]+)(?:\s+["'][^)]*)?\)/g;
+  const htmlPattern = /<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi;
+  let match;
+  while ((match = markdownPattern.exec(readme)) !== null) addReadmeCandidate_(candidates, match[2], match[1], repo);
+  while ((match = htmlPattern.exec(readme)) !== null) {
+    const tag = match[0];
+    const altMatch = tag.match(/\balt=["']([^"']*)["']/i);
+    addReadmeCandidate_(candidates, match[1], altMatch ? altMatch[1] : "", repo);
+  }
+  return candidates;
+}
+
+function addReadmeCandidate_(candidates, source, alt, repo) {
+  const raw = String(source || "").trim().replace(/^<|>$/g, "");
+  if (!raw || /^(data:|javascript:)/i.test(raw) || /shields\.io|badge/i.test(raw)) return;
+  let path = raw.split("#")[0].split("?")[0].replace(/^\.\//, "");
+  if (/^https:\/\//i.test(path)) {
+    const rawPrefix = "https://raw.githubusercontent.com/" + String(repo.full_name || "") + "/";
+    if (path.indexOf(rawPrefix) !== 0) return;
+    path = path.slice(rawPrefix.length).split("/").slice(1).join("/");
+  }
+  if (!isScreenshotImagePath_(path)) return;
+  candidates.push({ path: path, alt: String(alt || ""), readme: true, size: 0 });
+}
+
+function selectScreenshotCandidate_(candidates) {
+  return (candidates || []).map(candidate => ({ candidate: candidate, score: scoreScreenshotCandidate_(candidate) }))
+    .filter(item => item.score > 0)
+    .sort((a, b) => b.score - a.score || a.candidate.path.localeCompare(b.candidate.path))
+    .map(item => item.candidate)[0] || null;
+}
+
+function scoreScreenshotCandidate_(candidate) {
+  const path = String(candidate.path || "").toLowerCase();
+  const alt = String(candidate.alt || "").toLowerCase();
+  const text = path + " " + alt;
+  if (!isScreenshotImagePath_(path) || /(social[-_ ]?preview|open[-_ ]?graph|\bog\b|badge|shield|logo|wordmark|avatar|favicon|icon(?:-|_|\d|\.)|banner|sponsor|technology)/.test(text)) return -1000;
+  let score = candidate.readme ? 100 : 0;
+  if (/(^|\/)(screenshots?|captures?|images?|media|docs|public)(\/|$)/.test(path)) score += 50;
+  if (/(dashboard|overview|analytics|report|workspace|interface|storefront|homepage|home-page|upload|pricing|subscription|app-ui|production-state)/.test(text)) score += 70;
+  if (/(desktop|wide)/.test(text)) score += 15;
+  if (/(mobile|tablet|login|sign-in)/.test(text)) score -= 10;
+  if (Number(candidate.size || 0) >= 20000) score += 10;
+  return score;
+}
+
+function isScreenshotImagePath_(path) {
+  return /\.(png|jpe?g|webp)$/i.test(String(path || "").split("?")[0]);
+}
+
+function buildScreenshotDiscovery_(repo, candidate, source) {
+  const path = String(candidate.path || "").replace(/^\/+/, "");
+  return {
+    url: "https://raw.githubusercontent.com/" + encodePathForUrl_(repo.full_name) + "/" + encodePathForUrl_(repo.default_branch) + "/" + encodePathForUrl_(path),
+    path: path,
+    alt: buildScreenshotAlt_(repo.name, path, candidate.alt),
+    source: source,
+    status: "found"
+  };
+}
+
+function buildScreenshotAlt_(name, path, suppliedAlt) {
+  const title = String(name || "Project").replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
+  const text = (String(path || "") + " " + String(suppliedAlt || "")).toLowerCase();
+  if (/sales.*dashboard|dashboard.*sales/.test(text)) return title + " analytics overview";
+  if (/dashboard|analytics|report/.test(text)) return title + " dashboard";
+  if (/storefront|shop|commerce/.test(text)) return title + " storefront interface";
+  if (/upload/.test(text)) return title + " data upload interface";
+  if (/pricing|subscription/.test(text)) return title + " subscription interface";
+  if (/homepage|home-page|home\./.test(text)) return title + " homepage";
+  if (/login|sign-in/.test(text)) return title + " sign-in interface";
+  return title + " project interface";
+}
+
+function encodePathForUrl_(value) {
+  return String(value || "").split("/").map(part => encodeURIComponent(part)).join("/");
+}
+
+function emptyScreenshotDiscovery_(status) {
+  return { url: "", path: "", alt: "", source: "", status: status || "none" };
 }
 
 function validateRepositorySnapshot_(repositories) {
@@ -219,7 +369,7 @@ function mapMergedProjectDto_(repo, curation) {
     featured: normalizeBoolean_(curation.featured),
     displayOrder: normalizeDisplayOrder_(curation.display_order),
     image: resolveProjectThumbnail_(repo, curation),
-    imageAlt: cleanPublicText_((curation.custom_title || repo.name) + " project preview", 180),
+    imageAlt: cleanPublicText_(curation.portfolio_image ? (curation.custom_title || repo.name) + " project preview" : (repo.screenshot_alt || (curation.custom_title || repo.name) + " project preview"), 180),
     kpiHighlight: cleanPublicText_(curation.kpi_highlight, 300),
     status: cleanPublicText_(curation.portfolio_status || (repo.archived ? "archived" : "active"), 50),
     lastUpdated: repo.updated_at
@@ -229,6 +379,8 @@ function mapMergedProjectDto_(repo, curation) {
 function resolveProjectThumbnail_(repo, curation) {
   const curatedImage = safeHttpsUrl_(curation.portfolio_image);
   if (curatedImage) return curatedImage;
+  const discoveredImage = safeHttpsUrl_(repo.screenshot_url);
+  if (discoveredImage) return discoveredImage;
   if (!/^[^/]+\/[^/]+$/.test(String(repo.repo_key || ""))) return "";
   return "https://opengraph.githubassets.com/portfolio/" + repo.repo_key;
 }
@@ -319,6 +471,7 @@ function ensureGitHubSyncSheets_() {
 function ensureSheetWithHeaders_(ss, name, headers) {
   let sheet = ss.getSheetByName(name);
   if (!sheet) sheet = ss.insertSheet(name);
+  if (typeof sheet.getMaxColumns === "function" && sheet.getMaxColumns() < headers.length) sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
   const existing = sheet.getRange(1, 1, 1, headers.length).getValues()[0];
   if (existing.some((value, index) => String(value || "").trim() && String(value).trim() !== headers[index])) {
     throw createPublicError_("SHEET_SCHEMA_CONFLICT", "A synchronization sheet has an incompatible schema.");

@@ -63,6 +63,11 @@ function repository(overrides = {}) {
         disabled: false,
         updated_at: '2026-08-08T00:00:00.000Z',
         readme_url: 'https://github.com/itsmebillah/example#readme',
+        screenshot_url: '',
+        screenshot_path: '',
+        screenshot_alt: '',
+        screenshot_source: '',
+        screenshot_discovery_status: 'none',
         fetched_at: '2026-08-08T00:00:00.000Z',
         sync_state: 'active',
         last_seen_at: '2026-08-08T00:00:00.000Z',
@@ -209,6 +214,58 @@ test('missing demo and description use a GitHub-hosted project thumbnail', () =>
     assert.equal(result.demoUrl, '');
     assert.equal(result.image, 'https://opengraph.githubassets.com/portfolio/itsmebillah/example');
     assert.equal(result.imageAlt, 'example project preview');
+});
+
+test('screenshot discovery prefers representative README UI over social cards', () => {
+    const { context } = createContext();
+    context.__repo = { full_name: 'itsmebillah/Sales-Dashboard', default_branch: 'main', name: 'Sales-Dashboard' };
+    context.__readme = `![Social](assets/social-preview/card.png)\n![Executive dashboard overview](assets/screenshots/sales-dashboard-overview.png)`;
+    const candidates = evaluate(context, 'extractReadmeImageCandidates_(__readme, __repo)');
+    context.__selected = evaluate(context, 'selectScreenshotCandidate_(__candidates = extractReadmeImageCandidates_(__readme, __repo))');
+    const result = evaluate(context, 'buildScreenshotDiscovery_(__repo, __selected, "readme")');
+    assert.equal(candidates.length, 2);
+    assert.equal(result.path, 'assets/screenshots/sales-dashboard-overview.png');
+    assert.equal(result.alt, 'Sales Dashboard analytics overview');
+});
+
+test('manual image overrides discovered Wealth OS screenshot', () => {
+    const { context } = createContext();
+    context.__repo = repository({ screenshot_url: 'https://raw.githubusercontent.com/itsmebillah/Wealth-OS/main/assets/screenshots/wealth-os-login.png', screenshot_alt: 'Wealth OS sign-in interface' });
+    context.__curation = { portfolio_image: 'https://example.com/wealth-dashboard.png', custom_title: 'Wealth OS' };
+    const result = evaluate(context, 'mapMergedProjectDto_(__repo, __curation)');
+    assert.equal(result.image, 'https://example.com/wealth-dashboard.png');
+    assert.equal(result.imageAlt, 'Wealth OS project preview');
+});
+
+test('selector recognizes SubPro, website, and AI interface screenshots', () => {
+    const { context } = createContext();
+    context.__cases = [
+        { name: 'SubPro', path: 'assets/screenshots/subpro-pricing.png', expected: 'SubPro subscription interface' },
+        { name: 'Reyon-Online', path: 'assets/screenshots/reyon-storefront-desktop.png', expected: 'Reyon Online storefront interface' },
+        { name: 'InsightFlowAi', path: 'assets/screenshots/insightflow-upload.png', expected: 'InsightFlowAi data upload interface' }
+    ];
+    for (let index = 0; index < 3; index++) {
+        context.__index = index;
+        assert.ok(evaluate(context, 'scoreScreenshotCandidate_({path:__cases[__index].path,alt:"",readme:true,size:50000})') > 0);
+        assert.equal(evaluate(context, 'buildScreenshotAlt_(__cases[__index].name, __cases[__index].path, "")'), context.__cases[index].expected);
+    }
+});
+
+test('repository without a suitable screenshot uses GitHub OG fallback', () => {
+    const { context } = createContext();
+    context.__repo = repository({ screenshot_url: '', screenshot_discovery_status: 'none' });
+    context.__curation = {};
+    const result = evaluate(context, 'mapMergedProjectDto_(__repo, __curation)');
+    assert.equal(result.image, 'https://opengraph.githubassets.com/portfolio/itsmebillah/example');
+});
+
+test('transient screenshot discovery failure preserves the last good image', () => {
+    const { context } = createContext();
+    context.__previous = [repository({ screenshot_url: 'https://raw.githubusercontent.com/itsmebillah/example/main/assets/screenshots/dashboard.png', screenshot_path: 'assets/screenshots/dashboard.png', screenshot_alt: 'Example dashboard', screenshot_source: 'readme', screenshot_discovery_status: 'found' })];
+    context.__current = [repository({ screenshot_discovery_status: 'error' })];
+    const result = evaluate(context, `reconcileRepositorySnapshot_(__previous, __current, new Date('2026-08-08T00:00:00Z'))`);
+    assert.equal(result[0].screenshot_url, context.__previous[0].screenshot_url);
+    assert.equal(result[0].screenshot_discovery_status, 'preserved');
 });
 
 test('legacy Projects sheet is not read by the production project builder', () => {
