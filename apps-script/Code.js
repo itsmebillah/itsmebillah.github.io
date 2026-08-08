@@ -23,7 +23,10 @@ const MASTER_CONFIG = {
     githubSnapshot: "GitHub_Project_Snapshot",
     projectCuration: "Portfolio_Project_Curation",
     manualProjects: "Manual_Portfolio_Projects",
-    syncStatus: "GitHub_Sync_Status"
+    syncStatus: "GitHub_Sync_Status",
+    media: "Portfolio_Media",
+    seo: "Portfolio_SEO",
+    adminAudit: "Admin_Activity_Log"
   },
   publicCacheKey: "portfolio_public_dto_v1_contract12",
   publicCacheSeconds: 600,
@@ -81,6 +84,11 @@ function doPost(e) {
       payload = JSON.parse(e.postData.contents);
     } else {
       payload = e.parameter;
+    }
+
+    if (payload.action === "admin") {
+      const request = typeof payload.request === "string" ? JSON.parse(payload.request) : payload.request;
+      return buildSecureJsonResponse(adminCall(request));
     }
 
     if (payload.action === "chat" && payload.message) {
@@ -253,9 +261,11 @@ function cleanAiContextField_(value) {
 function mapPublicTable_(ss, sheetName, fields, options) {
   const config = options || {};
   return readSheetObjects_(ss, sheetName).filter(item => {
+    if (Object.prototype.hasOwnProperty.call(item, "Active") && !normalizeBoolean_(item.Active)) return false;
     if (!config.publishedOnly) return true;
     return normalizeBoolean_(item.Published);
-  }).map(item => pickPublicFields_(item, fields));
+  }).sort((a, b) => Number(a.DisplayOrder || a.Order || 999) - Number(b.DisplayOrder || b.Order || 999))
+    .map(item => pickPublicFields_(item, fields));
 }
 
 // ৩. জেনারেল টেবিল শিট পার্সার (Skills, Projects, etc.)
@@ -290,7 +300,9 @@ function parseTableSheet(ss, sheetName, checkPublished = false) {
 
 // ৪. গুগল ডক্স ইন্টিগ্রেশনসহ অ্যাডভান্সড ব্লগ এক্সট্র্যাক্টর
 function extractDynamicBlogsWithDocs(ss) {
-  const rawBlogs = readSheetObjects_(ss, MASTER_CONFIG.tabs.blogs).filter(blog => normalizeBoolean_(blog.Published));
+  const rawBlogs = readSheetObjects_(ss, MASTER_CONFIG.tabs.blogs)
+    .filter(blog => normalizeBoolean_(blog.Published) && (!Object.prototype.hasOwnProperty.call(blog, "Active") || normalizeBoolean_(blog.Active)))
+    .sort((a, b) => Number(a.DisplayOrder || 999) - Number(b.DisplayOrder || 999));
   return rawBlogs.map(blog => {
     let content = blog.Content || "";
     const docId = blog.DocID || blog.GoogleDocID || "";
