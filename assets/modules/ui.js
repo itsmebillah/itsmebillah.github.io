@@ -101,3 +101,44 @@
             });
         }
 
+        function initializePublicTheme() {
+            const storageKey = 'portfolio-public-theme';
+            const root = document.documentElement;
+            const controls = [...document.querySelectorAll('[data-public-theme-select]')];
+            const media = window.matchMedia('(prefers-color-scheme: dark)');
+            const allowed = new Set(['system', 'light', 'dark']);
+
+            const getPreference = () => {
+                const current = root.dataset.themePreference;
+                return allowed.has(current) ? current : 'system';
+            };
+
+            const updateBrowserChrome = (preference) => {
+                const resolved = preference === 'system' ? (media.matches ? 'dark' : 'light') : preference;
+                const meta = document.querySelector('meta[name="theme-color"]');
+                if (meta) meta.content = resolved === 'dark' ? '#0B1120' : '#F6F8F7';
+            };
+
+            const applyPreference = (preference, persist = true) => {
+                const next = allowed.has(preference) ? preference : 'system';
+                root.dataset.themePreference = next;
+                if (next === 'system') delete root.dataset.theme;
+                else root.dataset.theme = next;
+                controls.forEach(control => { control.value = next; });
+                updateBrowserChrome(next);
+                if (persist) {
+                    try { localStorage.setItem(storageKey, next); } catch (_) {}
+                }
+            };
+
+            controls.forEach(control => {
+                control.addEventListener('change', event => applyPreference(event.target.value));
+            });
+            const onSystemThemeChange = () => {
+                if (getPreference() === 'system') updateBrowserChrome('system');
+            };
+            if (typeof media.addEventListener === 'function') media.addEventListener('change', onSystemThemeChange);
+            else if (typeof media.addListener === 'function') media.addListener(onSystemThemeChange);
+            applyPreference(getPreference(), false);
+        }
+

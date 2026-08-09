@@ -3,6 +3,7 @@
                 link.href = DASHBOARD_URL;
                 link.rel = 'nofollow';
             });
+            initializePublicTheme();
             if (typeof applySEOConfig === 'function') applySEOConfig();
             if(typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
             

@@ -2,7 +2,7 @@
         <div class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
                 <div class="text-2xl font-bold gradient-text" id="navName"></div>
-                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <div class="hidden lg:flex items-center gap-4 text-xs font-medium">
                     <a href="#home" class="text-gray-300 hover:text-white transition magnetic-btn">Home</a>
                     <a href="#about" class="text-gray-300 hover:text-white transition magnetic-btn">About</a>
                     <a href="#skills" class="text-gray-300 hover:text-white transition magnetic-btn">Skills</a>
@@ -12,8 +12,16 @@
                     <a href="#experience" class="text-gray-300 hover:text-white transition magnetic-btn">Experience</a>
                     <a href="#contact" class="text-gray-300 hover:text-white transition magnetic-btn">Contact</a>
                     <a href="#" data-dashboard-login class="text-gray-500 hover:text-emerald-400 transition magnetic-btn">Login</a>
+                    <label class="theme-switcher" aria-label="Portfolio color theme">
+                        <span class="sr-only">Theme</span>
+                        <select data-public-theme-select aria-label="Portfolio color theme">
+                            <option value="system">System</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </label>
                 </div>
-                <button id="mobileNavToggle" class="mobile-nav-toggle md:hidden w-11 h-11 rounded-xl glass text-gray-200 flex items-center justify-center border border-white/10" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileNavPanel">
+                <button id="mobileNavToggle" class="mobile-nav-toggle lg:hidden w-11 h-11 rounded-xl glass text-gray-200 flex items-center justify-center border border-white/10" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileNavPanel">
                     <span>
                         <span class="bar"></span>
                         <span class="bar"></span>
@@ -21,7 +29,7 @@
                     </span>
                 </button>
             </div>
-            <div id="mobileNavPanel" class="mobile-nav-panel md:hidden">
+            <div id="mobileNavPanel" class="mobile-nav-panel lg:hidden">
                 <div class="mt-4 grid gap-2 rounded-2xl bg-black/30 border border-white/10 p-3 backdrop-blur-xl">
                     <a href="#home" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Home</a>
                     <a href="#about" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">About</a>
@@ -32,6 +40,14 @@
                     <a href="#experience" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Experience</a>
                     <a href="#contact" class="mobile-nav-link text-gray-300 hover:text-white hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Contact</a>
                     <a href="#" data-dashboard-login class="mobile-nav-link text-gray-500 hover:text-emerald-400 hover:bg-white/5 transition rounded-xl px-4 py-3 text-sm font-medium">Login</a>
+                    <label class="theme-switcher mobile-theme-switcher">
+                        <span>Theme</span>
+                        <select data-public-theme-select aria-label="Portfolio color theme">
+                            <option value="system">System</option>
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </label>
                 </div>
             </div>
         </div>
