@@ -2,6 +2,15 @@ const { test, expect } = require('@playwright/test');
 
 const baseUrl = 'http://127.0.0.1:4173/';
 
+async function holdPortfolioApi(page) {
+    await page.addInitScript(() => {
+        const nativeFetch = window.fetch.bind(window);
+        window.fetch = (input, init) => String(input).includes('script.google.com')
+            ? new Promise(() => {})
+            : nativeFetch(input, init);
+    });
+}
+
 async function waitForPortfolio(page) {
     await page.waitForFunction(() => window.__portfolioComponentsLoaded === true, null, { timeout: 15000 });
     await expect(page.locator('body')).not.toHaveClass(/portfolio-loading/, { timeout: 30000 });
@@ -30,6 +39,19 @@ for (const theme of ['light', 'dark']) {
         await page.screenshot({ path: `test-results/data-intelligence-desktop-${theme}.png`, fullPage: false });
     });
 }
+
+test('analytics loader remains readable on mobile', async ({ page }) => {
+    await holdPortfolioApi(page);
+    await page.addInitScript(() => localStorage.setItem('portfolio-public-theme', 'dark'));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${baseUrl}?preview=data-intelligence`);
+    await page.waitForFunction(() => window.__portfolioComponentsLoaded === true);
+
+    await expect(page.locator('.intelligence-loader-stage')).toBeVisible();
+    await expect(page.locator('.pipeline-core')).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: 'test-results/intelligence-loader-mobile-dark.png', fullPage: false });
+});
 
 test('data intelligence draft reduces density on mobile', async ({ page }) => {
     const errors = [];
@@ -73,3 +95,20 @@ test('added text and icons change color when the theme changes', async ({ page }
     expect(lightText).not.toBe(darkText);
     expect(lightIcon).not.toBe(darkIcon);
 });
+
+for (const theme of ['light', 'dark']) {
+    test(`analytics loader renders in ${theme} mode without changing the legacy loader`, async ({ page }) => {
+        await holdPortfolioApi(page);
+        await page.addInitScript(value => localStorage.setItem('portfolio-public-theme', value), theme);
+        await page.setViewportSize({ width: 1440, height: 1000 });
+        await page.goto(`${baseUrl}?preview=data-intelligence`);
+        await page.waitForFunction(() => window.__portfolioComponentsLoaded === true);
+
+        await expect(page.locator('#loader')).toBeVisible();
+        await expect(page.locator('.legacy-loader-stage')).toBeHidden();
+        await expect(page.locator('.intelligence-loader-stage')).toBeVisible();
+        await expect(page.locator('#loaderCorePercent')).toHaveText(/\d+%/);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        await page.screenshot({ path: `test-results/intelligence-loader-${theme}.png`, fullPage: false });
+    });
+}

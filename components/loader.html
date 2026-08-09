@@ -1,6 +1,6 @@
     <div id="loader" class="fixed inset-0 flex flex-col justify-center items-center z-50 transition-opacity duration-500" aria-live="polite" aria-busy="true">
         <div class="portfolio-loader-shell">
-            <div class="portfolio-loader-stage" aria-hidden="true">
+            <div class="portfolio-loader-stage legacy-loader-stage" aria-hidden="true">
                 <div class="loader-ground"></div>
                 <div class="stone-marker"><div class="stone-base"></div></div>
                 <div class="cave-entrance"></div>
@@ -25,6 +25,35 @@
                 <div class="power-plug left"></div>
                 <div class="power-plug right"></div>
                 <div class="spark-burst"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <div class="intelligence-loader-stage" aria-hidden="true">
+                <div class="intelligence-loader-grid"></div>
+                <div class="intelligence-status"><span></span> DATA SYSTEM ONLINE</div>
+                <div class="intelligence-pipeline">
+                    <div class="pipeline-source pipeline-source-left">
+                        <span class="pipeline-label">SOURCES</span>
+                        <div class="pipeline-node"><b>SQL</b><small>QUERY</small></div>
+                        <div class="pipeline-node"><b>Sheets</b><small>INPUT</small></div>
+                    </div>
+                    <div class="pipeline-rail pipeline-rail-left"><i></i></div>
+                    <div class="pipeline-core">
+                        <div class="pipeline-core-ring"></div>
+                        <div class="pipeline-core-content">
+                            <span>PROCESSING</span>
+                            <div class="pipeline-bars"><i></i><i></i><i></i><i></i><i></i></div>
+                            <strong id="loaderCorePercent">0%</strong>
+                        </div>
+                    </div>
+                    <div class="pipeline-rail pipeline-rail-right"><i></i></div>
+                    <div class="pipeline-source pipeline-source-right">
+                        <span class="pipeline-label">OUTPUTS</span>
+                        <div class="pipeline-node"><b>BI</b><small>INSIGHT</small></div>
+                        <div class="pipeline-node"><b>Auto</b><small>ACTION</small></div>
+                    </div>
+                </div>
+                <div class="intelligence-code-line">
+                    <span>RAW DATA</span><i></i><span>CLEAN</span><i></i><span>MODEL</span><i></i><span>DECISION</span>
+                </div>
             </div>
             <div class="loader-title" id="loaderTitle">Connecting the pieces...</div>
             <div class="loader-subtitle" id="loaderSubtitle">Please wait a moment, something awesome is loading.</div>

@@ -5,6 +5,7 @@ const test = require('node:test');
 const script = fs.readFileSync('assets/js/data-intelligence-background.js', 'utf8');
 const styles = fs.readFileSync('assets/css/main.css', 'utf8');
 const component = fs.readFileSync('components/particles.html', 'utf8');
+const loader = fs.readFileSync('components/loader.html', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 
 test('data intelligence layer is limited to the explicit draft query', () => {
@@ -28,6 +29,17 @@ test('background defines independent light and dark color tokens', () => {
     assert.match(styles, /\.data-intelligence-background \{[\s\S]*--data-text: rgba\(27, 73, 47/);
     assert.match(styles, /:root\[data-theme="dark"\] \.data-intelligence-background \{[\s\S]*--data-text: rgba\(220, 231, 242/);
     assert.match(styles, /\.data-tool-icon \{[\s\S]*stroke: var\(--data-accent\)/);
+});
+
+test('draft loader presents an analytics pipeline while preserving the legacy loader', () => {
+    assert.match(loader, /legacy-loader-stage/);
+    assert.match(loader, /intelligence-loader-stage/);
+    assert.match(loader, /SOURCES/);
+    assert.match(loader, /PROCESSING/);
+    assert.match(loader, /OUTPUTS/);
+    assert.match(loader, /RAW DATA[\s\S]*CLEAN[\s\S]*MODEL[\s\S]*DECISION/);
+    assert.match(styles, /\.data-intelligence-preview \.legacy-loader-stage \{ display: none; \}/);
+    assert.match(styles, /\.data-intelligence-preview \.intelligence-loader-stage/);
 });
 
 test('visual distribution is deterministic and bounded', () => {

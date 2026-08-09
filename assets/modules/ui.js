@@ -30,6 +30,8 @@
             loader.style.setProperty('--cable-shift-neg', `${cableShift * -1}px`);
             const percentText = document.getElementById('loaderPercent');
             if (percentText) percentText.textContent = `${Math.round(progress * 100)}%`;
+            const corePercent = document.getElementById('loaderCorePercent');
+            if (corePercent) corePercent.textContent = `${Math.round(progress * 100)}%`;
 
             const stepState = {
                 sheets: portfolioLoaderTasks.has('sheets'),
