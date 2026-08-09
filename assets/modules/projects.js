@@ -24,7 +24,7 @@
                 const image = sanitizeUrl(projectValue(project, 'image', 'Image'), { image: true, allowImageData: true });
                 const alt = escapeHtml(projectValue(project, 'imageAlt') || `${projectValue(project, 'title', 'Name')} project preview`);
                 if (!image) return `<div class="${classes} project-image-fallback border border-white/10 bg-white/5 flex items-center justify-center text-gray-500 text-xs">Project preview unavailable</div>`;
-                return `<div class="relative"><img src="${escapeHtml(image)}" loading="lazy" decoding="async" width="${width}" height="${height}" class="${classes}" alt="${alt}" data-project-image><div class="${classes} project-image-fallback hidden border border-white/10 bg-white/5 items-center justify-center text-gray-500 text-xs" aria-hidden="true">Project preview unavailable</div></div>`;
+                return `<div class="relative"><img loading="lazy" decoding="async" width="${width}" height="${height}" class="${classes}" alt="${alt}" data-project-image data-project-src="${escapeHtml(image)}"><div class="${classes} project-image-fallback hidden border border-white/10 bg-white/5 items-center justify-center text-gray-500 text-xs" aria-hidden="true">Project preview unavailable</div></div>`;
             };
 
             if(featContainer) {
@@ -83,7 +83,19 @@
             }
 
             document.querySelectorAll('[data-project-image]').forEach(image => {
-                image.addEventListener('error', () => {
+                const source = image.dataset.projectSrc;
+                loadImageWithRetry(image, source, {
+                    retries: 2,
+                    onLoad: () => {
+                        const fallback = image.nextElementSibling;
+                        image.classList.remove('hidden');
+                        if (fallback) {
+                            fallback.classList.add('hidden');
+                            fallback.classList.remove('flex');
+                            fallback.setAttribute('aria-hidden', 'true');
+                        }
+                    },
+                    onFailure: () => {
                     const fallback = image.nextElementSibling;
                     image.classList.add('hidden');
                     if (fallback) {
@@ -91,6 +103,7 @@
                         fallback.classList.add('flex');
                         fallback.setAttribute('aria-hidden', 'false');
                     }
-                }, { once: true });
+                    }
+                });
             });
         }

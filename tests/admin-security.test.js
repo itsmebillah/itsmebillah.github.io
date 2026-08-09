@@ -149,7 +149,8 @@ test('profile image remains manual, responsive, eager, and failure-safe', () => 
   const css = fs.readFileSync(path.join(root, 'assets', 'css', 'main.css'), 'utf8');
   assert.match(hero, /readObjProp\(p, 'ProfilePic'\)/);
   assert.doesNotMatch(hero, /ProfilePic[^\n]*(github|opengraph)/i);
-  assert.match(hero, /profileImage\.onerror/);
+  assert.match(hero, /loadImageWithRetry\(profileImage, manualImage/);
+  assert.match(hero, /onFailure: showProfileFallback/);
   assert.match(hero, /profileImage\.loading = 'eager'/);
   assert.match(heroMarkup, /profileImageFallback/);
   assert.match(css, /\.profile-image-frame/);

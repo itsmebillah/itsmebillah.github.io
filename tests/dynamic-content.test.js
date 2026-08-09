@@ -47,6 +47,17 @@ test('FAQ, footer, runtime SEO, and empty image fallbacks are data-driven', () =
   assert.doesNotMatch(read('assets/modules/certificates.js'), /images\.unsplash\.com/);
 });
 
+test('profile and project images retry transient failures before showing fallback', () => {
+  const utils = read('assets/js/utils.js');
+  const projects = read('assets/modules/projects.js');
+  assert.match(utils, /function loadImageWithRetry/);
+  assert.match(utils, /attempt < retries/);
+  assert.match(hero, /loadImageWithRetry\(profileImage, manualImage/);
+  assert.match(projects, /data-project-src=/);
+  assert.doesNotMatch(projects, /<img src="\$\{escapeHtml\(image\)\}/);
+  assert.match(projects, /loadImageWithRetry\(image, source/);
+});
+
 test('GitHub-backed and manual projects remain merged exclusively on the server', () => {
   const sync = read('apps-script/GitHubSync.js');
   assert.match(sync, /githubProjects\.concat\(manualProjects\)/);

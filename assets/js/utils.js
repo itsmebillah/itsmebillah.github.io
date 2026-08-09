@@ -187,3 +187,27 @@
             if (!Number.isFinite(number)) return 0;
             return Math.max(0, Math.min(100, number));
         }
+
+        function loadImageWithRetry(image, source, options = {}) {
+            const retries = Number.isInteger(options.retries) ? options.retries : 2;
+            const delay = Number(options.delay) || 350;
+            let attempt = 0;
+            let retryTimer = null;
+
+            const load = () => {
+                image.src = source;
+            };
+            image.onload = () => {
+                if (retryTimer) clearTimeout(retryTimer);
+                if (typeof options.onLoad === 'function') options.onLoad();
+            };
+            image.onerror = () => {
+                if (attempt < retries) {
+                    attempt += 1;
+                    retryTimer = setTimeout(load, delay * attempt);
+                    return;
+                }
+                if (typeof options.onFailure === 'function') options.onFailure();
+            };
+            load();
+        }

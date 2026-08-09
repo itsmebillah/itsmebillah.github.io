@@ -2,7 +2,8 @@
             const placeholders = Array.from(document.querySelectorAll('[data-component]'));
             const componentResponses = await Promise.all(placeholders.map(async placeholder => {
                 const componentPath = placeholder.getAttribute('data-component');
-                const response = await fetch(componentPath);
+                const version = document.documentElement.dataset.build || '';
+                const response = await fetch(version ? `${componentPath}?v=${encodeURIComponent(version)}` : componentPath);
                 if (!response.ok) throw new Error(`Component load failed: ${componentPath}`);
 
                 return {

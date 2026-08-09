@@ -26,7 +26,12 @@
             const profileImage = document.getElementById('profileImage');
             const profileFallback = document.getElementById('profileImageFallback');
             const manualImage = sanitizeUrl(pic, { image: true, allowImageData: true });
-            profileImage.onerror = () => {
+            if (profileFallback) profileFallback.querySelector('span').textContent = String(name || 'Portfolio').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+            profileImage.alt = `Portrait of ${name}`;
+            profileImage.decoding = 'async';
+            profileImage.fetchPriority = 'high';
+            profileImage.loading = 'eager';
+            const showProfileFallback = () => {
                 profileImage.classList.add('hidden');
                 if (profileFallback) {
                     profileFallback.classList.remove('hidden');
@@ -34,21 +39,18 @@
                     profileFallback.setAttribute('aria-hidden', 'false');
                 }
             };
-            profileImage.onload = () => {
-                profileImage.classList.remove('hidden');
-                if (profileFallback) {
-                    profileFallback.classList.add('hidden');
-                    profileFallback.classList.remove('flex');
-                    profileFallback.setAttribute('aria-hidden', 'true');
-                }
-            };
-            if (profileFallback) profileFallback.querySelector('span').textContent = String(name || 'Portfolio').split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
-            if (manualImage) profileImage.src = manualImage;
-            else profileImage.onerror();
-            profileImage.alt = `Portrait of ${name}`;
-            profileImage.decoding = 'async';
-            profileImage.fetchPriority = 'high';
-            profileImage.loading = 'eager';
+            if (manualImage) loadImageWithRetry(profileImage, manualImage, {
+                retries: 2,
+                onLoad: () => {
+                    profileImage.classList.remove('hidden');
+                    if (profileFallback) {
+                        profileFallback.classList.add('hidden');
+                        profileFallback.classList.remove('flex');
+                        profileFallback.setAttribute('aria-hidden', 'true');
+                    }
+                },
+                onFailure: showProfileFallback
+            }); else showProfileFallback();
 
             const socials = document.getElementById('socialContainer');
             if(socials) {
