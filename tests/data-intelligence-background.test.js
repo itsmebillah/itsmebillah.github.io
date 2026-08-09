@@ -24,6 +24,12 @@ test('background supports mobile density reduction and reduced motion', () => {
     assert.match(styles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.data-visual \{ animation: none;/);
 });
 
+test('background defines independent light and dark color tokens', () => {
+    assert.match(styles, /\.data-intelligence-background \{[\s\S]*--data-text: rgba\(27, 73, 47/);
+    assert.match(styles, /:root\[data-theme="dark"\] \.data-intelligence-background \{[\s\S]*--data-text: rgba\(220, 231, 242/);
+    assert.match(styles, /\.data-tool-icon \{[\s\S]*stroke: var\(--data-accent\)/);
+});
+
 test('visual distribution is deterministic and bounded', () => {
     assert.match(script, /const positions = \[/);
     assert.doesNotMatch(script, /Math\.random/);

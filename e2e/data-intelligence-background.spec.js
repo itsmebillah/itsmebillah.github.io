@@ -52,3 +52,24 @@ test('reduced motion disables ambient animation', async ({ page }) => {
     await waitForPortfolio(page);
     await expect(page.locator('.data-visual').first()).toHaveCSS('animation-name', 'none');
 });
+
+test('added text and icons change color when the theme changes', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('portfolio-public-theme', 'dark'));
+    await page.goto(`${baseUrl}?preview=data-intelligence`);
+    await waitForPortfolio(page);
+
+    const tool = page.locator('.data-visual-tool').first();
+    const icon = tool.locator('.data-tool-icon');
+    const darkText = await tool.evaluate(element => getComputedStyle(element).color);
+    const darkIcon = await icon.evaluate(element => getComputedStyle(element).stroke);
+
+    await page.locator('[data-public-theme-select]').first().selectOption('light');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(tool).toHaveCSS('color', 'rgba(27, 73, 47, 0.38)');
+    await expect(icon).toHaveCSS('stroke', 'rgba(190, 70, 30, 0.4)');
+    const lightText = await tool.evaluate(element => getComputedStyle(element).color);
+    const lightIcon = await icon.evaluate(element => getComputedStyle(element).stroke);
+
+    expect(lightText).not.toBe(darkText);
+    expect(lightIcon).not.toBe(darkIcon);
+});
