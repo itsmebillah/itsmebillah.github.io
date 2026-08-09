@@ -7,9 +7,9 @@ const component = fs.readFileSync('components/experience.html', 'utf8');
 const script = fs.readFileSync('assets/modules/experience.js', 'utf8');
 const styles = fs.readFileSync('assets/css/main.css', 'utf8');
 
-test('career tree remains isolated behind its preview query', () => {
-    assert.match(index, /get\('preview'\) === 'career-tree'/);
-    assert.match(index, /classList\.add\('career-tree-preview'\)/);
+test('career tree is enabled on the normal portfolio', () => {
+    assert.match(index, /class="data-intelligence-preview career-tree-preview"/);
+    assert.doesNotMatch(index, /get\('preview'\) === 'career-tree'/);
     assert.match(styles, /\.career-tree-preview \.timeline-container::before/);
 });
 

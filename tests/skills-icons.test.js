@@ -18,5 +18,5 @@ test('technical skills use supported local icons', () => {
 test('rejected skills draft copy is absent and component cache is refreshed', () => {
     assert.doesNotMatch(component, /Tools and disciplines I use/);
     assert.doesNotMatch(component, /CAPABILITY MATRIX/);
-    assert.match(index, /data-build="20260809\.17"/);
+    assert.match(index, /data-build="20260810\.24"/);
 });

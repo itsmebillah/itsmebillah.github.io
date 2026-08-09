@@ -28,9 +28,10 @@ async function loadTree(page, path) {
     }
 }
 
-test('normal timeline remains unchanged', async ({ page }) => {
+test('career tree is active on the normal portfolio without formula ground', async ({ page }) => {
     await loadTree(page, '#experience');
-    await expect(page.locator('html')).not.toHaveClass(/career-tree-preview/);
+    await expect(page.locator('html')).toHaveClass(/career-tree-preview/);
+    await expect(page.locator('.career-tree-art')).toBeVisible();
     await expect(page.locator('.career-data-ground')).toHaveCount(0);
 });
 

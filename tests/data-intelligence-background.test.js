@@ -10,7 +10,7 @@ const index = fs.readFileSync('index.html', 'utf8');
 
 test('approved data intelligence layer is enabled on the normal portfolio', () => {
     assert.doesNotMatch(script, /PREVIEW_PARAM|PREVIEW_VALUE/);
-    assert.match(index, /class="data-intelligence-preview"/);
+    assert.match(index, /class="[^"]*data-intelligence-preview[^"]*"/);
     assert.match(styles, /\.data-intelligence-preview \.data-intelligence-background \{ display: block; \}/);
 });
 
