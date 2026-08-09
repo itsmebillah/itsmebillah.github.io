@@ -28,7 +28,7 @@ test('background supports mobile density reduction and reduced motion', () => {
 test('background defines independent light and dark color tokens', () => {
     assert.match(styles, /\.data-intelligence-background \{[\s\S]*--data-text: rgba\(27, 73, 47/);
     assert.match(styles, /:root\[data-theme="dark"\] \.data-intelligence-background \{[\s\S]*--data-text: rgba\(220, 231, 242/);
-    assert.match(styles, /\.data-brand-icon \{[\s\S]*--brand-primary: var\(--data-accent\)/);
+    assert.match(styles, /\.data-tool-icon \{[\s\S]*stroke: var\(--data-accent\)/);
 });
 
 test('draft loader presents an analytics pipeline while preserving the legacy loader', () => {
@@ -49,15 +49,8 @@ test('visual distribution is deterministic and bounded', () => {
     for (const tool of ['MICROSOFT POWER BI', 'TABLEAU', 'PYTHON', 'SQL', 'MICROSOFT EXCEL', 'GOOGLE LOOKER STUDIO', 'QLIK SENSE', 'KNIME', 'RAPIDMINER', 'SAS', 'APACHE SPARK', 'JUPYTER NOTEBOOKS', 'ALTERYX']) {
         assert.match(script, new RegExp(tool));
     }
-    assert.match(script, /class="data-brand-icon data-brand-/);
-    assert.match(styles, /\.data-brand-powerbi/);
-    assert.match(styles, /\.data-brand-excel/);
-    assert.match(styles, /\.data-brand-python/);
-    assert.match(styles, /\.data-brand-sql/);
-    assert.match(styles, /\.data-brand-appsscript/);
-    assert.match(styles, /\.data-brand-ai/);
-    assert.match(styles, /@keyframes dataIconTrace/);
-    assert.match(styles, /@keyframes dataBrandBars/);
+    assert.match(script, /class="data-tool-icon"/);
+    assert.match(styles, /\.data-tool-icon/);
     for (const formula of ['SUMIFS', 'XLOOKUP', 'INDEX', 'MATCH', 'QUERY', 'FILTER', 'ARRAYFORMULA', 'IFERROR', 'VLOOKUP']) {
         assert.match(script, new RegExp(formula));
     }

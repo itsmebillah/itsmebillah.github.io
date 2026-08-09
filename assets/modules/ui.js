@@ -61,13 +61,6 @@
 
             setTimeout(() => {
                 loader.style.opacity = '0';
-                if (document.documentElement.classList.contains('data-intelligence-preview')) {
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                        document.body.classList.remove('portfolio-loading');
-                    }, 250);
-                    return;
-                }
                 document.body.classList.remove('portfolio-loading');
                 setTimeout(() => loader.style.display = 'none', 500);
             }, 700);

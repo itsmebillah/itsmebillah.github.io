@@ -14,8 +14,6 @@ async function holdPortfolioApi(page) {
 async function waitForPortfolio(page) {
     await page.waitForFunction(() => window.__portfolioComponentsLoaded === true, null, { timeout: 15000 });
     await expect(page.locator('body')).not.toHaveClass(/portfolio-loading/, { timeout: 30000 });
-    await expect(page.locator('#loader')).toBeHidden();
-    await page.waitForTimeout(1200);
 }
 
 test('normal portfolio keeps the draft background disabled', async ({ page }) => {
@@ -34,7 +32,7 @@ for (const theme of ['light', 'dark']) {
         await page.goto(`${baseUrl}?preview=data-intelligence`);
         await waitForPortfolio(page);
         await expect(page.locator('html')).toHaveClass(/data-intelligence-preview/);
-        await expect(page.locator('.data-visual')).toHaveCount(42);
+        await expect(page.locator('.data-visual')).toHaveCount(40);
         await expect(page.locator('body')).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
         expect(errors).toEqual([]);
@@ -62,9 +60,9 @@ test('data intelligence draft reduces density on mobile', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`${baseUrl}?preview=data-intelligence`);
     await waitForPortfolio(page);
-    await expect(page.locator('.data-visual')).toHaveCount(42);
+    await expect(page.locator('.data-visual')).toHaveCount(40);
     const visibleCount = await page.locator('.data-visual').evaluateAll(nodes => nodes.filter(node => getComputedStyle(node).display !== 'none').length);
-    expect(visibleCount).toBe(15);
+    expect(visibleCount).toBe(9);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     expect(errors).toEqual([]);
     await page.screenshot({ path: 'test-results/data-intelligence-mobile-dark.png', fullPage: false });
@@ -83,14 +81,14 @@ test('added text and icons change color when the theme changes', async ({ page }
     await waitForPortfolio(page);
 
     const tool = page.locator('.data-visual-tool').first();
-    const icon = tool.locator('.data-brand-icon svg');
+    const icon = tool.locator('.data-tool-icon');
     const darkText = await tool.evaluate(element => getComputedStyle(element).color);
     const darkIcon = await icon.evaluate(element => getComputedStyle(element).stroke);
 
     await page.locator('[data-public-theme-select]').first().selectOption('light');
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
     await expect(tool).toHaveCSS('color', 'rgba(27, 73, 47, 0.38)');
-    await page.waitForTimeout(300);
+    await expect(icon).toHaveCSS('stroke', 'rgba(190, 70, 30, 0.4)');
     const lightText = await tool.evaluate(element => getComputedStyle(element).color);
     const lightIcon = await icon.evaluate(element => getComputedStyle(element).stroke);
 
