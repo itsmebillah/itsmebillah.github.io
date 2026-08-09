@@ -44,6 +44,13 @@ function setupMasterDashboard() {
   return { success: true, initialized: true };
 }
 
+function cleanupDashboardSchema() {
+  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+  return [ADMIN_ENTITIES.media, ADMIN_ENTITIES.seo].map(config =>
+    normalizeLeadingBlankSchemaColumn_(ss.getSheetByName(config.tab), config)
+  );
+}
+
 function adminCall(request) {
   const input = request && typeof request === "object" ? request : {};
   const command = String(input.command || "");
@@ -234,8 +241,11 @@ function listAdminActivity_() { return readSheetObjects_(SpreadsheetApp.openById
 function ensureAdminEntitySchema_(ss, config) {
   let sheet = ss.getSheetByName(config.tab);
   if (!sheet) sheet = ss.insertSheet(config.tab);
+  normalizeLeadingBlankSchemaColumn_(sheet, config);
   const values = sheet.getDataRange().getValues();
-  const headers = values.length ? values[0].map(x => String(x || "").trim()) : [];
+  const headers = values.length && values[0].some(x => String(x || "").trim())
+    ? values[0].map(x => String(x || "").trim())
+    : [];
   const required = [config.id].concat(config.fields).filter((x, i, a) => a.indexOf(x) === i);
   required.forEach(header => {
     if (headers.indexOf(header) >= 0) return;
@@ -250,6 +260,23 @@ function ensureAdminEntitySchema_(ss, config) {
     ids.forEach((row, index) => { if (!row[0]) sheet.getRange(index + 2, idCol).setValue(Utilities.getUuid()); });
   }
   sheet.setFrozenRows(1);
+}
+
+function normalizeLeadingBlankSchemaColumn_(sheet, config) {
+  if (!sheet || sheet.getLastColumn() === 0) return { tab: config.tab, status: "empty" };
+  const required = [config.id].concat(config.fields).filter((x, i, a) => a.indexOf(x) === i);
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getDisplayValues()[0].map(x => String(x || "").trim());
+  const leadingHasData = sheet.getRange(1, 1, Math.max(sheet.getLastRow(), 1), 1).getDisplayValues().some(row => String(row[0] || "").trim());
+  const state = dashboardSchemaMigrationState_(headers, required, leadingHasData);
+  if (state === "shift") sheet.deleteColumn(1);
+  return { tab: config.tab, status: state === "shift" ? "migrated" : "ready" };
+}
+
+function dashboardSchemaMigrationState_(headers, required, leadingHasData) {
+  const matches = values => values.length === required.length && required.every((header, index) => values[index] === header);
+  if (matches(headers)) return "ready";
+  if (!leadingHasData && headers[0] === "" && matches(headers.slice(1))) return "shift";
+  throw new Error("DASHBOARD_SCHEMA_CONFLICT");
 }
 
 function updateHorizontalRecord_(tab, payload, allowed) { const sheet = SpreadsheetApp.openById(MASTER_CONFIG.sheetId).getSheetByName(tab); const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String); const changed = []; allowed.forEach(field => { if (Object.prototype.hasOwnProperty.call(payload, field) && headers.indexOf(field) >= 0) { sheet.getRange(2, headers.indexOf(field) + 1).setValue(adminCellValue_(field, payload[field])); changed.push(field); } }); return changed; }

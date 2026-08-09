@@ -100,6 +100,19 @@ test('bootstrap property is deleted only after verifier persistence succeeds', (
   assert.ok(deleteIndex > setIndex);
 });
 
+test('dashboard schema cleanup shifts only an exact schema behind an empty leading column', () => {
+  const context = {};
+  vm.createContext(context);
+  vm.runInContext(admin, context);
+  const required = ['record_id', 'title', 'active'];
+  assert.equal(context.dashboardSchemaMigrationState_(required, required, false), 'ready');
+  assert.equal(context.dashboardSchemaMigrationState_(['', ...required], required, false), 'shift');
+  assert.throws(() => context.dashboardSchemaMigrationState_(['', ...required], required, true), /DASHBOARD_SCHEMA_CONFLICT/);
+  assert.throws(() => context.dashboardSchemaMigrationState_(['', 'wrong', 'title', 'active'], required, false), /DASHBOARD_SCHEMA_CONFLICT/);
+  assert.match(admin, /function cleanupDashboardSchema\(\)/);
+  assert.match(admin, /normalizeLeadingBlankSchemaColumn_\(sheet, config\)/);
+});
+
 test('private and GitHub-owned boundaries remain explicit', () => {
   assert.match(admin, /private: true/);
   assert.match(admin, /GITHUB_SYNC_CONFIG\.curationHeaders\.slice\(2\)/);
