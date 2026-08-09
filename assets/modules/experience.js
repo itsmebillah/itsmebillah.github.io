@@ -15,7 +15,7 @@
                 const icon = sanitizeIconClass(readObjProp(item, 'Icon'));
 
                 return `
-                    <div class="timeline-item">
+                    <div class="timeline-item timeline-${item.blockType}" data-timeline-type="${item.blockType}">
                         <div class="timeline-content">
                             <span class="timeline-period">${period}</span>
                             <div class="timeline-icon"><i class="fas ${icon || (item.blockType === 'edu' ? 'fa-graduation-cap' : 'fa-briefcase')}"></i></div>
