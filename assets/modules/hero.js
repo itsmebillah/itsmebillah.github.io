@@ -17,16 +17,7 @@
 
             document.getElementById('navName').textContent = name;
             document.getElementById('heroName').textContent = name;
-            const heroTitle = document.getElementById('heroTitle');
-            if (document.documentElement.classList.contains('hero-redesign-preview')) {
-                heroTitle.innerHTML = String(title || '').split('|').map((role, index) => `
-                    <span class="hero-role" data-role-index="${index + 1}">
-                        <small>0${index + 1}</small><b>${escapeHtml(role.trim())}</b>
-                    </span>
-                `).join('');
-            } else {
-                heroTitle.textContent = title;
-            }
+            document.getElementById('heroTitle').textContent = title;
             document.getElementById('heroBio').textContent = heroQuote || bio;
             document.getElementById('aboutBio').textContent = about;
             document.getElementById('infoLocation').textContent = loc;
