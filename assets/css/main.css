@@ -135,17 +135,59 @@
             letter-spacing: 0.04em;
         }
         .data-visual-tool b { font: inherit; }
-        .data-tool-icon {
-            width: 0.9rem;
-            height: 0.9rem;
+        .data-brand-icon {
+            --brand-primary: var(--data-accent);
+            --brand-secondary: var(--data-secondary);
+            --brand-rendered: color-mix(in srgb, var(--brand-primary) 82%, var(--data-text));
+            --brand-secondary-rendered: color-mix(in srgb, var(--brand-secondary) 78%, var(--data-text));
+            display: grid;
+            width: 1.45rem;
+            height: 1.45rem;
+            place-items: center;
+            flex: none;
+            border: 1px solid color-mix(in srgb, var(--brand-rendered) 46%, transparent);
+            background: color-mix(in srgb, var(--brand-rendered) 10%, transparent);
+            animation: dataBrandPulse 5s ease-in-out var(--data-delay) infinite;
+        }
+        .data-brand-icon svg {
+            width: 1rem;
+            height: 1rem;
+            overflow: visible;
             fill: none;
-            stroke: var(--data-accent);
-            stroke-width: 1.6;
+            stroke: var(--brand-rendered);
+            stroke-width: 1.5;
             stroke-linecap: round;
             stroke-linejoin: round;
-            flex: none;
-            transition: stroke 0.25s ease;
         }
+        .data-brand-icon path, .data-brand-icon ellipse, .data-brand-icon circle {
+            transform-origin: center;
+            stroke-dasharray: 48;
+            animation: dataIconTrace 6s ease-in-out var(--data-delay) infinite;
+        }
+        .data-brand-icon .icon-fill { fill: var(--brand-rendered); stroke: none; }
+        .data-brand-icon .icon-fill-secondary { fill: var(--brand-secondary-rendered); stroke: none; }
+        .data-brand-icon .icon-cut { fill: none; stroke: var(--loader-bg, var(--page-start)); stroke-width: 1.5; }
+        .data-brand-powerbi { --brand-primary: #d6a900; }
+        .data-brand-tableau { --brand-primary: #4e79a7; --brand-secondary: #e15759; }
+        .data-brand-python { --brand-primary: #3776ab; --brand-secondary: #ffd343; }
+        .data-brand-r { --brand-primary: #276dc3; }
+        .data-brand-sql { --brand-primary: #3b82b4; }
+        .data-brand-excel { --brand-primary: #168554; }
+        .data-brand-looker { --brand-primary: #4285f4; }
+        .data-brand-qlik { --brand-primary: #59a14f; }
+        .data-brand-knime { --brand-primary: #c4a900; }
+        .data-brand-rapidminer { --brand-primary: #3c78a9; }
+        .data-brand-sas { --brand-primary: #4b8bbe; }
+        .data-brand-spark { --brand-primary: #e25a1c; }
+        .data-brand-jupyter { --brand-primary: #e46e2e; }
+        .data-brand-alteryx { --brand-primary: #1597a5; }
+        .data-brand-appsscript { --brand-primary: #4285f4; }
+        .data-brand-ai { --brand-primary: #d94c8c; --brand-secondary: #7c6ee6; }
+        .data-brand-powerbi .icon-bar { animation: dataBrandBars 1.8s ease-in-out var(--data-delay) infinite alternate; transform-origin: bottom; }
+        .data-brand-powerbi .icon-bar:nth-child(2) { animation-delay: -0.4s; }
+        .data-brand-powerbi .icon-bar:nth-child(3) { animation-delay: -0.8s; }
+        .data-brand-powerbi .icon-bar:nth-child(4) { animation-delay: -1.2s; }
+        .data-brand-ai svg, .data-brand-appsscript svg { animation: dataIconOrbit 7s ease-in-out var(--data-delay) infinite; }
         .data-visual-formula {
             display: inline-flex;
             align-items: center;
@@ -178,10 +220,25 @@
             0%, 100% { opacity: 0.38; transform: translate3d(0, 0, 0) rotate(var(--data-rotate)); }
             50% { opacity: 0.78; transform: translate3d(0, -8px, 0) rotate(var(--data-rotate)); }
         }
+        @keyframes dataBrandPulse { 50% { border-color: var(--brand-rendered); box-shadow: 0 0 14px color-mix(in srgb, var(--brand-rendered) 22%, transparent); } }
+        @keyframes dataIconTrace { 0%, 100% { stroke-dashoffset: 0; } 50% { stroke-dashoffset: 12; } }
+        @keyframes dataBrandBars { from { transform: scaleY(0.55); opacity: 0.55; } to { transform: scaleY(1); opacity: 1; } }
+        @keyframes dataIconOrbit { 50% { transform: rotate(8deg) scale(1.06); } }
         @media (max-width: 768px) {
             .data-intelligence-background::before { opacity: 0.24; background-size: 88px 88px; }
             .data-visual { opacity: 0.48; font-size: 0.56rem; }
             .data-visual:nth-child(n+10) { display: none; }
+            .data-visual-tool.data-mobile-featured {
+                display: inline-flex;
+                left: var(--mobile-left);
+                top: var(--mobile-top);
+                max-width: 7rem;
+                font-size: 0.48rem;
+                opacity: 0.58;
+            }
+            .data-mobile-featured .data-brand-icon { width: 1.2rem; height: 1.2rem; }
+            .data-mobile-featured .data-brand-icon svg { width: 0.82rem; height: 0.82rem; }
+            .data-mobile-featured > b { display: none; }
             .data-visual-chart { min-width: 4.2rem; padding: 0.35rem; }
         }
         .skill-container { margin-bottom: 1.5rem; }
@@ -295,6 +352,7 @@
             --loader-signal: #20875a;
             background: var(--loader-bg);
             color: var(--loader-copy);
+            transition-duration: 250ms;
         }
         :root[data-theme="dark"].data-intelligence-preview #loader {
             --loader-bg: #090f1c;
@@ -582,4 +640,5 @@
         @media (prefers-reduced-motion: reduce) {
             body { transition: none; }
             .data-visual { animation: none; opacity: 0.42; will-change: auto; }
+            .data-brand-icon, .data-brand-icon path, .data-brand-icon ellipse, .data-brand-icon circle, .data-brand-icon svg { animation: none !important; }
         }

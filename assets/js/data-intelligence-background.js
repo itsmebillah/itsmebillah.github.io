@@ -21,20 +21,22 @@
         { type: 'query', text: 'AVG(value)' },
         { type: 'chart', text: 'BI', bars: [5, 9, 13, 10, 15] },
         { type: 'term', text: 'MODEL' },
-        { type: 'tool', text: 'MICROSOFT POWER BI', icon: 'chart' },
-        { type: 'tool', text: 'TABLEAU', icon: 'chart' },
-        { type: 'tool', text: 'PYTHON', icon: 'code' },
-        { type: 'tool', text: 'R', icon: 'code' },
-        { type: 'tool', text: 'SQL', icon: 'database' },
-        { type: 'tool', text: 'MICROSOFT EXCEL', icon: 'grid' },
-        { type: 'tool', text: 'GOOGLE LOOKER STUDIO', icon: 'chart' },
-        { type: 'tool', text: 'QLIK SENSE', icon: 'chart' },
-        { type: 'tool', text: 'KNIME', icon: 'workflow' },
-        { type: 'tool', text: 'RAPIDMINER', icon: 'workflow' },
-        { type: 'tool', text: 'SAS', icon: 'chart' },
-        { type: 'tool', text: 'APACHE SPARK', icon: 'workflow' },
-        { type: 'tool', text: 'JUPYTER NOTEBOOKS', icon: 'notebook' },
-        { type: 'tool', text: 'ALTERYX', icon: 'workflow' },
+        { type: 'tool', text: 'MICROSOFT POWER BI', brand: 'powerbi', mobile: [6, 12] },
+        { type: 'tool', text: 'TABLEAU', brand: 'tableau' },
+        { type: 'tool', text: 'PYTHON', brand: 'python', mobile: [86, 18] },
+        { type: 'tool', text: 'R', brand: 'r' },
+        { type: 'tool', text: 'SQL', brand: 'sql', mobile: [6, 68] },
+        { type: 'tool', text: 'MICROSOFT EXCEL', brand: 'excel', mobile: [86, 72] },
+        { type: 'tool', text: 'GOOGLE LOOKER STUDIO', brand: 'looker' },
+        { type: 'tool', text: 'QLIK SENSE', brand: 'qlik' },
+        { type: 'tool', text: 'KNIME', brand: 'knime' },
+        { type: 'tool', text: 'RAPIDMINER', brand: 'rapidminer' },
+        { type: 'tool', text: 'SAS', brand: 'sas' },
+        { type: 'tool', text: 'APACHE SPARK', brand: 'spark' },
+        { type: 'tool', text: 'JUPYTER NOTEBOOKS', brand: 'jupyter' },
+        { type: 'tool', text: 'ALTERYX', brand: 'alteryx' },
+        { type: 'tool', text: 'GOOGLE APPS SCRIPT', brand: 'appsscript', mobile: [6, 38] },
+        { type: 'tool', text: 'AI AUTOMATION', brand: 'ai', mobile: [86, 43] },
         { type: 'formula', text: '=SUMIFS(revenue, region, "East")' },
         { type: 'formula', text: '=XLOOKUP(id, data[id], data[value])' },
         { type: 'formula', text: '=INDEX(result, MATCH(key, range, 0))' },
@@ -52,23 +54,33 @@
         [2, 12], [90, 28], [13, 79], [82, 95], [4, 63], [71, 34],
         [87, 76], [17, 39], [95, 18], [28, 93], [68, 65], [9, 24],
         [83, 47], [24, 73], [3, 86], [75, 15], [89, 68], [15, 47],
-        [62, 91], [93, 36], [31, 17], [72, 76]
+        [62, 91], [93, 36], [31, 17], [72, 76], [37, 8], [56, 88]
     ];
 
     function chartMarkup(bars) {
         return `<span class="data-chart-bars">${bars.map(height => `<i style="--bar-height:${height}px"></i>`).join('')}</span>`;
     }
 
-    function toolIconMarkup(icon) {
-        const paths = {
-            chart: '<path d="M4 19V9m6 10V5m6 14v-7m4 7H2"/>',
-            code: '<path d="m8 9-3 3 3 3m8-6 3 3-3 3m-3-8-2 10"/>',
-            database: '<ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
-            grid: '<rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 10h16M10 4v16m5-10v10"/>',
-            workflow: '<circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h4c3 0 3-6 6-6M11 12c3 0 3 6 6 6"/>',
-            notebook: '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3v18m3-13h4m-4 4h4"/>'
+    function toolIconMarkup(brand) {
+        const marks = {
+            powerbi: '<rect class="icon-fill icon-bar" x="4" y="11" width="3" height="9" rx="1"/><rect class="icon-fill icon-bar" x="9" y="7" width="3" height="13" rx="1"/><rect class="icon-fill icon-bar" x="14" y="3" width="3" height="17" rx="1"/><rect class="icon-fill icon-bar" x="19" y="9" width="2" height="11" rx="1"/>',
+            tableau: '<path d="M12 2v7M9 5h6M5 9v6M2 12h6m11-3v6m-3-3h6M12 15v7m-3-3h6"/>',
+            python: '<path class="icon-fill icon-python-top" d="M12 3c-5 0-5 2-5 5v2h9v2H6c-3 0-4 2-4 5s2 4 5 4h2v-3c0-3 2-5 5-5h4c2 0 4-2 4-5s-2-5-5-5h-5Z"/><path class="icon-fill-secondary" d="M12 21c5 0 5-2 5-5v-2H8v-2h10c3 0 4-2 4-5 0 4-2 6-5 6h-4c-3 0-5 2-5 5 0 2 1 3 4 3Z"/><circle class="icon-cut" cx="15" cy="6" r="1"/>',
+            r: '<ellipse cx="12" cy="12" rx="9" ry="6"/><path d="M9 16V8h4c3 0 3 4 0 4H9m4 0 4 5"/>',
+            sql: '<ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/>',
+            excel: '<rect class="icon-fill" x="3" y="3" width="18" height="18" rx="2"/><path class="icon-cut" d="m7 8 5 8m0-8-5 8m7-8h4m-4 4h4m-4 4h4"/>',
+            looker: '<circle cx="10" cy="10" r="6"/><circle class="icon-fill" cx="17.5" cy="17.5" r="3.5"/>',
+            qlik: '<circle cx="12" cy="12" r="8"/><path d="M12 7v5l4 3"/><circle class="icon-fill" cx="12" cy="12" r="2"/>',
+            knime: '<circle class="icon-fill" cx="12" cy="5" r="2"/><circle class="icon-fill" cx="5" cy="18" r="2"/><circle class="icon-fill" cx="19" cy="18" r="2"/><path d="m12 7-7 9m7-9 7 9M7 18h10"/>',
+            rapidminer: '<path d="M4 17c4-9 8 3 12-7m-8 9c4-8 8 1 12-8"/><circle class="icon-fill" cx="18" cy="6" r="2"/>',
+            sas: '<path d="M3 14c4-8 7 8 11 0s5 2 7-4"/>',
+            spark: '<path class="icon-fill" d="m13 2-2 8-7 3 7 2 2 7 2-7 6-2-6-3-2-8Z"/>',
+            jupyter: '<circle cx="12" cy="12" r="6"/><path d="M6 6a9 9 0 0 1 12 0M6 18a9 9 0 0 0 12 0"/><circle class="icon-fill" cx="5" cy="4" r="1.5"/><circle class="icon-fill" cx="19" cy="20" r="1.5"/>',
+            alteryx: '<path d="M3 18 9 6l4 8 3-6 5 10M6 14h12"/>',
+            appsscript: '<path class="icon-fill" d="M7 3h8l4 4v14H7z"/><path class="icon-cut" d="M15 3v5h4m-8 3-2 2 2 2m4-4 2 2-2 2"/>',
+            ai: '<circle cx="12" cy="12" r="3"/><circle class="icon-fill" cx="5" cy="6" r="2"/><circle class="icon-fill" cx="19" cy="6" r="2"/><circle class="icon-fill" cx="5" cy="18" r="2"/><circle class="icon-fill" cx="19" cy="18" r="2"/><path d="m7 7 3 3m4 0 3-3m-7 7-3 3m7-3 3 3"/>'
         };
-        return `<svg class="data-tool-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">${paths[icon] || paths.chart}</svg>`;
+        return `<span class="data-brand-icon data-brand-${brand}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${marks[brand] || marks.ai}</svg></span>`;
     }
 
     function createVisual(item, index) {
@@ -81,11 +93,16 @@
         element.style.setProperty('--data-duration', `${18 + (index % 5) * 4}s`);
         element.style.setProperty('--data-rotate', `${((index * 7) % 11) - 5}deg`);
         element.dataset.visualIndex = String(index);
+        if (item.mobile) {
+            element.classList.add('data-mobile-featured');
+            element.style.setProperty('--mobile-left', `${item.mobile[0]}%`);
+            element.style.setProperty('--mobile-top', `${item.mobile[1]}%`);
+        }
 
         if (item.type === 'chart') {
             element.innerHTML = `<b>${item.text}</b>${chartMarkup(item.bars)}`;
         } else if (item.type === 'tool') {
-            element.innerHTML = `${toolIconMarkup(item.icon)}<b>${item.text}</b>`;
+            element.innerHTML = `${toolIconMarkup(item.brand)}<b>${item.text}</b>`;
         } else if (item.type === 'formula') {
             element.innerHTML = `<b class="data-formula-icon">fx</b><span>${item.text}</span>`;
         } else {
