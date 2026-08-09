@@ -5,8 +5,10 @@
                     throw new Error('Portfolio API returned an incompatible payload.');
                 }
                 window.portfolioData = payload;
+                const siteFeatures = payload.siteFeatures || {};
                 renderProfile(payload.profile);
                 applyPortfolioContent(payload);
+                applySiteFeatures(siteFeatures);
                 updatePortfolioLoader('profile');
                 renderSkills(payload.skills);
                 updatePortfolioLoader('skills');
@@ -16,9 +18,12 @@
                 updatePortfolioLoader('certificates');
                 renderBlogs(payload.blogs);
                 updatePortfolioLoader('blogs');
-                renderTimeline(payload.experience, payload.education);
+                renderTimeline(
+                    isSiteFeatureActive(siteFeatures, 'experience') ? payload.experience : [],
+                    isSiteFeatureActive(siteFeatures, 'education') ? payload.education : []
+                );
                 updatePortfolioLoader('timeline');
-                renderFAQ(payload.faq);
+                renderFAQ(isSiteFeatureActive(siteFeatures, 'faq') ? payload.faq : []);
             };
             const readLastKnownGood = () => {
                 try {

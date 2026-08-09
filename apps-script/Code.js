@@ -26,9 +26,10 @@ const MASTER_CONFIG = {
     syncStatus: "GitHub_Sync_Status",
     media: "Portfolio_Media",
     seo: "Portfolio_SEO",
-    adminAudit: "Admin_Activity_Log"
+    adminAudit: "Admin_Activity_Log",
+    siteFeatures: "Site_Features"
   },
-  publicCacheKey: "portfolio_public_dto_v1_contract12",
+  publicCacheKey: "portfolio_public_dto_v1_contract13",
   publicCacheSeconds: 600,
   limits: {
     chatMessage: 500,
@@ -43,6 +44,22 @@ const MASTER_CONFIG = {
     contactPerHour: 20
   }
 };
+
+const SITE_FEATURE_DEFINITIONS = [
+  ["hero", "Hero", "Primary profile introduction and actions", 10],
+  ["about", "About / Profile", "Professional biography and contact summary", 20],
+  ["skills", "Skills", "Skills and capability indicators", 30],
+  ["projects", "Projects", "Published GitHub-backed and manual projects", 40],
+  ["certificates", "Certificates", "Published certificates and credentials", 50],
+  ["blog", "Blog", "Case studies and articles", 60],
+  ["experience", "Experience", "Professional experience timeline entries", 70],
+  ["education", "Education", "Education timeline entries", 80],
+  ["faq", "FAQ", "Frequently asked questions", 90],
+  ["contact", "Contact", "Public contact form", 100],
+  ["chatbot", "Chatbot", "Portfolio AI assistant", 110],
+  ["resume", "Resume / CV", "Resume download action", 120],
+  ["social_links", "Social Links", "Public professional social links", 130]
+];
 
 function getSecret_(key) {
   const value = PropertiesService.getScriptProperties().getProperty(key);
@@ -163,6 +180,7 @@ function compileAllPortfolioData() {
     data: {
       profile: buildPublicProfile_(ss),
       config: buildPublicConfig_(ss),
+      siteFeatures: buildPublicSiteFeatures_(ss),
       skills: mapPublicTable_(ss, MASTER_CONFIG.tabs.skills, ["Name", "Level", "Category", "Description", "Order"]),
       projects: buildPublicProjects_(ss),
       experience: mapPublicTable_(ss, MASTER_CONFIG.tabs.experience, ["Title", "Company", "Period", "Description", "SkillsUsed", "Achievements", "Icon"]),
@@ -180,6 +198,24 @@ function compileAllPortfolioData() {
     catch (error) { logSafeError_("CACHE_WRITE_FAILED", error); }
   }
   return result;
+}
+
+function buildPublicSiteFeatures_(ss) {
+  const known = SITE_FEATURE_DEFINITIONS.reduce((map, row) => { map[row[0]] = row; return map; }, {});
+  const stored = readSheetObjects_(ss, MASTER_CONFIG.tabs.siteFeatures).reduce((map, row) => {
+    const key = String(row.FeatureKey || "").trim();
+    if (known[key]) map[key] = row;
+    return map;
+  }, {});
+  return SITE_FEATURE_DEFINITIONS.reduce((result, definition) => {
+    const key = definition[0];
+    const row = stored[key];
+    result[key] = {
+      active: row ? normalizeBoolean_(row.Active) : true,
+      displayOrder: row && Number.isFinite(Number(row.DisplayOrder)) ? Number(row.DisplayOrder) : definition[3]
+    };
+    return result;
+  }, {});
 }
 
 // ১. Profile শিট পার্সার (Horizontal Single-Row Data)

@@ -37,6 +37,34 @@ function applyPortfolioContent(payload) {
     if (typeof applySEOConfig === 'function') applySEOConfig(buildPortfolioSEO(profile, config, payload.skills || []));
 }
 
+function isSiteFeatureActive(features, key) {
+    const feature = features && features[key];
+    return !feature || feature.active !== false;
+}
+
+function applySiteFeatures(features) {
+    const sectionMap = { hero: 'home', about: 'about', skills: 'skills', projects: 'projects', certificates: 'certificates', blog: 'blogs', faq: 'faq', contact: 'contact' };
+    Object.entries(sectionMap).forEach(([key, id]) => {
+        const element = document.getElementById(id);
+        if (element) element.hidden = !isSiteFeatureActive(features, key);
+    });
+    const timelineActive = isSiteFeatureActive(features, 'experience') || isSiteFeatureActive(features, 'education');
+    const timeline = document.getElementById('experience');
+    if (timeline) timeline.hidden = !timelineActive;
+    document.querySelectorAll('[data-feature-nav]').forEach(link => {
+        const keys = String(link.dataset.featureNav || '').split(',');
+        link.hidden = !keys.some(key => isSiteFeatureActive(features, key));
+    });
+    ['chatToggle', 'chatWindow'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.hidden = !isSiteFeatureActive(features, 'chatbot');
+    });
+    const resume = document.getElementById('resumeLink');
+    if (resume && !isSiteFeatureActive(features, 'resume')) resume.classList.add('hidden');
+    const socials = document.getElementById('socialContainer');
+    if (socials) socials.hidden = !isSiteFeatureActive(features, 'social_links');
+}
+
 function renderFAQ(items) {
     const container = document.getElementById('faqContainer');
     const section = document.getElementById('faq');

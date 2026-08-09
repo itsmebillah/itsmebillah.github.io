@@ -12,7 +12,8 @@ const ADMIN_CONFIG = {
   tabs: {
     media: "Portfolio_Media",
     seo: "Portfolio_SEO",
-    audit: "Admin_Activity_Log"
+    audit: "Admin_Activity_Log",
+    siteFeatures: "Site_Features"
   }
 };
 const ADMIN_PASSWORD_POLICY_MESSAGE = "Use at least 6 characters with uppercase, lowercase, number, and symbol.";
@@ -42,6 +43,7 @@ function setupMasterDashboard() {
   const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
   Object.keys(ADMIN_ENTITIES).forEach(key => ensureAdminEntitySchema_(ss, ADMIN_ENTITIES[key]));
   ensureSheetWithHeaders_(ss, ADMIN_CONFIG.tabs.audit, ["event_id", "timestamp", "admin", "action", "entity", "entity_id", "success", "error_code", "changed_fields"]);
+  ensureSiteFeaturesSchema_(ss);
   return { success: true, initialized: true };
 }
 
@@ -68,6 +70,8 @@ function adminCall(request) {
       case "profile.update": result = updateAdminProfile_(input.payload || {}, session); break;
       case "config.read": result = readAdminConfig_(); break;
       case "config.update": result = updateAdminConfig_(input.payload || {}, session); break;
+      case "siteFeatures.list": result = listAdminSiteFeatures_(); break;
+      case "siteFeatures.update": result = updateAdminSiteFeature_(input.payload || {}, session); break;
       case "projects.list": result = listAdminProjects_(); break;
       case "projects.github.update": result = updateGitHubCuration_(input.payload || {}, session); break;
       case "projects.manual.save": result = saveManualProject_(input.payload || {}, session); break;
@@ -204,6 +208,51 @@ function updateAdminProfile_(payload, session) {
 const SAFE_CONFIG_KEYS = ["name", "site_tagline", "chatbot_name", "chatbot_welcome", "footer_text", "about_section_title", "projects_section_title", "skills_section_title", "experience_section_title", "certificates_section_title", "blogs_section_title", "faq_section_title", "contact_section_title", "site_title", "meta_description", "meta_keywords", "canonical_url", "og_title", "og_description", "og_image", "twitter_title", "twitter_description", "site_name", "language", "dashboard_url"];
 function readAdminConfig_() { return pickPublicFields_(parseKeyValueSheet(SpreadsheetApp.openById(MASTER_CONFIG.sheetId), MASTER_CONFIG.tabs.config), SAFE_CONFIG_KEYS); }
 function updateAdminConfig_(payload, session) { const changed = updateKeyValueRecord_(MASTER_CONFIG.tabs.config, payload, SAFE_CONFIG_KEYS); invalidatePublicPortfolioCache_(); auditAdmin_(session.email, "update", "config", "config", true, "", changed); return readAdminConfig_(); }
+
+function ensureSiteFeaturesSchema_(ss) {
+  const headers = ["RecordID", "FeatureKey", "FeatureName", "Description", "Active", "DisplayOrder", "UpdatedAt"];
+  const sheet = ensureSheetWithHeaders_(ss, ADMIN_CONFIG.tabs.siteFeatures, headers);
+  const existing = readSheetObjects_(ss, ADMIN_CONFIG.tabs.siteFeatures).reduce((map, row) => { if (row.FeatureKey) map[String(row.FeatureKey)] = true; return map; }, {});
+  SITE_FEATURE_DEFINITIONS.forEach(definition => {
+    if (existing[definition[0]]) return;
+    sheet.appendRow([Utilities.getUuid(), definition[0], definition[1], definition[2], true, definition[3], new Date()]);
+  });
+  sheet.setFrozenRows(1);
+  return sheet;
+}
+
+function listAdminSiteFeatures_() {
+  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+  ensureSiteFeaturesSchema_(ss);
+  const known = SITE_FEATURE_DEFINITIONS.reduce((map, row) => { map[row[0]] = true; return map; }, {});
+  return readSheetObjects_(ss, ADMIN_CONFIG.tabs.siteFeatures)
+    .filter(row => known[String(row.FeatureKey || "")])
+    .sort((a, b) => Number(a.DisplayOrder || 999) - Number(b.DisplayOrder || 999))
+    .map(row => pickPublicFields_(row, ["RecordID", "FeatureKey", "FeatureName", "Description", "Active", "DisplayOrder", "UpdatedAt"]));
+}
+
+function updateAdminSiteFeature_(payload, session) {
+  const key = String(payload.FeatureKey || "").trim();
+  const definition = SITE_FEATURE_DEFINITIONS.find(row => row[0] === key);
+  if (!definition) throw adminError_("UNKNOWN_SITE_FEATURE", "Unknown website feature.");
+  if (!Object.prototype.hasOwnProperty.call(payload, "Active") || !/^(true|false)$/i.test(String(payload.Active))) {
+    throw adminError_("INVALID_FEATURE_STATE", "Feature state must be true or false.");
+  }
+  if (Object.prototype.hasOwnProperty.call(payload, "DisplayOrder") && (!Number.isFinite(Number(payload.DisplayOrder)) || Number(payload.DisplayOrder) < 0)) {
+    throw adminError_("INVALID_DISPLAY_ORDER", "Display order must be a non-negative number.");
+  }
+  const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);
+  ensureSiteFeaturesSchema_(ss);
+  const rows = readSheetObjects_(ss, ADMIN_CONFIG.tabs.siteFeatures);
+  const current = rows.find(row => String(row.FeatureKey) === key);
+  if (!current || !current.RecordID) throw adminError_("SITE_FEATURE_NOT_FOUND", "Website feature configuration is unavailable.");
+  const record = { Active: normalizeBoolean_(payload.Active), UpdatedAt: new Date() };
+  if (Object.prototype.hasOwnProperty.call(payload, "DisplayOrder")) record.DisplayOrder = Number(payload.DisplayOrder);
+  const changed = updateTableRecordById_(ADMIN_CONFIG.tabs.siteFeatures, "RecordID", String(current.RecordID), record, ["Active", "DisplayOrder", "UpdatedAt"], false);
+  invalidatePublicPortfolioCache_();
+  auditAdmin_(session.email, record.Active ? "enabled" : "disabled", "site_feature", key, true, "", changed);
+  return listAdminSiteFeatures_();
+}
 
 function listAdminProjects_() {
   const ss = SpreadsheetApp.openById(MASTER_CONFIG.sheetId);

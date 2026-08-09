@@ -15,10 +15,29 @@ const index = read('index.html');
 
 test('one public payload feeds centralized portfolio state and every collection', () => {
   assert.match(api, /window\.portfolioData = payload/);
-  for (const section of ['profile', 'config', 'skills', 'projects', 'experience', 'education', 'certificates', 'blogs', 'faq']) {
+  for (const section of ['profile', 'config', 'siteFeatures', 'skills', 'projects', 'experience', 'education', 'certificates', 'blogs', 'faq']) {
     assert.match(api + content, new RegExp(`payload\\.${section}`));
   }
   assert.equal((api.match(/fetch\(/g) || []).length, 1);
+});
+
+test('site feature visibility is Sheet-backed, allowlisted, and applied to sections and navigation', () => {
+  const code = read('apps-script/Code.js');
+  const admin = read('apps-script/Admin.js');
+  const dashboard = read('admin/index.html');
+  const api = read('assets/js/api.js');
+  const content = read('assets/modules/content.js');
+  const navbar = read('components/navbar.html');
+  assert.match(code, /siteFeatures:\s*"Site_Features"/);
+  assert.match(code, /function buildPublicSiteFeatures_/);
+  assert.match(admin, /case "siteFeatures\.list"/);
+  assert.match(admin, /case "siteFeatures\.update"/);
+  assert.match(admin, /UNKNOWN_SITE_FEATURE/);
+  assert.match(admin, /auditAdmin_\(session\.email, record\.Active \? "enabled" : "disabled"/);
+  assert.match(dashboard, /\['features','Site Features'\]/);
+  assert.match(api, /payload\.siteFeatures/);
+  assert.match(content, /function applySiteFeatures/);
+  assert.match(navbar, /data-feature-nav="experience,education"/);
 });
 
 test('profile content, resume, social links, and manual image come from the profile DTO', () => {

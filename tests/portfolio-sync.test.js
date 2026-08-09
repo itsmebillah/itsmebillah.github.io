@@ -359,7 +359,7 @@ test('last-known-good repository snapshot is chunked and restored', () => {
 test('cached public response survives a spreadsheet outage', () => {
     const { context, cache } = createContext();
     const cached = { success: true, schemaVersion: 1, data: { profile: { Name: 'Cached' }, projects: [], skills: [] } };
-    cache.set('portfolio_public_dto_v1_contract12', JSON.stringify(cached));
+    cache.set('portfolio_public_dto_v1_contract13', JSON.stringify(cached));
     context.SpreadsheetApp = { openById: () => { throw new Error('Sheets unavailable'); } };
     const result = evaluate(context, 'compileAllPortfolioData()');
     assert.equal(result.data.profile.Name, 'Cached');
@@ -424,7 +424,7 @@ test('complete public API response uses strict entity DTOs', () => {
     const result = evaluate(context, 'compileAllPortfolioData()');
     const serialized = JSON.stringify(result);
     assert.equal(result.schemaVersion, 1);
-    assert.deepEqual(Object.keys(result.data).sort(), ['aiContext', 'blogs', 'certificates', 'config', 'education', 'experience', 'faq', 'profile', 'projects', 'skills']);
+    assert.deepEqual(Object.keys(result.data).sort(), ['aiContext', 'blogs', 'certificates', 'config', 'education', 'experience', 'faq', 'profile', 'projects', 'siteFeatures', 'skills']);
     for (const forbidden of ['sex', 'Maritial status', 'InternalNote', 'DemoEmail', 'DemoPassword', 'private-doc-id', 'private-config', 'private-faq', 'private-prompt']) {
         assert.equal(serialized.includes(forbidden), false, `forbidden field leaked: ${forbidden}`);
     }
