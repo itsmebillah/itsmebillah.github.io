@@ -202,7 +202,7 @@
         .timeline-item:nth-child(odd) .timeline-icon { right: -25px; }
         .timeline-item:nth-child(even) .timeline-icon { left: -25px; }
         .timeline-period { display: inline-block; background: rgba(255, 107, 53, 0.2); color: #FF6B35; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .career-data-ground, .career-tree-art { display: none; }
+        .career-tree-art { display: none; }
         .career-tree-preview #experience {
             --tree-line: rgba(37, 111, 69, 0.28);
             --tree-branch: #346d49;
@@ -246,10 +246,10 @@
             display: none;
         }
         .career-tree-preview .timeline-item { z-index: 1; min-height: 10rem; margin: 0 0 0.8rem; }
-        .career-tree-preview .timeline-item::before { content: ''; position: absolute; top: 52%; z-index: -1; display: block; width: 14%; height: 1.25rem; background: repeating-linear-gradient(172deg, #507843 0 3px, #315333 3px 6px, #67502f 6px 9px, #263f2b 9px 12px); filter: drop-shadow(0 0.25rem 0.35rem rgba(5, 20, 11, 0.3)); }
+        .career-tree-preview .timeline-item::before { content: ''; position: absolute; top: 52%; z-index: -1; display: block; width: 14%; height: 0.42rem; border: 1px solid rgba(255, 122, 66, 0.34); border-radius: 999px; background: linear-gradient(180deg, #9b541e, #3f291a 48%, #1d3827); box-shadow: 0 0 0.7rem rgba(255, 122, 66, 0.16); }
         .career-tree-preview .timeline-item::after { content: ''; position: absolute; top: calc(52% - 0.28rem); z-index: 2; width: 0.72rem; height: 0.72rem; border: 2px solid var(--tree-accent); border-radius: 50%; background: #36261a; box-shadow: 0 0 0.65rem rgba(255, 122, 66, 0.6); }
-        .career-tree-preview .timeline-item:nth-child(odd)::before { left: 49%; transform: rotate(8deg); transform-origin: left center; clip-path: polygon(0 4%, 100% 34%, 100% 66%, 0 96%); }
-        .career-tree-preview .timeline-item:nth-child(even)::before { right: 49%; transform: rotate(-8deg); transform-origin: right center; clip-path: polygon(0 34%, 100% 4%, 100% 96%, 0 66%); }
+        .career-tree-preview .timeline-item:nth-child(odd)::before { left: 49%; transform: rotate(8deg); transform-origin: left center; }
+        .career-tree-preview .timeline-item:nth-child(even)::before { right: 49%; transform: rotate(-8deg); transform-origin: right center; }
         .career-tree-preview .timeline-item:nth-child(odd)::after { left: calc(50% - 0.36rem); }
         .career-tree-preview .timeline-item:nth-child(even)::after { right: calc(50% - 0.36rem); }
         .career-tree-preview .timeline-content { z-index: 2; width: 38%; padding: 1.15rem 1.3rem; border: 1px solid var(--tree-line); border-radius: 6px; background: var(--tree-leaf); color: var(--tree-copy); box-shadow: 0 0.8rem 2rem rgba(8, 24, 16, 0.08); backdrop-filter: blur(10px); }
@@ -267,13 +267,6 @@
         .career-tree-preview .timeline-content h3 { color: var(--tree-copy); }
         .career-tree-preview .timeline-company { color: var(--tree-copy); }
         .career-tree-preview .timeline-description { color: var(--tree-muted); }
-        .career-tree-preview .career-data-ground { position: relative; display: block; height: 8rem; margin-top: 1.5rem; border-top: 2px solid var(--tree-branch); }
-        .career-tree-preview .career-data-ground::before { content: ''; position: absolute; left: 50%; top: -2rem; width: 9rem; height: 2.1rem; transform: translateX(-50%); border-radius: 50% 50% 0 0; background: color-mix(in srgb, var(--tree-branch) 35%, transparent); }
-        .career-tree-preview .career-root-label { position: absolute; left: 50%; top: 0.65rem; transform: translateX(-50%); color: var(--tree-muted); font: 700 0.52rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.12em; }
-        .career-tree-preview .data-grass { position: absolute; inset: auto 0 6rem; display: flex; height: 4.5rem; align-items: flex-end; justify-content: space-around; overflow: visible; }
-        .career-tree-preview .data-grass span { display: flex; width: var(--grass-height); height: 1px; align-items: center; color: var(--tree-education); font: 600 0.43rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; transform: rotate(-68deg); transform-origin: left center; }
-        .career-tree-preview .data-grass span:nth-child(even) { color: color-mix(in srgb, var(--tree-education) 72%, var(--tree-accent)); transform: rotate(-108deg); transform-origin: right center; }
-        .career-tree-preview .data-grass span::before { content: ''; width: 1.2rem; height: 1px; margin-right: 0.25rem; flex: 0 0 auto; background: currentColor; }
         @media (max-width: 768px) {
             .career-tree-preview #experience { padding-inline: 1rem; }
             .career-tree-preview .timeline-container::before { left: 1rem; width: 0.75rem; }
@@ -285,10 +278,6 @@
             .career-tree-preview .timeline-item:nth-child(even) .timeline-content { width: calc(100% - 4.5rem); margin: 0 0 0 4.5rem; padding: 1rem; }
             .career-tree-preview .timeline-item:nth-child(odd) .timeline-icon,
             .career-tree-preview .timeline-item:nth-child(even) .timeline-icon { left: -1.1rem; right: auto; }
-            .career-tree-preview .career-data-ground { margin-left: 0; }
-            .career-tree-preview .data-grass { inset-inline: 0; }
-            .career-tree-preview .data-grass { inset-inline: 0.5rem; }
-            .career-tree-preview .data-grass span { font-size: 0.34rem; }
         }
         .project-tag { display: inline-block; background: rgba(255, 107, 53, 0.15); color: #FF8B35; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; }
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--overlay); backdrop-filter: blur(10px); z-index: 1000; display: none; overflow-y: auto; padding: 2rem; }

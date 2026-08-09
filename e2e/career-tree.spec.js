@@ -31,7 +31,7 @@ async function loadTree(page, path) {
 test('normal timeline remains unchanged', async ({ page }) => {
     await loadTree(page, '#experience');
     await expect(page.locator('html')).not.toHaveClass(/career-tree-preview/);
-    await expect(page.locator('.career-data-ground')).toBeHidden();
+    await expect(page.locator('.career-data-ground')).toHaveCount(0);
 });
 
 for (const theme of ['light', 'dark']) {
@@ -42,7 +42,7 @@ for (const theme of ['light', 'dark']) {
         await expect(page.locator('.timeline-item')).toHaveCount(4);
         await expect(page.locator('.career-tree-art')).toBeVisible();
         await page.locator('.career-tree-art').screenshot({ path: `test-results/career-tree-art-${theme}.png` });
-        await expect(page.locator('.career-data-ground')).toBeVisible();
+        await expect(page.locator('.career-data-ground')).toHaveCount(0);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
         await page.screenshot({ path: `test-results/career-tree-desktop-${theme}.png`, fullPage: false });
     });

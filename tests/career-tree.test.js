@@ -13,12 +13,11 @@ test('career tree remains isolated behind its preview query', () => {
     assert.match(styles, /\.career-tree-preview \.timeline-container::before/);
 });
 
-test('career tree preserves dynamic records and adds a data ground', () => {
+test('career tree preserves dynamic records without formula ground decoration', () => {
     assert.match(script, /timeline-\$\{item\.blockType\}/);
-    assert.match(script, /career-tree-trunk-green\.png/);
+    assert.match(script, /career-tree-trunk\.png/);
     assert.match(styles, /timeline-item:nth-child\(odd\)::before/);
     assert.match(styles, /timeline-item:nth-child\(even\)::before/);
-    assert.match(component, /ROOTED IN DATA/);
-    for (const value of ['SUM', 'XLOOKUP', 'QUERY', 'ARRAYFORMULA', 'IFERROR', 'FILTER', 'INDEX']) assert.match(component, new RegExp(value));
-    assert.match(styles, /\.career-tree-preview \.data-grass/);
+    assert.doesNotMatch(component, /ROOTED IN DATA|SUM|XLOOKUP|QUERY|ARRAYFORMULA|IFERROR|FILTER|INDEX/);
+    assert.doesNotMatch(styles, /\.career-tree-preview \.data-grass/);
 });
