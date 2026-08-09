@@ -20,7 +20,7 @@ test('background enhancement preserves the existing particle layer', () => {
 });
 
 test('background supports mobile density reduction and reduced motion', () => {
-    assert.match(styles, /@media \(max-width: 768px\)[\s\S]*\.data-visual:nth-child\(n\+8\)/);
+    assert.match(styles, /@media \(max-width: 768px\)[\s\S]*\.data-visual:nth-child\(n\+10\)/);
     assert.match(styles, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.data-visual \{ animation: none;/);
 });
 
@@ -28,4 +28,13 @@ test('visual distribution is deterministic and bounded', () => {
     assert.match(script, /const positions = \[/);
     assert.doesNotMatch(script, /Math\.random/);
     assert.match(script, /visuals\.forEach/);
+    for (const tool of ['MICROSOFT POWER BI', 'TABLEAU', 'PYTHON', 'SQL', 'MICROSOFT EXCEL', 'GOOGLE LOOKER STUDIO', 'QLIK SENSE', 'KNIME', 'RAPIDMINER', 'SAS', 'APACHE SPARK', 'JUPYTER NOTEBOOKS', 'ALTERYX']) {
+        assert.match(script, new RegExp(tool));
+    }
+    assert.match(script, /class="data-tool-icon"/);
+    assert.match(styles, /\.data-tool-icon/);
+    for (const formula of ['SUMIFS', 'XLOOKUP', 'INDEX', 'MATCH', 'QUERY', 'FILTER', 'ARRAYFORMULA', 'IFERROR', 'VLOOKUP']) {
+        assert.match(script, new RegExp(formula));
+    }
+    assert.match(styles, /\.data-formula-icon/);
 });

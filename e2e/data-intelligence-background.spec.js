@@ -3,9 +3,8 @@ const { test, expect } = require('@playwright/test');
 const baseUrl = 'http://127.0.0.1:4173/';
 
 async function waitForPortfolio(page) {
-    const loader = page.locator('#loader');
-    await expect(loader).toBeAttached({ timeout: 10000 });
-    await expect(loader).toBeHidden({ timeout: 30000 });
+    await page.waitForFunction(() => window.__portfolioComponentsLoaded === true, null, { timeout: 15000 });
+    await expect(page.locator('body')).not.toHaveClass(/portfolio-loading/, { timeout: 30000 });
 }
 
 test('normal portfolio keeps the draft background disabled', async ({ page }) => {
@@ -24,7 +23,7 @@ for (const theme of ['light', 'dark']) {
         await page.goto(`${baseUrl}?preview=data-intelligence`);
         await waitForPortfolio(page);
         await expect(page.locator('html')).toHaveClass(/data-intelligence-preview/);
-        await expect(page.locator('.data-visual')).toHaveCount(18);
+        await expect(page.locator('.data-visual')).toHaveCount(40);
         await expect(page.locator('body')).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
         expect(errors).toEqual([]);
@@ -39,9 +38,9 @@ test('data intelligence draft reduces density on mobile', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(`${baseUrl}?preview=data-intelligence`);
     await waitForPortfolio(page);
-    await expect(page.locator('.data-visual')).toHaveCount(18);
+    await expect(page.locator('.data-visual')).toHaveCount(40);
     const visibleCount = await page.locator('.data-visual').evaluateAll(nodes => nodes.filter(node => getComputedStyle(node).display !== 'none').length);
-    expect(visibleCount).toBe(7);
+    expect(visibleCount).toBe(9);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     expect(errors).toEqual([]);
     await page.screenshot({ path: 'test-results/data-intelligence-mobile-dark.png', fullPage: false });

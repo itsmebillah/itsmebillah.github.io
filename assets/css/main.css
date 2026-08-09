@@ -68,10 +68,10 @@
         .magnetic-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 25px rgba(255, 107, 53, 0.25); }
         .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
         .data-intelligence-background {
-            --data-text: rgba(28, 61, 43, 0.24);
-            --data-line: rgba(35, 94, 66, 0.15);
-            --data-accent: rgba(224, 91, 45, 0.26);
-            --data-secondary: rgba(184, 53, 105, 0.18);
+            --data-text: rgba(28, 61, 43, 0.32);
+            --data-line: rgba(35, 94, 66, 0.18);
+            --data-accent: rgba(224, 91, 45, 0.32);
+            --data-secondary: rgba(184, 53, 105, 0.23);
             position: fixed;
             inset: 0;
             z-index: -1;
@@ -81,17 +81,17 @@
             contain: strict;
         }
         :root[data-theme="dark"] .data-intelligence-background {
-            --data-text: rgba(226, 232, 240, 0.16);
-            --data-line: rgba(103, 187, 205, 0.13);
-            --data-accent: rgba(255, 107, 53, 0.22);
-            --data-secondary: rgba(255, 107, 157, 0.16);
+            --data-text: rgba(226, 232, 240, 0.23);
+            --data-line: rgba(103, 187, 205, 0.17);
+            --data-accent: rgba(255, 107, 53, 0.29);
+            --data-secondary: rgba(255, 107, 157, 0.22);
         }
         @media (prefers-color-scheme: dark) {
             :root:not([data-theme="light"]) .data-intelligence-background {
-                --data-text: rgba(226, 232, 240, 0.16);
-                --data-line: rgba(103, 187, 205, 0.13);
-                --data-accent: rgba(255, 107, 53, 0.22);
-                --data-secondary: rgba(255, 107, 157, 0.16);
+                --data-text: rgba(226, 232, 240, 0.23);
+                --data-line: rgba(103, 187, 205, 0.17);
+                --data-accent: rgba(255, 107, 53, 0.29);
+                --data-secondary: rgba(255, 107, 157, 0.22);
             }
         }
         .data-intelligence-preview .data-intelligence-background { display: block; }
@@ -117,12 +117,46 @@
             line-height: 1.45;
             letter-spacing: 0;
             white-space: pre;
-            opacity: 0.72;
+            opacity: 0.82;
             transform: rotate(var(--data-rotate));
             animation: dataAmbientFloat var(--data-duration) ease-in-out var(--data-delay) infinite;
             will-change: transform, opacity;
         }
         .data-visual-term { font-weight: 700; letter-spacing: 0.08em; }
+        .data-visual-tool {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.32rem;
+            color: var(--data-text);
+            font-size: 0.58rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+        .data-visual-tool b { font: inherit; }
+        .data-tool-icon {
+            width: 0.9rem;
+            height: 0.9rem;
+            fill: none;
+            stroke: var(--data-accent);
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex: none;
+        }
+        .data-visual-formula {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--data-text);
+            font-size: 0.54rem;
+        }
+        .data-formula-icon {
+            color: var(--data-accent);
+            font-family: Georgia, serif;
+            font-size: 0.72rem;
+            font-style: italic;
+            font-weight: 700;
+        }
         .data-visual-value { color: var(--data-accent); font-size: 0.7rem; font-weight: 700; }
         .data-visual-query { padding-left: 0.55rem; border-left: 1px solid var(--data-secondary); }
         .data-visual-pipeline { color: var(--data-accent); font-size: 0.56rem; }
@@ -144,7 +178,7 @@
         @media (max-width: 768px) {
             .data-intelligence-background::before { opacity: 0.24; background-size: 88px 88px; }
             .data-visual { opacity: 0.48; font-size: 0.56rem; }
-            .data-visual:nth-child(n+8) { display: none; }
+            .data-visual:nth-child(n+10) { display: none; }
             .data-visual-chart { min-width: 4.2rem; padding: 0.35rem; }
         }
         .skill-container { margin-bottom: 1.5rem; }
