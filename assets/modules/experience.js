@@ -7,7 +7,8 @@
             if(edu) edu.forEach(i => unifiedList.push({...i, blockType: 'edu'}));
             if(unifiedList.length === 0) return;
 
-            container.innerHTML = unifiedList.map(item => {
+            const treeArt = '<img class="career-tree-art" src="assets/images/career-tree-organic.png" alt="" aria-hidden="true" loading="lazy" decoding="async">';
+            container.innerHTML = treeArt + unifiedList.map(item => {
                 const period = escapeHtml(readObjProp(item, 'Period'));
                 const title = escapeHtml(readObjProp(item, 'Title') || readObjProp(item, 'Degree'));
                 const center = escapeHtml(readObjProp(item, 'Company') || readObjProp(item, 'Institution'));

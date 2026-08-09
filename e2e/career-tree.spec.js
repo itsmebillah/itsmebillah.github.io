@@ -20,6 +20,12 @@ async function loadTree(page, path) {
     await page.goto(`${baseUrl}${path}`, { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => document.getElementById('loader')?.style.display === 'none', null, { timeout: 15000 });
     await page.locator('#experience').scrollIntoViewIfNeeded();
+    if (path.includes('preview=career-tree')) {
+        await page.waitForFunction(() => {
+            const image = document.querySelector('.career-tree-art');
+            return image && image.complete && image.naturalWidth > 0;
+        }, null, { timeout: 15000 });
+    }
 }
 
 test('normal timeline remains unchanged', async ({ page }) => {
@@ -34,6 +40,8 @@ for (const theme of ['light', 'dark']) {
         await page.setViewportSize({ width: 1440, height: 1000 });
         await loadTree(page, '?preview=career-tree#experience');
         await expect(page.locator('.timeline-item')).toHaveCount(4);
+        await expect(page.locator('.career-tree-art')).toBeVisible();
+        await page.locator('.career-tree-art').screenshot({ path: `test-results/career-tree-art-${theme}.png` });
         await expect(page.locator('.career-data-ground')).toBeVisible();
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
         await page.screenshot({ path: `test-results/career-tree-desktop-${theme}.png`, fullPage: false });
