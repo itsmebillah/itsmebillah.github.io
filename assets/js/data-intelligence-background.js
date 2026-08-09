@@ -1,7 +1,4 @@
 (() => {
-    const PREVIEW_PARAM = 'preview';
-    const PREVIEW_VALUE = 'data-intelligence';
-
     const visuals = [
         { type: 'term', text: 'DATA' },
         { type: 'value', text: '42.7%' },
@@ -95,13 +92,9 @@
     }
 
     function initializeDataIntelligenceBackground() {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get(PREVIEW_PARAM) !== PREVIEW_VALUE) return;
-
         const layer = document.getElementById('data-intelligence-background');
         if (!layer || layer.dataset.initialized === 'true') return;
 
-        document.documentElement.classList.add('data-intelligence-preview');
         const fragment = document.createDocumentFragment();
         visuals.forEach((item, index) => fragment.appendChild(createVisual(item, index)));
         layer.appendChild(fragment);

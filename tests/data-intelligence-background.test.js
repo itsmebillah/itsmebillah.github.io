@@ -8,9 +8,9 @@ const component = fs.readFileSync('components/particles.html', 'utf8');
 const loader = fs.readFileSync('components/loader.html', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 
-test('data intelligence layer is limited to the explicit draft query', () => {
-    assert.match(script, /params\.get\(PREVIEW_PARAM\) !== PREVIEW_VALUE/);
-    assert.match(script, /data-intelligence-preview/);
+test('approved data intelligence layer is enabled on the normal portfolio', () => {
+    assert.doesNotMatch(script, /PREVIEW_PARAM|PREVIEW_VALUE/);
+    assert.match(index, /class="data-intelligence-preview"/);
     assert.match(styles, /\.data-intelligence-preview \.data-intelligence-background \{ display: block; \}/);
 });
 

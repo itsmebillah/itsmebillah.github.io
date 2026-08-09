@@ -16,11 +16,11 @@ async function waitForPortfolio(page) {
     await expect(page.locator('body')).not.toHaveClass(/portfolio-loading/, { timeout: 30000 });
 }
 
-test('normal portfolio keeps the draft background disabled', async ({ page }) => {
+test('normal portfolio enables the approved data intelligence background', async ({ page }) => {
     await page.goto(baseUrl);
     await waitForPortfolio(page);
-    await expect(page.locator('html')).not.toHaveClass(/data-intelligence-preview/);
-    await expect(page.locator('.data-visual')).toHaveCount(0);
+    await expect(page.locator('html')).toHaveClass(/data-intelligence-preview/);
+    await expect(page.locator('.data-visual')).toHaveCount(40);
 });
 
 for (const theme of ['light', 'dark']) {
@@ -29,7 +29,7 @@ for (const theme of ['light', 'dark']) {
         page.on('pageerror', error => errors.push(error.message));
         await page.addInitScript(value => localStorage.setItem('portfolio-public-theme', value), theme);
         await page.setViewportSize({ width: 1440, height: 1000 });
-        await page.goto(`${baseUrl}?preview=data-intelligence`);
+        await page.goto(baseUrl);
         await waitForPortfolio(page);
         await expect(page.locator('html')).toHaveClass(/data-intelligence-preview/);
         await expect(page.locator('.data-visual')).toHaveCount(40);
@@ -44,7 +44,7 @@ test('analytics loader remains readable on mobile', async ({ page }) => {
     await holdPortfolioApi(page);
     await page.addInitScript(() => localStorage.setItem('portfolio-public-theme', 'dark'));
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`${baseUrl}?preview=data-intelligence`);
+    await page.goto(baseUrl);
     await page.waitForFunction(() => window.__portfolioComponentsLoaded === true);
 
     await expect(page.locator('.intelligence-loader-stage')).toBeVisible();
@@ -58,7 +58,7 @@ test('data intelligence draft reduces density on mobile', async ({ page }) => {
     page.on('pageerror', error => errors.push(error.message));
     await page.addInitScript(() => localStorage.setItem('portfolio-public-theme', 'dark'));
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto(`${baseUrl}?preview=data-intelligence`);
+    await page.goto(baseUrl);
     await waitForPortfolio(page);
     await expect(page.locator('.data-visual')).toHaveCount(40);
     const visibleCount = await page.locator('.data-visual').evaluateAll(nodes => nodes.filter(node => getComputedStyle(node).display !== 'none').length);
@@ -70,14 +70,14 @@ test('data intelligence draft reduces density on mobile', async ({ page }) => {
 
 test('reduced motion disables ambient animation', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto(`${baseUrl}?preview=data-intelligence`);
+    await page.goto(baseUrl);
     await waitForPortfolio(page);
     await expect(page.locator('.data-visual').first()).toHaveCSS('animation-name', 'none');
 });
 
 test('added text and icons change color when the theme changes', async ({ page }) => {
     await page.addInitScript(() => localStorage.setItem('portfolio-public-theme', 'dark'));
-    await page.goto(`${baseUrl}?preview=data-intelligence`);
+    await page.goto(baseUrl);
     await waitForPortfolio(page);
 
     const tool = page.locator('.data-visual-tool').first();
@@ -101,7 +101,7 @@ for (const theme of ['light', 'dark']) {
         await holdPortfolioApi(page);
         await page.addInitScript(value => localStorage.setItem('portfolio-public-theme', value), theme);
         await page.setViewportSize({ width: 1440, height: 1000 });
-        await page.goto(`${baseUrl}?preview=data-intelligence`);
+        await page.goto(baseUrl);
         await page.waitForFunction(() => window.__portfolioComponentsLoaded === true);
 
         await expect(page.locator('#loader')).toBeVisible();
