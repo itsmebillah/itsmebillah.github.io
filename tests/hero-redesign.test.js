@@ -24,7 +24,8 @@ test('hero draft reuses dynamic profile fields and existing actions', () => {
 });
 
 test('hero draft expresses the analyst and automation workflow', () => {
-    assert.match(hero, /DATA INTELLIGENCE · AUTOMATION SYSTEMS/);
+    assert.match(hero, /INTELLIGENCE SYSTEM \/ ONLINE/);
+    assert.match(hero, /DECISION CORE/);
     assert.match(hero, /SQL/);
     assert.match(hero, /POWER BI/);
     assert.match(hero, /APPS SCRIPT/);
