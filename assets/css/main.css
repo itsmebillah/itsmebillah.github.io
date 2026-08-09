@@ -458,7 +458,7 @@
         }
         .intelligence-code-line i { width: 1.4rem; height: 1px; background: var(--loader-line); }
         .data-intelligence-preview .loader-title { color: var(--loader-copy); font-size: 0; margin-bottom: 0.7rem; }
-        .data-intelligence-preview .loader-title::before { content: 'Building the intelligence layer'; font-size: clamp(1.55rem, 4vw, 2.35rem); }
+        .data-intelligence-preview .loader-title::before { content: 'Please wait, connecting data to insights'; font-size: clamp(1.55rem, 4vw, 2.35rem); }
         .data-intelligence-preview .loader-subtitle { color: var(--loader-muted); font-size: 0; margin-bottom: 1.4rem; }
         .data-intelligence-preview .loader-subtitle::before { content: 'Validating data, models, and automation workflows.'; font-size: clamp(0.85rem, 2vw, 1rem); }
         .data-intelligence-preview .loader-progress-track { height: 4px; width: min(420px, 72vw); margin-bottom: 0.7rem; background: var(--loader-line); box-shadow: none; }
