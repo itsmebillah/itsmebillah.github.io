@@ -266,8 +266,10 @@
         .career-tree-preview .career-data-ground { position: relative; display: block; height: 8rem; margin-top: 1.5rem; border-top: 2px solid var(--tree-branch); }
         .career-tree-preview .career-data-ground::before { content: ''; position: absolute; left: 50%; top: -2rem; width: 9rem; height: 2.1rem; transform: translateX(-50%); border-radius: 50% 50% 0 0; background: color-mix(in srgb, var(--tree-branch) 35%, transparent); }
         .career-tree-preview .career-root-label { position: absolute; left: 50%; top: 0.65rem; transform: translateX(-50%); color: var(--tree-muted); font: 700 0.52rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: 0.12em; }
-        .career-tree-preview .data-grass { position: absolute; inset: 0 1rem auto; display: flex; align-items: flex-end; justify-content: space-around; }
-        .career-tree-preview .data-grass span { display: flex; height: var(--grass-height); align-items: flex-start; padding-top: 0.6rem; border-left: 1px solid var(--tree-education); color: var(--tree-muted); font: 600 0.48rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; writing-mode: vertical-rl; }
+        .career-tree-preview .data-grass { position: absolute; inset: auto 0 6rem; display: flex; height: 4.5rem; align-items: flex-end; justify-content: space-around; overflow: visible; }
+        .career-tree-preview .data-grass span { display: flex; width: var(--grass-height); height: 1px; align-items: center; color: var(--tree-education); font: 600 0.43rem/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: nowrap; transform: rotate(-68deg); transform-origin: left center; }
+        .career-tree-preview .data-grass span:nth-child(even) { color: color-mix(in srgb, var(--tree-education) 72%, var(--tree-accent)); transform: rotate(-108deg); transform-origin: right center; }
+        .career-tree-preview .data-grass span::before { content: ''; width: 1.2rem; height: 1px; margin-right: 0.25rem; flex: 0 0 auto; background: currentColor; }
         @media (max-width: 768px) {
             .career-tree-preview #experience { padding-inline: 1rem; }
             .career-tree-preview .timeline-container::before { left: 1rem; width: 0.75rem; }
@@ -279,7 +281,8 @@
             .career-tree-preview .timeline-item:nth-child(even) .timeline-icon { left: -1.1rem; right: auto; }
             .career-tree-preview .career-data-ground { margin-left: 0; }
             .career-tree-preview .data-grass { inset-inline: 0; }
-            .career-tree-preview .data-grass span { font-size: 0.4rem; }
+            .career-tree-preview .data-grass { inset-inline: 0.5rem; }
+            .career-tree-preview .data-grass span { font-size: 0.34rem; }
         }
         .project-tag { display: inline-block; background: rgba(255, 107, 53, 0.15); color: #FF8B35; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; }
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--overlay); backdrop-filter: blur(10px); z-index: 1000; display: none; overflow-y: auto; padding: 2rem; }
