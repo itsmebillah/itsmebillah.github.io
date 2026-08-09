@@ -66,6 +66,23 @@ test('authentication requires forced password change and server-side sessions', 
   assert.match(admin, /constantTimeEqual_/);
 });
 
+test('frontend and backend enforce the same six-character password policy', () => {
+  const context = {};
+  vm.createContext(context);
+  vm.runInContext(admin, context);
+  assert.equal(context.isAdminPasswordValid_('Aa1!aa'), true);
+  assert.equal(context.isAdminPasswordValid_('Aa1!a'), false);
+  assert.equal(context.isAdminPasswordValid_('aa1!aa'), false);
+  assert.equal(context.isAdminPasswordValid_('AA1!AA'), false);
+  assert.equal(context.isAdminPasswordValid_('Aaa!aa'), false);
+  assert.equal(context.isAdminPasswordValid_('Aa11aa'), false);
+  const message = 'Use at least 6 characters with uppercase, lowercase, number, and symbol.';
+  assert.match(admin, new RegExp(message.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(dashboard, new RegExp(message.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(dashboard, /minlength="6"/);
+  assert.match(dashboard, /const isPasswordValid=/);
+});
+
 test('password verifier uses byte-array HMAC, unique salt, and rejects wrong password', () => {
   const context = {
     Utilities: {

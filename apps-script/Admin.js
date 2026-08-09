@@ -15,6 +15,7 @@ const ADMIN_CONFIG = {
     audit: "Admin_Activity_Log"
   }
 };
+const ADMIN_PASSWORD_POLICY_MESSAGE = "Use at least 6 characters with uppercase, lowercase, number, and symbol.";
 
 const ADMIN_ENTITIES = {
   skills: { tab: "Skills", id: "RecordID", active: "Active", order: "Order", fields: ["Name", "Level", "Category", "Description", "Order", "Active"] },
@@ -105,9 +106,7 @@ function adminLogin_(payload) {
 function changeAdminPassword_(session, payload) {
   const current = String(payload.currentPassword || "");
   const next = String(payload.newPassword || "");
-  if (next.length < 12 || !/[a-z]/.test(next) || !/[A-Z]/.test(next) || !/[0-9]/.test(next) || !/[^A-Za-z0-9]/.test(next)) {
-    throw adminError_("WEAK_PASSWORD", "Use at least 12 characters with upper, lower, number, and symbol.");
-  }
+  if (!isAdminPasswordValid_(next)) throw adminError_("WEAK_PASSWORD", ADMIN_PASSWORD_POLICY_MESSAGE);
   const properties = PropertiesService.getScriptProperties();
   if (!verifyPassword_(current, properties.getProperty(ADMIN_CONFIG.properties.password) || "")) throw adminError_("INVALID_CURRENT_PASSWORD", "Current password is incorrect.");
   properties.setProperty(ADMIN_CONFIG.properties.password, createPasswordVerifier_(next));
@@ -117,6 +116,11 @@ function changeAdminPassword_(session, payload) {
   const replacement = createAdminSession_(false);
   auditAdmin_(ADMIN_CONFIG.email, "change_password", "authentication", "", true, "", []);
   return { token: replacement.token, session: adminSessionDto_(replacement.record) };
+}
+
+function isAdminPasswordValid_(password) {
+  const value = String(password || "");
+  return value.length >= 6 && /[a-z]/.test(value) && /[A-Z]/.test(value) && /[0-9]/.test(value) && /[^A-Za-z0-9]/.test(value);
 }
 
 function createPasswordVerifier_(password) {

@@ -27,10 +27,10 @@
   <section id="passwordView" class="auth hidden">
     <form id="passwordForm" class="auth-panel">
       <div class="eyebrow">Required security step</div><div class="brand">Change temporary password</div>
-      <p class="muted">Use 12+ characters with uppercase, lowercase, number, and symbol.</p>
+      <p class="muted">Use at least 6 characters with uppercase, lowercase, number, and symbol.</p>
       <label>Current password<input id="currentPassword" type="password" autocomplete="current-password" required></label>
-      <label>New password<input id="newPassword" type="password" autocomplete="new-password" required></label>
-      <label>Confirm password<input id="confirmPassword" type="password" autocomplete="new-password" required></label>
+      <label>New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{6,}" required></label>
+      <label>Confirm password<input id="confirmPassword" type="password" autocomplete="new-password" minlength="6" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{6,}" required></label>
       <button class="btn primary full" type="submit">Change password</button><div id="passwordError" class="error" role="alert"></div>
     </form>
   </section>
@@ -47,6 +47,8 @@
       const $=id=>document.getElementById(id);
       let token=''; let active='overview'; let editorSave=null; const cache={};
       const themeKey='portfolio-dashboard-theme';
+      const passwordPolicyMessage='Use at least 6 characters with uppercase, lowercase, number, and symbol.';
+      const isPasswordValid=value=>String(value||'').length>=6&&/[a-z]/.test(value)&&/[A-Z]/.test(value)&&/[0-9]/.test(value)&&/[^A-Za-z0-9]/.test(value);
       function applyTheme(value){const theme=['light','dark'].includes(value)?value:'system';document.documentElement.toggleAttribute('data-theme',theme!=='system');if(theme==='system')document.documentElement.removeAttribute('data-theme');else document.documentElement.setAttribute('data-theme',theme);$('themeSelect').value=theme}
       applyTheme(localStorage.getItem(themeKey)||'system');
       $('themeSelect').addEventListener('change',e=>{const value=e.target.value;if(value==='system')localStorage.removeItem(themeKey);else localStorage.setItem(themeKey,value);applyTheme(value)});
@@ -58,7 +60,7 @@
       async function call(command,payload={}){const body=new URLSearchParams({action:'admin',request:JSON.stringify({command,payload,token})});const response=await fetch(window.PORTFOLIO_ADMIN_API,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:body.toString()});if(!response.ok)throw{message:`Request failed (${response.status})`};const r=await response.json();if(!r||!r.success)throw(r&&r.error||{message:'Request failed'});return r.data}
       function busy(el,on){el.disabled=on;el.dataset.label||=(el.textContent||'');el.innerHTML=on?'<span class="spinner"></span>':esc(el.dataset.label)}
       $('loginForm').addEventListener('submit',async e=>{e.preventDefault();const b=e.submitter;busy(b,true);$('loginError').textContent='';try{const r=await call('auth.login',{email:$('loginEmail').value,password:$('loginPassword').value,clientId:navigator.userAgent.slice(0,80)});token=r.token;showSession(r.session)}catch(x){$('loginError').textContent=x.message}finally{busy(b,false)}});
-      $('passwordForm').addEventListener('submit',async e=>{e.preventDefault();if($('newPassword').value!==$('confirmPassword').value){$('passwordError').textContent='Passwords do not match.';return}const b=e.submitter;busy(b,true);try{const r=await call('auth.changePassword',{currentPassword:$('currentPassword').value,newPassword:$('newPassword').value});token=r.token;showSession(r.session)}catch(x){$('passwordError').textContent=x.message}finally{busy(b,false)}});
+      $('passwordForm').addEventListener('submit',async e=>{e.preventDefault();const next=$('newPassword').value;if(!isPasswordValid(next)){$('passwordError').textContent=passwordPolicyMessage;return}if(next!==$('confirmPassword').value){$('passwordError').textContent='Passwords do not match.';return}const b=e.submitter;busy(b,true);try{const r=await call('auth.changePassword',{currentPassword:$('currentPassword').value,newPassword:next});token=r.token;showSession(r.session)}catch(x){$('passwordError').textContent=x.message}finally{busy(b,false)}});
       $('logoutButton').onclick=async()=>{try{await call('auth.logout')}finally{token='';location.reload()}};
       function showSession(s){$('loginView').classList.add('hidden');$('passwordView').classList.toggle('hidden',!s.mustChangePassword);$('appView').classList.toggle('hidden',s.mustChangePassword);if(!s.mustChangePassword){$('adminEmail').textContent=s.email;buildNav();openModule('overview')}}
       function buildNav(){$('nav').innerHTML=modules.map(([k,n])=>`<button data-module="${k}">${esc(n)}</button>`).join('');$('nav').onclick=e=>{const b=e.target.closest('[data-module]');if(b)openModule(b.dataset.module)}}
