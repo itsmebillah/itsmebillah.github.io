@@ -246,10 +246,10 @@
             display: none;
         }
         .career-tree-preview .timeline-item { z-index: 1; min-height: 10rem; margin: 0 0 0.8rem; }
-        .career-tree-preview .timeline-item::before { content: ''; position: absolute; top: 52%; z-index: -1; display: block; width: 14%; height: 0.42rem; border: 1px solid rgba(255, 122, 66, 0.34); border-radius: 999px; background: linear-gradient(180deg, #9b541e, #3f291a 48%, #1d3827); box-shadow: 0 0 0.7rem rgba(255, 122, 66, 0.16); }
+        .career-tree-preview .timeline-item::before { content: ''; position: absolute; top: 52%; z-index: -1; display: block; width: 14%; height: 1.25rem; background: repeating-linear-gradient(172deg, #507843 0 3px, #315333 3px 6px, #67502f 6px 9px, #263f2b 9px 12px); filter: drop-shadow(0 0.25rem 0.35rem rgba(5, 20, 11, 0.3)); }
         .career-tree-preview .timeline-item::after { content: ''; position: absolute; top: calc(52% - 0.28rem); z-index: 2; width: 0.72rem; height: 0.72rem; border: 2px solid var(--tree-accent); border-radius: 50%; background: #36261a; box-shadow: 0 0 0.65rem rgba(255, 122, 66, 0.6); }
-        .career-tree-preview .timeline-item:nth-child(odd)::before { left: 49%; transform: rotate(8deg); transform-origin: left center; }
-        .career-tree-preview .timeline-item:nth-child(even)::before { right: 49%; transform: rotate(-8deg); transform-origin: right center; }
+        .career-tree-preview .timeline-item:nth-child(odd)::before { left: 49%; transform: rotate(8deg); transform-origin: left center; clip-path: polygon(0 4%, 100% 34%, 100% 66%, 0 96%); }
+        .career-tree-preview .timeline-item:nth-child(even)::before { right: 49%; transform: rotate(-8deg); transform-origin: right center; clip-path: polygon(0 34%, 100% 4%, 100% 96%, 0 66%); }
         .career-tree-preview .timeline-item:nth-child(odd)::after { left: calc(50% - 0.36rem); }
         .career-tree-preview .timeline-item:nth-child(even)::after { right: calc(50% - 0.36rem); }
         .career-tree-preview .timeline-content { z-index: 2; width: 38%; padding: 1.15rem 1.3rem; border: 1px solid var(--tree-line); border-radius: 6px; background: var(--tree-leaf); color: var(--tree-copy); box-shadow: 0 0.8rem 2rem rgba(8, 24, 16, 0.08); backdrop-filter: blur(10px); }

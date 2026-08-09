@@ -15,7 +15,7 @@ test('career tree remains isolated behind its preview query', () => {
 
 test('career tree preserves dynamic records and adds a data ground', () => {
     assert.match(script, /timeline-\$\{item\.blockType\}/);
-    assert.match(script, /career-tree-trunk\.png/);
+    assert.match(script, /career-tree-trunk-green\.png/);
     assert.match(styles, /timeline-item:nth-child\(odd\)::before/);
     assert.match(styles, /timeline-item:nth-child\(even\)::before/);
     assert.match(component, /ROOTED IN DATA/);
