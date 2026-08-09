@@ -186,7 +186,8 @@
         }
         .skill-container { margin-bottom: 1.5rem; }
         .skill-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-        .skill-name { font-weight: 600; color: var(--text-primary); }
+        .skill-name { display: inline-flex; align-items: center; gap: 0.55rem; color: var(--text-primary); font-weight: 600; }
+        .skill-name-icon { width: 1rem; height: 1rem; flex: 0 0 1rem; color: #FF7A35; }
         .skill-percentage { color: #FF6B35; font-weight: 600; }
         .skill-bar { height: 8px; background: var(--surface-hover); border-radius: 4px; overflow: hidden; }
         .skill-progress { height: 100%; background: linear-gradient(90deg, #FF6B35, #FF8B35); border-radius: 4px; width: 0; transition: width 1.5s ease-in-out; }
