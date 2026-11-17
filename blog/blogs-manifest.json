@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-16T17:44:59.702Z",
+  "generatedAt": "2026-11-17T04:06:10.014Z",
   "source": {
     "cms": "Google Sheets",
     "api": "Apps Script",
@@ -79,14 +79,6 @@
       "url": "/blog/pt-cpi-sales-target-gap-analytics-portal/",
       "output": "blog/pt-cpi-sales-target-gap-analytics-portal/index.html",
       "category": "Automation & Business Intelligence",
-      "published": true
-    },
-    {
-      "title": "Revenue Optimization & Customer Segmentation for a Telecom Giant",
-      "slug": "telecom-revenue-optimization-case-study",
-      "url": "/blog/telecom-revenue-optimization-case-study/",
-      "output": "blog/telecom-revenue-optimization-case-study/index.html",
-      "category": "Data Analytics",
       "published": true
     },
     {

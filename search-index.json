@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-16T17:44:59.704Z",
+  "generatedAt": "2026-11-17T04:06:10.015Z",
   "source": "Google Sheets via Apps Script",
   "fields": {
     "blog": [
@@ -109,15 +109,6 @@
     },
     {
       "type": "blog",
-      "id": "blog:telecom-revenue-optimization-case-study",
-      "url": "https://itsmebillah.github.io/blog/telecom-revenue-optimization-case-study/",
-      "title": "Revenue Optimization & Customer Segmentation for a Telecom Giant",
-      "description": "A comprehensive case study detailing how advanced data analytics, SQL, and Python were leveraged to optimize revenue streams and segment customer base for a leading telecom company, leading to a 20% increase in ARPU.",
-      "content": "Revenue Optimization & Customer Segmentation for a Telecom Giant In the hyper-competitive telecommunications industry, understanding customer behavior and optimizing revenue streams are paramount. This case study details a project undertaken for a major telecom provider to address challenges related to declining Average Revenue Per User (ARPU) and a lack of targeted marketing strategies. Executive Summary By implementing advanced data analytics techniques, including K-Means Clustering for customer segmentation and SQL-based revenue analysis, we identified key areas for improvement. This led to the development of three distinct customer segments and tailored marketing campaigns, resulting in a 20% increase in ARPU for the targeted segments and an overall 8% revenue uplift within nine months. 1. The Business Challenge: Stagnant Growth & Untapped Potential The client, a prominent telecom operator, was struggling with: Declining ARPU: Average Revenue Per User was flatlining despite a growing subscriber base. Generic Marketing: One-size-fits-all campaigns were yielding low conversion rates. High Churn in Specific Segments: Inability to identify and retain high-value customers at risk. Underperforming Product Bundles: Lack of insight into which service combinations truly resonated with users. 2. Data Sources & Engineering: Laying the Foundation A robust data infrastructure was critical. We integrated and cleaned data from various sources: Billing Records: Detailed usage, subscription tiers, and payment history (5TB+). CRM Data: Customer demographics, service requests, and interaction logs. Network Usage Data: Call duration, data consumption, and peak usage times. Marketing Campaign Data: Response rates and offer uptake. Data Cleaning & Transformation: Utilizing SQL (PostgreSQL) for initial data extraction and aggregation, followed by Python (Pandas, NumPy) for handling missing values, standardizing formats, and feature engineering. This ensured a high-quality dataset for advanced analytics. 3. Advanced Analytics: Unveiling Customer Segments 3.1. Customer Segmentation (K-Means Clustering) To move beyond generic marketing, we applied unsupervised machine learning. Feature Selection: Key features included ARPU, data usage, call duration, contract length, and customer tenure. Model Application: K-Means Clustering was chosen for its interpretability and efficiency in grouping similar customers. Optimal K: The Elbow Method indicated that K=3 was the optimal number of segments. 3.2. Segment Profiling & Key Characteristics Each segment was deeply profiled to understand their unique behaviors and preferences: Segment 1: The \"Digital Natives\" (35% of customer base) High data usage, low call duration. Early adopters of new services. Responsive to digital marketing. Segment 2: The \"Family Connectors\" (45% of customer base) Moderate data, high call duration, often multiple lines. Value stability and bundled family plans. Responsive to loyalty programs. Segment 3: The \"Budget Conscious\" (20% of customer base) Low usage across all services, price-sensitive. High churn risk if better deals emerge. Responsive to cost-saving promotions. 4. Revenue Optimization & Targeted Strategies With clear segments, we could develop specific strategies to boost ARPU and reduce churn: Digital Natives: Introduced tiered \"unlimited\" data plans with cloud storage bundles. Family Connectors: Launched value-added family entertainment packages and multi-line discounts. Budget Conscious: Created pre-emptive loyalty discounts for long-term customers and clearer, affordable data-only plans. 5. Impact & Future Recommendations The tailored strategies significantly impacted the client’s bottom line: 20% ARPU Increase: Achieved within targeted segments (Digital Natives, Family Connectors). 15% Churn Reduction: Among the Budget Conscious segment. 8% Overall Revenue Uplift: Across the entire customer base. Future Outlook: The client is now exploring predictive churn models using machine learning to proactively identify at-risk customers before they churn, further solidifying their market position. --- End of Case Study ---",
-      "category": "Data Analytics"
-    },
-    {
-      "type": "blog",
       "id": "blog:data-analysis-career-business-guide",
       "url": "https://itsmebillah.github.io/blog/data-analysis-career-business-guide/",
       "title": "Data Analysis & Storytelling for Better Decisions",
@@ -165,52 +156,72 @@
     {
       "type": "project",
       "id": "project:autopilot-business-system",
-      "url": "https://script.google.com/macros/s/AKfycbze2NXUH8ddcmy7l99wLCbPrsz0v95vu7xO_bR632byfPPi0Yn7uxoZJm_W1Me4k8IH/exec",
+      "url": "#projects",
       "title": "Autopilot Business System",
-      "description": "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script",
-      "technologies": [
-        "Google Apps Script",
-        "Automation",
-        "Google Sheets API"
-      ]
+      "description": "Fully automated Point of Sale & Business Management System built using Google Sheets and Apps Script"
     },
     {
       "type": "project",
       "id": "project:car-sales-analysis",
-      "url": "https://app.powerbi.com/view?r=eyJrIjoiNzVlYzIyNzEtYjc2Ni00MjY4LWJlYTAtOWUzYTBlZTdhMjVkIiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
+      "url": "#projects",
       "title": "Car Sales Analysis",
-      "description": "Vehicle sales trends and profitability analysis with Power BI dashboard",
-      "technologies": [
-        "Power BI",
-        "SQL",
-        "Data Analysis",
-        "Dashboard"
-      ]
+      "description": "Vehicle sales trends and profitability analysis with Power BI dashboard"
     },
     {
       "type": "project",
       "id": "project:hr-analytics-dashboard",
-      "url": "https://app.powerbi.com/view?r=eyJrIjoiMjBhNzM1MDEtNTZiYy00MGM1LWJhM2MtY2NlZmYyZTA0ZjQ4IiwidCI6IjliOTk0Yjg2LWZmNjctNGEyNC05YTBjLTFkYzgzNWVjOTJjNSIsImMiOjEwfQ%3D%3D",
+      "url": "#projects",
       "title": "HR Analytics Dashboard",
-      "description": "Employee performance and retention analysis with advanced SQL queries",
-      "technologies": [
-        "Power BI",
-        "SQL",
-        "HR Analytics",
-        "Dashboard"
-      ]
+      "description": "Employee performance and retention analysis with advanced SQL queries"
     },
     {
       "type": "project",
       "id": "project:wealth-os",
-      "url": "https://wealth-os-sooty-six.vercel.app/",
+      "url": "#projects",
       "title": "Wealth OS",
-      "description": "Your Personal Wealth Intelligence Platform",
-      "technologies": [
-        "App Script",
-        "supabase",
-        "vercel"
-      ]
+      "description": "Your Personal Wealth Intelligence Platform"
+    },
+    {
+      "type": "project",
+      "id": "project:company-hub",
+      "url": "#projects",
+      "title": "company-hub",
+      "description": "Role-aware company operations platform for workforce administration, employee self-service, and platform governance."
+    },
+    {
+      "type": "project",
+      "id": "project:itsmebillah-github-io",
+      "url": "#projects",
+      "title": "itsmebillah.github.io",
+      "description": "Portfolio of Md. Masum Billah showcasing data analytics, business intelligence, and workflow automation projects."
+    },
+    {
+      "type": "project",
+      "id": "project:reyon-online",
+      "url": "#projects",
+      "title": "Reyon-Online",
+      "description": "Premium beauty retail storefront and governed business operations foundation built with Next.js and Supabase."
+    },
+    {
+      "type": "project",
+      "id": "project:sales-report-reminder",
+      "url": "#projects",
+      "title": "Sales_Report_Reminder",
+      "description": "Google Sheets and Apps Script automation for sales reporting, attendance, message queues, and notification delivery."
+    },
+    {
+      "type": "project",
+      "id": "project:sales-dashboard",
+      "url": "#projects",
+      "title": "Sales-Dashboard",
+      "description": "Production sales dashboard powered by Google Sheets, Google Apps Script, and a certified KPI data layer."
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:excel-for-data-analytics-analystbuilder",
+      "url": "https://www.analystbuilder.com/achievements/verify/SO9RP6CCDB?r=G0H6JyqOWXT7ghOFyEpQC1fSR",
+      "title": "Excel for Data Analytics",
+      "issuer": "AnalystBuilder"
     },
     {
       "type": "certificate",
@@ -238,23 +249,9 @@
     },
     {
       "type": "certificate",
-      "id": "certificate:python-programming-for-beginners-analystbuilder",
-      "url": "https://www.analystbuilder.com/achievements/verify/EY0VQ83JGK?r=vgidCVcAlFNjV4Zgwagi0uOBt",
-      "title": "Python Programming for Beginners",
-      "issuer": "AnalystBuilder"
-    },
-    {
-      "type": "certificate",
       "id": "certificate:advanced-mysql-for-data-analysis-analystbuilder",
       "url": "https://www.analystbuilder.com/achievements/verify/N89XBITP8M?r=EBd1otx7xeaxP1SWwGo01hVCr",
       "title": "Advanced MySQL for Data Analysis",
-      "issuer": "AnalystBuilder"
-    },
-    {
-      "type": "certificate",
-      "id": "certificate:excel-for-data-analytics-analystbuilder",
-      "url": "https://www.analystbuilder.com/achievements/verify/SO9RP6CCDB?r=G0H6JyqOWXT7ghOFyEpQC1fSR",
-      "title": "Excel for Data Analytics",
       "issuer": "AnalystBuilder"
     },
     {
@@ -266,6 +263,13 @@
       "skills": [
         "sql"
       ]
+    },
+    {
+      "type": "certificate",
+      "id": "certificate:python-programming-for-beginners-analystbuilder",
+      "url": "https://www.analystbuilder.com/achievements/verify/EY0VQ83JGK?r=vgidCVcAlFNjV4Zgwagi0uOBt",
+      "title": "Python Programming for Beginners",
+      "issuer": "AnalystBuilder"
     },
     {
       "type": "experience",
